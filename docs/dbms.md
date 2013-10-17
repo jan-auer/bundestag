@@ -41,3 +41,11 @@ Der Einsatz eines DBMS erfordert entsprechend qualifiziertes Personal, welfches 
 ## Anschaffungskosten
 
 Zum Betrieb eines DBMS benötigte Hard- sowie Software sind ggf. mit hohen Anschaffungskosten verbunden.
+
+## Infrastruktur
+
+Alle Clients, welche Datensätze in die DB einfügen oder aus selbiger lesen möchten, benötigen Zugriff auf eine Schnittstelle zur DB (bspw. Webinterface/Internet). In unserem konkreten Szenario könnte dies bedeuten, dass sämtliche Wahllokale mit einem Internetanschluss ausgestattet werden müssten.
+
+## Single Point Of Failure
+
+Da Datensätze in einem DBMS zentralisiert gespeichert werden, existiert ein zentraler Angriffspunkt. Wird diese DB bspw. angegriffen, so kann die gesamte Datenbasis gefährdet sein.
