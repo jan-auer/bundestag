@@ -2,50 +2,50 @@
 
 ## Effizienterer Datenzugriff
 
-Die Verwendung von Indexstrukturen ermöglicht Datenbanken eine effizientere Selektion von Datensätzen. Ohne Verwendung eines DBMS müsste zur Auswahl bestimmter Datensätze die gesamte Datenbasis durchsucht werden.
+Die Verwendung von Indexstrukturen ermÃ¶glicht Datenbanken eine effizientere Selektion von DatensÃ¤tzen. Ohne Verwendung eines DBMS mÃ¼sste zur Auswahl bestimmter DatensÃ¤tze die gesamte Datenbasis durchsucht werden.
 
 ## Multi-User-Access
 
-DBMS synchronisieren konkurrierende Zugriffe verschiedener Benutzer automatisch - bei einer anderen Lösung müssten parallele Zugriffe ggf. zusätzlich implementiert werden.
+DBMS synchronisieren konkurrierende Zugriffe verschiedener Benutzer automatisch - bei einer anderen LÃ¶sung mÃ¼sste die UnterstÃ¼tzung von parallelen Zugriffen ggf. zusÃ¤tzlich implementiert werden.
 
 ## Datenzugriff
 
-DBMS bieten von Haus aus Standardfunktionalitäten (bspw. zum Lese-/Schreibzugriff), welche ohne DBMS ggf. zusätzlich implementiert werden müssten.
+DBMS bieten von Haus aus StandardfunktionalitÃ¤ten (bspw. zum Lese-/Schreibzugriff), welche ohne DBMS ggf. zusÃ¤tzlich implementiert werden mÃ¼ssten.
 
 ## Transaktionen
 
-DBMS bieten die Möglichkeit, durch eine Transaktion mehre Aktionen en bloc (d.h. entweder werden *alle*, oder *keine*) durchzuführen (ohne, dass zwischenzeitlich andere, ggf. konkurrierende Aktionen ausgeführt werden). Ohne Verwendung eines DBMS müsste eine solche Funktionalität ggf. zusätzlich implementiert werden.
+DBMS bieten die MÃ¶glichkeit, durch eine Transaktion mehre Aktionen en bloc (d.h. entweder werden *alle*, oder *keine*) durchzufÃ¼hren (ohne, dass zwischenzeitlich konkurrierende Aktionen ausgefÃ¼hrt werden). Ohne Verwendung eines DBMS mÃ¼sste eine solche FunktionalitÃ¤t ggf. zusÃ¤tzlich implementiert werden.
 
 ## Konsistenzkontrolle
 
-DBMS bieten die Möglichkeit, für Datensätze Konsistenzbedingungen (Constraints) zu definieren - inkonsistente Daten können somit durch Einsatz eines DBMS vermieden werden.
+DBMS bieten die MÃ¶glichkeit, fÃ¼r DatensÃ¤tze Konsistenzbedingungen (Constraints) zu definieren - inkonsistente Daten kÃ¶nnen somit durch Einsatz eines DBMS vermieden werden.
 
 ## Datenzugriffskontrolle
 
-DBMS bieten die Möglichkeit, für Datensätze Zugriffsregeln zu definieren und somit unauthorisierten Zugriff zu verhindern.
+DBMS bieten die MÃ¶glichkeit, fÃ¼r DatensÃ¤tze Zugriffsregeln zu definieren und somit unauthorisierten Zugriff zu verhindern.
 
 ## Standardisierung
 
-Werden *alle* Datensätze in *einem* DBMS persistiert, so kann der Zugriff auf selbige stets auf gleiche Weise erfolgen - hierunter zählen neben einheitlichen Namen und Formaten ebenso Schlüssel sowie Fachbegriffe.
+Werden *alle* DatensÃ¤tze in *einem* DBMS persistiert, so kann der Zugriff auf selbige stets auf gleiche Weise erfolgen - hierunter zÃ¤hlen neben einheitlichen Namen und Formaten ebenso SchlÃ¼ssel sowie Fachbegriffe.
 
 ## Trennung von Daten und Anwendung
 
-Da DBMS und Anwendung per Schnittstelle kommunizieren, brauchen diese keine Kenntnisse über das jeweils andere. Hieraus folgt, dass bspw. DBMS-interne Änderungen Anwendungen nicht beeinflussen.
+Da DBMS und Anwendung per Schnittstelle kommunizieren, brauchen diese keine Kenntnisse Ã¼ber das jeweils andere. Hieraus folgt, dass bspw. DBMS-interne Ã„nderungen die Anwendungen nicht beeinflussen.
 
 # Nachteile eines DBMS
 
 ## Personalkosten
 
-Der Einsatz eines DBMS erfordert entsprechend qualifiziertes Personal, welfches wiederum mit zusätzlichen Kosten verbunden sein kann.
+Der Einsatz eines DBMS erfordert entsprechend qualifiziertes Personal, welches wiederum mit zusÃ¤tzlichen Kosten verbunden sein kann.
 
 ## Anschaffungskosten
 
-Zum Betrieb eines DBMS benötigte Hard- sowie Software sind ggf. mit hohen Anschaffungskosten verbunden.
+Zum Betrieb eines DBMS benÃ¶tigte Hard- sowie Software sind ggf. mit hohen Anschaffungskosten verbunden.
 
 ## Infrastruktur
 
-Alle Clients, welche Datensätze in die DB einfügen oder aus selbiger lesen möchten, benötigen Zugriff auf eine Schnittstelle zur DB (bspw. Webinterface/Internet). In unserem konkreten Szenario könnte dies bedeuten, dass sämtliche Wahllokale mit einem Internetanschluss ausgestattet werden müssten.
+Alle Clients, welche DatensÃ¤tze in die DB einfÃ¼gen oder aus selbiger lesen mÃ¶chten, benÃ¶tigen Zugriff auf eine Schnittstelle zur DB (bspw. Webinterface/Internet). In unserem konkreten Szenario kÃ¶nnte dies bedeuten, dass sÃ¤mtliche Wahllokale mit einem Internetanschluss ausgestattet werden mÃ¼ssten.
 
 ## Single Point Of Failure
 
-Da Datensätze in einem DBMS zentralisiert gespeichert werden, existiert ein zentraler Angriffspunkt. Wird diese DB bspw. angegriffen, so kann die gesamte Datenbasis gefährdet sein.
+Da DatensÃ¤tze in einem DBMS zentralisiert gespeichert werden, existiert ein zentraler Angriffspunkt. Wird diese DB bspw. angegriffen, so kann die gesamte Datenbasis gefÃ¤hrdet sein bzw. von Unbefugten eingelesen werden. Ersteres liegt daher eine entsprechende Backup oder Spiegelung der DB nahe, was einen erhÃ¶hten Aufwand bedeutet.
