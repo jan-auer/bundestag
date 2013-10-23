@@ -1,6 +1,7 @@
 #Lastenheft
-*Einführung*
-Web-interface und Datenbanken
+Der Zweck dieses Dokuments ist die Beschreibung von Anforderungen an das zu entwickelnde Wahlinformationssystem (WIS) zur Verwaltung von Informationen zu Bundestagswahlen nach deutschem Wahlrecht.
+Das geforderte System soll einerseits die Möglichkeit bieten, relevante Informationen zu Bundestagswahlen zu speichern, sowie andererseits die Erstellung von Analysen/Statistiken zu Wahlergebnissen ermöglichen. Hierzu zählen insbesondere auch Vergleiche mit Wahlergebnissen aus vergangenen Wahlen.
+Neben der Implementierung einer geeigneten Möglichkeit zur Persistierung von Datensätze ist die Erstellung eines Web-UIs ebenfalls Ziel dieses Projekts.
 
 # Benutzer-Schnittstelle
 Web-Frontend
@@ -36,12 +37,13 @@ Usecases
 
 ###Analytiker
 
-1. Vergleichen von Wahlergebnissen bund1esweit, pro Bundesland, pro Wahlkreis
-2. Vergleichen von historischen Wahlergebnissen bundesweit, pro Bundesland, pro Wahlkreis (Vergleiche zwischen Jahren)
-3. Anzeige des Gewinners eines Wahlkreises (Direktmandat)
-4. Aulfistung von allen Mandaten bundesweit, Bundesland
-5. Anzeige der Koalitionsmöglichkeiten für eine beliebige Wahl
-6. Anzeige der Sitzeverteilung pro Bundesland und dessen Aufteilung auf Parteien in einem Bundesland
+1. As an analyst, I want to compare election outcomes within an arbitrary constituency or state (between arbitrary constituencies, respctively).
+2. As an analyst, I want to compare election outcomes between different election years (between arbitrary constituencie or within an arbitrary constituency or state).
+3. As an analyst, I want to determine a certain constituency´s winner (cf. direct mandate).
+4. As an analyst, I want to list all mandates of an arbitrary state (of all states, respectively).
+5. As an analyst, I want to determine all coalition possibilites for an arbitrary election.
+6. As an analyst, I want to determine a state´s amount of chairs in the Bundestag for an arbitrary election.
+7. As an analyst, I want to determine the distribution of a state´s chairs in the Bundestag among the available parties.
 
 ###Wähler
 1. Abgabe seiner Stimme
