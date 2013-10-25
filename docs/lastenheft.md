@@ -2,9 +2,9 @@
 
 ## Einführung
 
-Der Zweck dieses Dokuments ist die Beschreibung von Anforderungen an das zu entwickelnde Wahlinformationssystem (WIS) zur Verwaltung von Informationen zu Bundestagswahlen nach deutschem Wahlrecht.
-Das geforderte System soll einerseits die Möglichkeit bieten, relevante Informationen zu Bundestagswahlen zu speichern, sowie andererseits die Erstellung von Analysen/Statistiken zu Wahlergebnissen ermöglichen. Hierzu zählen insbesondere auch Vergleiche mit Wahlergebnissen aus vergangenen Wahlen.
-Neben der Implementierung einer geeigneten Möglichkeit zur Persistierung von Datensätze ist die Erstellung eines Web-UIs ebenfalls Ziel dieses Projekts.
+Mit **WIS** wird ein Wahlinformationssystem für deutsche Bundestagswahlen entwickelt, mit dem Interessierte vor der Wahl Informationen abfragen, sowie nach der Wahl Analysen und Statistiken über die Wahlergebnisse erstellen können. Hierzu zählen insbesondere auch Vergleiche der Wahlergebnisse mit vorangegangen Wahlen.
+
+Das Wahlsystem ist als Webapplikation konzipiert und stellt dort zusätzlich zusätzlich zu den Wahlergebnissen der letzten Wahlen auch allgemeine Informationen zu den Parteien dar. Im weiteren Verlauf soll die Stimmabgabe am Wahltag ebenfalls durch eine eigene Schnittstelle des Wahlsystems ermöglicht werden.
 
 ## Benutzergruppen
 
