@@ -41,30 +41,30 @@ Usecases
 
 ###Analytiker
 
-1. As an analyst, I want to compare election outcomes within an arbitrary constituency or state (between arbitrary constituencies, respctively).
-2. As an analyst, I want to compare election outcomes between different election years (between arbitrary constituencie or within an arbitrary constituency or state).
-3. As an analyst, I want to determine a certain constituency´s winner (cf. direct mandate).
-4. As an analyst, I want to list all mandates of an arbitrary state (of all states, respectively).
-5. As an analyst, I want to determine all coalition possibilites for an arbitrary election.
-6. As an analyst, I want to determine a state´s amount of chairs in the Bundestag for an arbitrary election.
-7. As an analyst, I want to determine the distribution of a state´s chairs in the Bundestag among the available parties.
+1. Als Analytiker möchte ich Wahlergebnisse bundesweit, pro Bundesland sowie pro Wahlkreis vergleichen.
+2. Als Analytiker möchte ich Wahlergebnisse (bundesweit, pro Bundesland sowie pro Wahlkreis) aus verschiedenen Jahren vergleichen.
+3. Als Analytiker möchte ich den Gewinner eines Wahlkreises (vgl. Direktmandat) ermitteln.
+4. Als Analytiker möchte ich alle Mandate innerhalb eines Bundeslands (bzw. auch bundesweit) auflisten.
+5. Als Analytiker möchte ich alle Koalitionsmöglichkeiten für ein beliebiges Wahlergebnis bestimmen.
+6. Als Analytiker möchte ich die Anzahl der Sitze im Bundestag eines beliebigen Bundeslands bestimmen.
+7. Als Analytiker möchte ich die Sitzverteilung auf Parteien für ein beliebiges Bundesland bestimmen.
 
 ###Wähler
-1. Abgabe seiner Stimme
+1. Als Wähler möchte ich eine Erst- und eine Zweitstimme abgeben.
 
 ###Wahllokalleiter
-1. Einfügen von abgegebenen Wahlstimmen
-2. Ändern von Wahlstimmen der aktuellen Wahl (bei Fehlern)
+1. Als Wahllokalleiter möchte ich abgegebene Stimmen in das System einpflegen können.
+2. Als Wahllokalleiter möchte ich im Fehlerfall Wahlstimmen einer aktuellen Wahl ändern können.
 
 ###Administrator
-1. Einfügen, Ändern und Löschen von Wahlen
-2. Einfügen, Ändern und Löschen von Parteien
-3. Einfügen, Ändern und Löschen von Länderlisten von Parteien für eine Wahl
-4. Einfügen, Ändern und Löschen von Direktkandidaten für Wahlkreise
-5. Einfügen, Ändern und Löschen von Bundesländern
-6. Einfügen, Ändern und Löschen von Wahlkreisen
-7. Einfügen, Ändern und Löschen von Wahlbezirke
-8. Einfügen, Ändern und Löschen von Wahllokale (mit Adressen und Städten)
+1. Als Administrator möchte ich eine beliebige Wahl hinzufügen, ändern oder löschen.
+2. Als Administrator möchte ich eine beliebige Partei hinzufügen, ändern oder löschen.
+3. Als Administrator möchte ich die Länderliste einer beliebigen Partei für eine beliebige Wahl hinzufügen, ändern oder löschen. 
+4. Als Administrator möchte ich den Direktkandidaten eines beliebigen Wahlkreises für eine beliebige Wahl hinzufügen, ändern oder löschen.
+5. Als Administrator möchte ich ein beliebiges Bundesland hinzufügen, ändern oder löschen.
+6. Als Administrator möchte ich einen beliebigen Wahlkreis hinzufügen, ändern oder löschen.
+7. Als Administrator möchte ich einen beliebigen Wahlbezirk hinzufügen, ändern oder löschen.
+8. Als Administrator möchte ich ein beliebiges Wahllokal hinzufügen, ändern oder löschen.
 
 
 ##Nicht-Funktionale Anforderungen
