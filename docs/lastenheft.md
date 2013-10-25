@@ -79,6 +79,76 @@ Usecases
 - Das System muss am Wahltag bis zu 20.000 Inserts pro Stunde unterstützen
 - Das Server-System muss auf Windows, Linux und Server portierbar sein
 
-## Abnahmekriterien
+## Abnahmeszenarien
 
-- 
+### Szenario 1: Authentifizierung als 
+
+**Schritte:**
+
+ - Zugriff auf eine geschützte Seite ohne Login.
+ - Einloggen mit falschen Benutzerdaten.
+ - Einloggen mit korrekten Benutzerdaten.
+ 
+**Erwartete Resultate:**
+
+ - Zugriff ohne Login war nicht möglich.
+ - Login mit falschen Benutzerdaten war nicht möglich.
+ - Login mit korrekten Benutzerdaten war möglich.
+
+### Szenario 2: Wartung von Parteidaten
+
+**Schritte:**
+
+ - Hinzufügen einer neuen Partei und Hochladen eines Bildes.
+ - Ändern des Namens einer bestehenen Partei.
+ - Ändern des Bildes einer bestehenden Partei.
+ - Löschen einer bestehenden Partei. 
+ 
+**Erwartete Resultate:**
+
+ - Die gespeicherten Daten sind persistiert.
+ - Vergangene Wahlen müssen von diesen Änderungen unberührt bleiben.
+ - Zukünftige Wahlen werden mit den neuen Informationen aktualisiert. 
+ - Die Änderungen sind auf der Webseite sichtbar.
+
+### Szenario 3: Wartung demographischer Daten
+
+**Schritte:**
+
+ - Hinzufügen eines neuen Wahlkreises.
+ - Hinzufügen von Wahllokalen zu dem neuen Wahlkreis .
+ - Ändern der Einwohnerzahl eines Wahlkreises.
+ - Ändern der Einwohnerzahl eines Wahrkreises mit zu großer Abweichung vom Durchschnitt.
+
+**Erwartete Resultate:**
+
+ - Die gespeicherten Daten sind persistiert.
+ - Vergangene Wahlen müssen von diesen Änderungen unberührt bleiben.
+ - Zukünftige Wahlen werden mit den neuen Informationen aktualisiert. 
+ - Das Speichern des Wahlkreises mit zu großer Abweichung von der durchschnittlichen Einwohnerzahl war nicht möglich.
+ - Die Einwohnerzahlen der Bundesländer wurden basierend auf den neuen Informationen der Wahlkreise aktualisiert.
+
+### Szenario 4: Wartung von Wahldaten
+
+**Schritte:**
+
+ - Erstellen einer neuen Wahl.
+ - Auswahl der kandidierenden Parteien.
+ - Hinzufügen von Kandidaten zu den Landeslisten und Wahlkreisen.
+ 
+**Erwartete Resultate:**
+
+ - Die gespeicherten Daten sind persistiert.
+ 
+### Szenario 5: Auswertung von Wahlergebnissen
+
+ - Eintragen der letzten Wahlergebnisse zur Auswertung.
+ - Bundesweite Abfrage der Zweitstimmen.
+ - Landesweite Abfrage der Zweitstimmen.
+ - Abfrage der gewählten Direktmandate. 
+ - Abfrage der Sitzverteilung im Bundestag auf Bundesebene.
+ - Abfrage der Sitzverteilung im Bundestag auf Landesebene.
+
+**Erwartete Resultate:**
+
+ - Die Auswertungen stimmen mit den tatsächlichen Wahlergebnissen überein.
