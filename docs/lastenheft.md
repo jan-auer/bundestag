@@ -36,8 +36,10 @@ Usecases
 
 ##Funktionale Anforderungen
 
-###Allgemein
-1. Wähler, Wahllokal und Administrator-Benutzer kann sich mit Benutzername und Passwort authentifizieren
+###Bundeswahlleiter
+1. Als Bundeswahlleiter möchte ich gewährleisten, dass nur solche Wähler eine Stimme abgeben, welche sich zuvor eindeutig authentifiziert haben.
+2. Als Bundeswahlleiter möchte ich gewährleisten, dass sich nur solche Wahllokalleiter auf das System zugreifen können, welche sich zuvor eindeutig authentifiziert haben.
+3. Als Bundeswahlleiter möchte ich gewährleisten, dass der Administratorzugriff auf das System nur nach vorheriger eindeutiger Authentifikation möglich ist.
 
 ###Analytiker
 
