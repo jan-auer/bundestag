@@ -1,4 +1,4 @@
-#Lastenheft
+# Lastenheft
 
 ## Einführung
 
@@ -12,7 +12,6 @@ Neben der Implementierung einer geeigneten Möglichkeit zur Persistierung von Da
 - Wähler
 - Wahllokal
 - Administrator
-
 
 ## Benutzer-Schnittstelle
 Web-Frontend
@@ -34,14 +33,15 @@ Usecases
 	- Benutzerverwaltung
 
 
-##Funktionale Anforderungen
+## Funktionale Anforderungen
 
-###Bundeswahlleiter
+### Bundeswahlleiter
+
 1. Als Bundeswahlleiter möchte ich gewährleisten, dass nur solche Wähler eine Stimme abgeben können, welche sich zuvor eindeutig authentifiziert haben.
 2. Als Bundeswahlleiter möchte ich gewährleisten, dass nur solche Wahllokalleiter auf das System zugreifen können, welche sich zuvor eindeutig authentifiziert haben.
 3. Als Bundeswahlleiter möchte ich gewährleisten, dass der Administratorzugriff auf das System nur nach vorheriger eindeutiger Authentifikation möglich ist.
 
-###Analytiker
+### Analytiker
 
 1. Als Analytiker möchte ich Wahlergebnisse bundesweit, pro Bundesland sowie pro Wahlkreis vergleichen.
 2. Als Analytiker möchte ich Wahlergebnisse (bundesweit, pro Bundesland sowie pro Wahlkreis) aus verschiedenen Jahren vergleichen.
@@ -51,14 +51,17 @@ Usecases
 6. Als Analytiker möchte ich die Anzahl der Sitze im Bundestag eines beliebigen Bundeslands bestimmen.
 7. Als Analytiker möchte ich die Sitzverteilung auf Parteien für ein beliebiges Bundesland bestimmen.
 
-###Wähler
+### Wähler
+
 1. Als Wähler möchte ich die Möglichkeit haben, eine Erst- und eine Zweitstimme abgeben.
 
-###Wahllokalleiter
+### Wahllokalleiter
+
 1. Als Wahllokalleiter möchte ich abgegebene Stimmen in das System einpflegen können.
 2. Als Wahllokalleiter möchte ich im Fehlerfall Wahlstimmen einer aktuellen Wahl ändern können.
 
-###Administrator
+### Administrator
+
 1. Als Administrator möchte ich eine beliebige Wahl hinzufügen, ändern oder löschen.
 2. Als Administrator möchte ich eine beliebige Partei hinzufügen, ändern oder löschen.
 3. Als Administrator möchte ich die Länderliste einer beliebigen Partei für eine beliebige Wahl hinzufügen, ändern oder löschen. 
@@ -68,8 +71,7 @@ Usecases
 7. Als Administrator möchte ich einen beliebigen Wahlbezirk hinzufügen, ändern oder löschen.
 8. Als Administrator möchte ich ein beliebiges Wahllokal hinzufügen, ändern oder löschen.
 
-
-##Nicht-Funktionale Anforderungen
+## Nicht-Funktionale Anforderungen
 
 - Datenschutzrichtlinien müssen berücksichtigt werden
 - Webinterface nutzbar mit Firefox 24.0, Chrome 30.0.1599.101 und Safari 7.0
@@ -77,6 +79,6 @@ Usecases
 - Das System muss am Wahltag bis zu 20.000 Inserts pro Stunde unterstützen
 - Das Server-System muss auf Windows, Linux und Server portierbar sein
 
-##Abnahmekriterien
+## Abnahmekriterien
 
 - 
