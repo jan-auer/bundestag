@@ -37,8 +37,8 @@ Usecases
 ##Funktionale Anforderungen
 
 ###Bundeswahlleiter
-1. Als Bundeswahlleiter möchte ich gewährleisten, dass nur solche Wähler eine Stimme abgeben, welche sich zuvor eindeutig authentifiziert haben.
-2. Als Bundeswahlleiter möchte ich gewährleisten, dass sich nur solche Wahllokalleiter auf das System zugreifen können, welche sich zuvor eindeutig authentifiziert haben.
+1. Als Bundeswahlleiter möchte ich gewährleisten, dass nur solche Wähler eine Stimme abgeben können, welche sich zuvor eindeutig authentifiziert haben.
+2. Als Bundeswahlleiter möchte ich gewährleisten, dass nur solche Wahllokalleiter auf das System zugreifen können, welche sich zuvor eindeutig authentifiziert haben.
 3. Als Bundeswahlleiter möchte ich gewährleisten, dass der Administratorzugriff auf das System nur nach vorheriger eindeutiger Authentifikation möglich ist.
 
 ###Analytiker
@@ -52,7 +52,7 @@ Usecases
 7. Als Analytiker möchte ich die Sitzverteilung auf Parteien für ein beliebiges Bundesland bestimmen.
 
 ###Wähler
-1. Als Wähler möchte ich eine Erst- und eine Zweitstimme abgeben.
+1. Als Wähler möchte ich die Möglichkeit haben, eine Erst- und eine Zweitstimme abgeben.
 
 ###Wahllokalleiter
 1. Als Wahllokalleiter möchte ich abgegebene Stimmen in das System einpflegen können.
