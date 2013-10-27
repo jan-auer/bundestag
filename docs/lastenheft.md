@@ -4,33 +4,28 @@
 
 Mit **WIS** wird ein Wahlinformationssystem für deutsche Bundestagswahlen entwickelt, mit dem Interessierte vor der Wahl Informationen abfragen, sowie nach der Wahl Analysen und Statistiken über die Wahlergebnisse erstellen können. Hierzu zählen insbesondere auch Vergleiche der Wahlergebnisse mit vorangegangen Wahlen.
 
-Das Wahlsystem ist als Webapplikation konzipiert und stellt dort zusätzlich zusätzlich zu den Wahlergebnissen der letzten Wahlen auch allgemeine Informationen zu den Parteien dar. Im weiteren Verlauf soll die Stimmabgabe am Wahltag ebenfalls durch eine eigene Schnittstelle des Wahlsystems ermöglicht werden.
+Das Wahlsystem ist als Webapplikation konzipiert und stellt dort zusätzlich zu den Wahlergebnissen der letzten Wahlen auch allgemeine Informationen zu den Parteien dar. Im weiteren Verlauf soll die Stimmabgabe durch die Wähler am Wahltag ebenfalls durch eine eigene Schnittstelle des Wahlsystems ermöglicht werden.
 
 ## Benutzergruppen
 
-- Analytiker (Anonym)
-- Wähler
-- Wahllokal
-- Administrator
+Das Wahlinformationssystem wird von den folgenden Benutzergruppen über die Webschnittstelle verwendet:
+
+####Analytiker
+Die erste Gruppe ist die der "Analytiker", die das Webangebot ohne Authenitifizierung anonym nutzen können. Diese informieren sich typischerweise über die Ergebnisse der Bundestagswahl und vergleichen diese mit Ergebnissen aus den vorherigen Jahren. Dabei haben sie zudem die Möglichkeit, die Informationen auf verschiedenen Granularitätsebenen zu betrachten (beispielsweise auf der Ebene eines Wahlkreises oder Bundeslandes).
+ 
+####Wähler
+Die Gruppe der Wähler hat, nach der Idenfitikation mit dem System, die Möglichkeit für eine laufende Bundestagswahl seine Stimme abzugeben. Dabei muss natürlich berücksichtigt werden, dass eine Mehrfachabstimmung für eine Bundestagswahl nicht möglich ist. Die Unterstützung dieser Benutzergruppe ist erst für eine zukünftige Version des **WIS** geplant.
+
+####Wahllokalleiter
+Repräsentativ für ein Wahllokal steht der Wahllokalleiter. Dessen Verantwortlichkeit liegt in dem Einpflegen in das **WIS** von abgegebenen Stimmen während einer laufenden Bundestagswahl. Dadurch wird es der Benutzergruppe der Analytiker ermöglicht eine zeitnahe Hochrechnung bei einer laufenden Wahl einsehen zu können.
+
+####Administrator
+Administratoren des Systems haben die Verantwortlichkeit der Stammdatenverwaltung. Darunter fällt beispielsweise das Anlegen einer neuen Wahl und der dazugehörigen Aufteilung in Bundesländer, Wahlkreise, Wahlbezirke etc. Ferner fällt die Benutzer- und Gruppenverwaltung in das Aufgabengebiet des Administrators.
 
 ## Benutzer-Schnittstelle
-Web-Frontend
+Wie bereits angesprochen wird das Wahlinformationssystem über ein Web-Frontend den verschiedenen Benutzergruppen zur Verfügung gestellt. Dabei stellt die nachfolgende Abbildung die angesprochenen Akteure und dessen Anwendungsfälle auf einem hohen Abstraktionslevel dar.
 
-Usecases
-
-- Analytiker (Anonym)
-	- Hochrechnungen von laufenden Wahlen
-	- Aufrufen und Analyse vom Wahlergebnis
-- Wähler
-	- Authentifizierung
-	- wählen
-- Wahllokalleiter
-	- Authentifizierung
-	- Verwaltung von Wahlinformationsergebnissen
-- Administrator
-	- Authentifizierung
-	- Stammdatenverwaltung für Wahlen
-	- Benutzerverwaltung
+->![Usecase diagram](usecases-highlevel.pdf)<-
 
 
 ## Funktionale Anforderungen
@@ -53,7 +48,7 @@ Usecases
 
 ### Wähler
 
-1. Als Wähler möchte ich die Möglichkeit haben, eine Erst- und eine Zweitstimme abgeben.
+1. Als Wähler möchte ich die Möglichkeit haben, eine Erst- und eine Zweitstimme für eine laufende Bundestagswahl abzugeben.
 
 ### Wahllokalleiter
 
@@ -62,10 +57,10 @@ Usecases
 
 ### Administrator
 
-1. Als Administrator möchte ich eine beliebige Wahl hinzufügen, ändern oder löschen.
+1. Als Administrator möchte ich eine anstehende Wahl hinzufügen, ändern oder löschen.
 2. Als Administrator möchte ich eine beliebige Partei hinzufügen, ändern oder löschen.
-3. Als Administrator möchte ich die Länderliste einer beliebigen Partei für eine beliebige Wahl hinzufügen, ändern oder löschen. 
-4. Als Administrator möchte ich den Direktkandidaten eines beliebigen Wahlkreises für eine beliebige Wahl hinzufügen, ändern oder löschen.
+3. Als Administrator möchte ich die Länderliste einer beliebigen Partei für eine anstehende Wahl hinzufügen, ändern oder löschen. 
+4. Als Administrator möchte ich den Direktkandidaten eines beliebigen Wahlkreises für eine anstehende Wahl hinzufügen, ändern oder löschen.
 5. Als Administrator möchte ich ein beliebiges Bundesland hinzufügen, ändern oder löschen.
 6. Als Administrator möchte ich einen beliebigen Wahlkreis hinzufügen, ändern oder löschen.
 7. Als Administrator möchte ich einen beliebigen Wahlbezirk hinzufügen, ändern oder löschen.
@@ -77,7 +72,7 @@ Usecases
 - Webinterface nutzbar mit Firefox 24.0, Chrome 30.0.1599.101 und Safari 7.0
 - Ermittlung der Wahlergebnisse muss in unter 1 Minute erfolgen
 - Das System muss am Wahltag bis zu 20.000 Inserts pro Stunde unterstützen
-- Das Server-System muss auf Windows, Linux und Server portierbar sein
+- Das Server-System muss auf Windows und Linux portierbar sein
 
 ## Abnahmeszenarien
 
