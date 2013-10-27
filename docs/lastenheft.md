@@ -30,12 +30,6 @@ Wie bereits angesprochen wird das Wahlinformationssystem über ein Web-Frontend 
 
 ## Funktionale Anforderungen
 
-### Bundeswahlleiter
-
-1. Als Bundeswahlleiter möchte ich gewährleisten, dass nur solche Wähler eine Stimme abgeben können, welche sich zuvor eindeutig authentifiziert haben.
-2. Als Bundeswahlleiter möchte ich gewährleisten, dass nur solche Wahllokalleiter auf das System zugreifen können, welche sich zuvor eindeutig authentifiziert haben.
-3. Als Bundeswahlleiter möchte ich gewährleisten, dass der Administratorzugriff auf das System nur nach vorheriger eindeutiger Authentifikation möglich ist.
-
 ### Analytiker
 
 1. Als Analytiker möchte ich Wahlergebnisse bundesweit, pro Bundesland sowie pro Wahlkreis vergleichen.
@@ -49,11 +43,13 @@ Wie bereits angesprochen wird das Wahlinformationssystem über ein Web-Frontend 
 ### Wähler
 
 1. Als Wähler möchte ich die Möglichkeit haben, eine Erst- und eine Zweitstimme für eine laufende Bundestagswahl abzugeben.
+2. Als Wähler muss ich mich eindeutig authentifiziert haben, um eine Stimme abgeben zu können.
 
 ### Wahllokalleiter
 
 1. Als Wahllokalleiter möchte ich abgegebene Stimmen in das System einpflegen können.
 2. Als Wahllokalleiter möchte ich im Fehlerfall Wahlstimmen einer aktuellen Wahl ändern können.
+3. Als Wahllokalleiter muss ich mich eindeutig authentifiziert haben, um auf das System zugreifen zu können.
 
 ### Administrator
 
@@ -65,6 +61,7 @@ Wie bereits angesprochen wird das Wahlinformationssystem über ein Web-Frontend 
 6. Als Administrator möchte ich einen beliebigen Wahlkreis hinzufügen, ändern oder löschen.
 7. Als Administrator möchte ich einen beliebigen Wahlbezirk hinzufügen, ändern oder löschen.
 8. Als Administrator möchte ich ein beliebiges Wahllokal hinzufügen, ändern oder löschen.
+9. Als Administrator muss ich mich eindeutig authentifiziert haben, um auf das System zugreifen zu können.
 
 ## Nicht-Funktionale Anforderungen
 
