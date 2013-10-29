@@ -1,4 +1,4 @@
-# Lastenheft
+# Pflichtenheft
 
 ## Einführung
 
