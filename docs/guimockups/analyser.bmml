@@ -1,0 +1,139 @@
+<mockup version="1.0" skin="sketch" fontFace="Balsamiq Sans" measuredW="1238" measuredH="1151" mockupW="1191" mockupH="1105">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="47" y="46" w="1191" h="1105" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>A%20Web%20Page%0Ahttp%3A//www.wis.de</text>
+      </controlProperties>
+    </control>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::Image" x="1018" y="135" w="189" h="95" measuredW="585" measuredH="293" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <src>http%3A//derwahlberliner.files.wordpress.com/2013/08/2013-08-30-bundestagswahl-2013.jpg</src>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="28" controlTypeID="com.balsamiq.mockups::SubTitle" x="515" y="1098" w="-1" h="-1" measuredW="255" measuredH="19" zOrder="12" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>16</size>
+        <text>Kontakt%20%7C%20Impressum%20%7C%20Datenschutz</text>
+      </controlProperties>
+    </control>
+    <control controlID="29" controlTypeID="com.balsamiq.mockups::SubTitle" x="1091" y="1098" w="-1" h="-1" measuredW="124" measuredH="19" zOrder="13" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>16</size>
+        <text>Admin%20%7C%20Wahllokal</text>
+      </controlProperties>
+    </control>
+    <control controlID="30" controlTypeID="com.balsamiq.mockups::SubTitle" x="62" y="1098" w="-1" h="-1" measuredW="120" measuredH="19" zOrder="14" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>16</size>
+        <text>%28c%29%202013%20by%20WIS</text>
+      </controlProperties>
+    </control>
+    <control controlID="31" controlTypeID="com.balsamiq.mockups::NumericStepper" x="562" y="1032" w="-1" h="-1" measuredW="41" measuredH="24" zOrder="15" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>3</text>
+      </controlProperties>
+    </control>
+    <control controlID="33" controlTypeID="com.balsamiq.mockups::Canvas" x="62" y="259" w="575" h="824" measuredW="100" measuredH="70" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>15658734</color>
+      </controlProperties>
+    </control>
+    <control controlID="34" controlTypeID="com.balsamiq.mockups::ComboBox" x="68" y="274" w="60" h="-1" measuredW="60" measuredH="78" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>2013%0A2009%0A2005%0A2001</text>
+      </controlProperties>
+    </control>
+    <control controlID="35" controlTypeID="com.balsamiq.mockups::ComboBox" x="225" y="274" w="134" h="-1" measuredW="77" measuredH="109" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Gesamt%0ABaden-W%FCrttemberg%0ABayern%0ABerlin%0ABrandenburg%0ABremen</text>
+      </controlProperties>
+    </control>
+    <control controlID="36" controlTypeID="com.balsamiq.mockups::ComboBox" x="364" y="274" w="129" h="-1" measuredW="77" measuredH="124" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <state>disabled</state>
+        <text>Gesamt%0AStuttgart%20I%20%28258%29%0AStuttgart%20II%20%28259%29%0AB%F6blingen%20%28260%29%0AEsslingen%20%28261%20%29%0AN%FCrtingen%20%28262%29%0AG%F6ppingen%20%28263%29</text>
+      </controlProperties>
+    </control>
+    <control controlID="37" controlTypeID="com.balsamiq.mockups::ComboBox" x="498" y="274" w="129" h="-1" measuredW="77" measuredH="140" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <state>disabled</state>
+        <text>Gesamt%0ABirkach%0ADegerloch%0AHedelfingen%0AM%F6hringen%0APlieningen%0ASillenbuch%0AStuttgart-Mitte</text>
+      </controlProperties>
+    </control>
+    <control controlID="38" controlTypeID="com.balsamiq.mockups::PieChart" x="154" y="435" w="394" h="394" measuredW="180" measuredH="180" zOrder="7" locked="false" isInGroup="-1"/>
+    <control controlID="39" controlTypeID="com.balsamiq.mockups::ComboBox" x="129" y="274" w="92" h="-1" measuredW="61" measuredH="62" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Sitze%0AErststimme%0AZweitstimme</text>
+      </controlProperties>
+    </control>
+    <control controlID="40" controlTypeID="com.balsamiq.mockups::Title" x="72" y="802" w="86" h="-1" measuredW="86" measuredH="43" zOrder="9" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>CDU</text>
+      </controlProperties>
+    </control>
+    <control controlID="41" controlTypeID="com.balsamiq.mockups::TabBar" x="80" y="855" w="541" h="210" measuredW="428" measuredH="100" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Gesamt%2C%20%DCberhangmandate%2C%20Ausgleichmandate%2C%20Landesliste</text>
+      </controlProperties>
+    </control>
+    <control controlID="42" controlTypeID="com.balsamiq.mockups::DataGrid" x="103" y="900" w="503" h="121" measuredW="334" measuredH="111" zOrder="11" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Name%20%5Ev%2C%20Bundesland%20%5Ev%2C%20Mandat%20%5Ev%0AMax%20Mustermann%2C%20NRW%2C%20Direktmandat%0AHanz%20Josef%2C%20Bayern%2C%20Landesliste%0AM%FCller%20L%FCdenscheid%2C%20Berlin%2C%20Ausgleichmandat</text>
+      </controlProperties>
+    </control>
+    <control controlID="43" controlTypeID="com.balsamiq.mockups::Canvas" x="640" y="259" w="575" h="824" measuredW="100" measuredH="70" zOrder="16" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>15658734</color>
+      </controlProperties>
+    </control>
+    <control controlID="44" controlTypeID="com.balsamiq.mockups::ComboBox" x="646" y="274" w="60" h="-1" measuredW="60" measuredH="78" zOrder="17" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>2013%0A2009%0A2005%0A2001</text>
+      </controlProperties>
+    </control>
+    <control controlID="45" controlTypeID="com.balsamiq.mockups::ComboBox" x="803" y="274" w="134" h="-1" measuredW="77" measuredH="109" zOrder="18" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Gesamt%0ABaden-W%FCrttemberg%0ABayern%0ABerlin%0ABrandenburg%0ABremen</text>
+      </controlProperties>
+    </control>
+    <control controlID="46" controlTypeID="com.balsamiq.mockups::ComboBox" x="942" y="274" w="129" h="-1" measuredW="77" measuredH="124" zOrder="19" locked="false" isInGroup="-1">
+      <controlProperties>
+        <state>disabled</state>
+        <text>Gesamt%0AStuttgart%20I%20%28258%29%0AStuttgart%20II%20%28259%29%0AB%F6blingen%20%28260%29%0AEsslingen%20%28261%20%29%0AN%FCrtingen%20%28262%29%0AG%F6ppingen%20%28263%29</text>
+      </controlProperties>
+    </control>
+    <control controlID="47" controlTypeID="com.balsamiq.mockups::ComboBox" x="1076" y="274" w="129" h="-1" measuredW="77" measuredH="140" zOrder="20" locked="false" isInGroup="-1">
+      <controlProperties>
+        <state>disabled</state>
+        <text>Gesamt%0ABirkach%0ADegerloch%0AHedelfingen%0AM%F6hringen%0APlieningen%0ASillenbuch%0AStuttgart-Mitte</text>
+      </controlProperties>
+    </control>
+    <control controlID="48" controlTypeID="com.balsamiq.mockups::PieChart" x="732" y="435" w="394" h="394" measuredW="180" measuredH="180" zOrder="21" locked="false" isInGroup="-1"/>
+    <control controlID="49" controlTypeID="com.balsamiq.mockups::ComboBox" x="707" y="274" w="92" h="-1" measuredW="61" measuredH="62" zOrder="22" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Sitze%0AErststimme%0AZweitstimme</text>
+      </controlProperties>
+    </control>
+    <control controlID="50" controlTypeID="com.balsamiq.mockups::Title" x="650" y="802" w="86" h="-1" measuredW="86" measuredH="43" zOrder="23" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>CDU</text>
+      </controlProperties>
+    </control>
+    <control controlID="51" controlTypeID="com.balsamiq.mockups::TabBar" x="658" y="855" w="541" h="210" measuredW="428" measuredH="100" zOrder="24" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Gesamt%2C%20%DCberhangmandate%2C%20Ausgleichmandate%2C%20Landesliste</text>
+      </controlProperties>
+    </control>
+    <control controlID="52" controlTypeID="com.balsamiq.mockups::DataGrid" x="681" y="900" w="503" h="121" measuredW="314" measuredH="111" zOrder="25" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Name%20%5Ev%2C%20Bundesland%20%5Ev%2C%20Mandat%20%5Ev%0AAdam%20Sapfel%2C%20NRW%2C%20Direktmandat%0ADavid%20Off%2C%20Bayern%2C%20Landesliste%0AJ%E4ger%20Schnitzel%2C%20Berlin%2C%20Ausgleichmandat</text>
+      </controlProperties>
+    </control>
+    <control controlID="53" controlTypeID="com.balsamiq.mockups::NumericStepper" x="1140" y="1032" w="-1" h="-1" measuredW="41" measuredH="24" zOrder="26" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>3</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

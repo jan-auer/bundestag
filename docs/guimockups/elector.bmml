@@ -1,0 +1,300 @@
+<mockup version="1.0" skin="sketch" fontFace="Balsamiq Sans" measuredW="1238" measuredH="1151" mockupW="1191" mockupH="1105">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="47" y="46" w="1191" h="1105" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>A%20Web%20Page%0Ahttp%3A//www.wis.de</text>
+      </controlProperties>
+    </control>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::Image" x="1018" y="135" w="189" h="95" measuredW="585" measuredH="293" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <src>http%3A//derwahlberliner.files.wordpress.com/2013/08/2013-08-30-bundestagswahl-2013.jpg</src>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="28" controlTypeID="com.balsamiq.mockups::SubTitle" x="515" y="1098" w="-1" h="-1" measuredW="255" measuredH="19" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>16</size>
+        <text>Kontakt%20%7C%20Impressum%20%7C%20Datenschutz</text>
+      </controlProperties>
+    </control>
+    <control controlID="29" controlTypeID="com.balsamiq.mockups::SubTitle" x="1091" y="1098" w="-1" h="-1" measuredW="124" measuredH="19" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>16</size>
+        <text>Admin%20%7C%20Wahllokal</text>
+      </controlProperties>
+    </control>
+    <control controlID="30" controlTypeID="com.balsamiq.mockups::SubTitle" x="62" y="1098" w="-1" h="-1" measuredW="120" measuredH="19" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>16</size>
+        <text>%28c%29%202013%20by%20WIS</text>
+      </controlProperties>
+    </control>
+    <control controlID="33" controlTypeID="com.balsamiq.mockups::Canvas" x="54" y="259" w="1153" h="824" measuredW="100" measuredH="70" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>15658734</color>
+      </controlProperties>
+    </control>
+    <control controlID="74" controlTypeID="com.balsamiq.mockups::Title" x="533" y="315" w="-1" h="-1" measuredW="219" measuredH="43" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Stimmzettel</text>
+      </controlProperties>
+    </control>
+    <control controlID="75" controlTypeID="com.balsamiq.mockups::SubTitle" x="333" y="364" w="-1" h="-1" measuredW="733" measuredH="27" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>f%FCr%20die%20Wahl%20zum%20Deutschen%20Bundestag%20im%20Wahlkreis%201%20Deutschland</text>
+      </controlProperties>
+    </control>
+    <control controlID="76" controlTypeID="com.balsamiq.mockups::SubTitle" x="515" y="398" w="-1" h="-1" measuredW="266" measuredH="27" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>am%2029.%20September%202013</text>
+      </controlProperties>
+    </control>
+    <control controlID="77" controlTypeID="com.balsamiq.mockups::SubTitle" x="544" y="474" w="-1" h="-1" measuredW="233" measuredH="27" zOrder="9" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Sie%20haben%202%20Stimmen</text>
+      </controlProperties>
+    </control>
+    <control controlID="80" controlTypeID="com.balsamiq.mockups::Paragraph" x="357" y="533" w="238" h="80" measuredW="200" measuredH="80" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <align>right</align>
+        <bold>true</bold>
+        <size>14</size>
+        <text>Hier%201%20Stimme%0Af%FCr%20die%20Wahl%0Aeines/einer%20Wahlkreisabgeordneten</text>
+      </controlProperties>
+    </control>
+    <control controlID="81" controlTypeID="com.balsamiq.mockups::Paragraph" x="699" y="533" w="238" h="80" measuredW="200" measuredH="80" zOrder="11" locked="false" isInGroup="-1">
+      <controlProperties>
+        <align>left</align>
+        <bold>true</bold>
+        <size>14</size>
+        <text>Hier%201%20Stimme%0Af%FCr%20die%20Wahl%0Aeines/einer%20Wahlkreisabgeordneten</text>
+      </controlProperties>
+    </control>
+    <control controlID="82" controlTypeID="com.balsamiq.mockups::SubTitle" x="470" y="601" w="-1" h="-1" measuredW="125" measuredH="27" zOrder="12" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Erststimme</text>
+      </controlProperties>
+    </control>
+    <control controlID="83" controlTypeID="com.balsamiq.mockups::SubTitle" x="699" y="601" w="-1" h="-1" measuredW="141" measuredH="27" zOrder="13" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Zweitstimme</text>
+      </controlProperties>
+    </control>
+    <control controlID="94" controlTypeID="com.balsamiq.mockups::Canvas" x="276" y="742" w="319" h="90" measuredW="100" measuredH="70" zOrder="14" locked="false" isInGroup="-1"/>
+    <control controlID="95" controlTypeID="com.balsamiq.mockups::CheckBox" x="552" y="750" w="34" h="32" measuredW="20" measuredH="21" zOrder="15" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>16</size>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="96" controlTypeID="com.balsamiq.mockups::Label" x="486" y="752" w="-1" h="-1" measuredW="40" measuredH="28" zOrder="16" locked="false" isInGroup="-1">
+      <controlProperties>
+        <bold>true</bold>
+        <size>20</size>
+        <text>SPD</text>
+      </controlProperties>
+    </control>
+    <control controlID="97" controlTypeID="com.balsamiq.mockups::Label" x="291" y="752" w="-1" h="-1" measuredW="18" measuredH="28" zOrder="17" locked="false" isInGroup="-1">
+      <controlProperties>
+        <bold>true</bold>
+        <size>20</size>
+        <text>2.</text>
+      </controlProperties>
+    </control>
+    <control controlID="98" controlTypeID="com.balsamiq.mockups::Label" x="318" y="752" w="-1" h="-1" measuredW="120" measuredH="28" zOrder="18" locked="false" isInGroup="-1">
+      <controlProperties>
+        <bold>true</bold>
+        <size>20</size>
+        <text>Hans%20Hubert</text>
+      </controlProperties>
+    </control>
+    <control controlID="99" controlTypeID="com.balsamiq.mockups::Paragraph" x="318" y="782" w="137" h="50" measuredW="200" measuredH="80" zOrder="19" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Beruf%0AHauptstra%DFe%2013%0A12345%20Berlin</text>
+      </controlProperties>
+    </control>
+    <control controlID="100" controlTypeID="com.balsamiq.mockups::Canvas" x="276" y="847" w="319" h="90" measuredW="100" measuredH="70" zOrder="20" locked="false" isInGroup="-1"/>
+    <control controlID="101" controlTypeID="com.balsamiq.mockups::CheckBox" x="552" y="855" w="34" h="32" measuredW="20" measuredH="21" zOrder="21" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>16</size>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="102" controlTypeID="com.balsamiq.mockups::Label" x="486" y="857" w="-1" h="-1" measuredW="39" measuredH="28" zOrder="22" locked="false" isInGroup="-1">
+      <controlProperties>
+        <bold>true</bold>
+        <size>20</size>
+        <text>FDP</text>
+      </controlProperties>
+    </control>
+    <control controlID="103" controlTypeID="com.balsamiq.mockups::Label" x="291" y="857" w="-1" h="-1" measuredW="17" measuredH="28" zOrder="23" locked="false" isInGroup="-1">
+      <controlProperties>
+        <bold>true</bold>
+        <size>20</size>
+        <text>3.</text>
+      </controlProperties>
+    </control>
+    <control controlID="104" controlTypeID="com.balsamiq.mockups::Label" x="318" y="857" w="-1" h="-1" measuredW="133" measuredH="28" zOrder="24" locked="false" isInGroup="-1">
+      <controlProperties>
+        <bold>true</bold>
+        <size>20</size>
+        <text>Michael%20Meier</text>
+      </controlProperties>
+    </control>
+    <control controlID="105" controlTypeID="com.balsamiq.mockups::Paragraph" x="318" y="887" w="137" h="50" measuredW="200" measuredH="80" zOrder="25" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Beruf%0AHauptstra%DFe%2013%0A12345%20Berlin</text>
+      </controlProperties>
+    </control>
+    <control controlID="106" controlTypeID="__group__" x="276" y="639" w="319" h="90" measuredW="319" measuredH="90" zOrder="26" locked="false" isInGroup="-1">
+      <groupChildrenDescriptors>
+        <control controlID="0" controlTypeID="com.balsamiq.mockups::Canvas" x="0" y="0" w="319" h="90" measuredW="100" measuredH="70" zOrder="0" locked="false" isInGroup="106"/>
+        <control controlID="1" controlTypeID="com.balsamiq.mockups::CheckBox" x="276" y="8" w="34" h="32" measuredW="20" measuredH="21" zOrder="1" locked="false" isInGroup="106">
+          <controlProperties>
+            <size>16</size>
+            <text/>
+          </controlProperties>
+        </control>
+        <control controlID="2" controlTypeID="com.balsamiq.mockups::Label" x="210" y="10" w="-1" h="-1" measuredW="43" measuredH="28" zOrder="2" locked="false" isInGroup="106">
+          <controlProperties>
+            <bold>true</bold>
+            <size>20</size>
+            <text>CDU</text>
+          </controlProperties>
+        </control>
+        <control controlID="3" controlTypeID="com.balsamiq.mockups::Label" x="15" y="10" w="-1" h="-1" measuredW="13" measuredH="28" zOrder="3" locked="false" isInGroup="106">
+          <controlProperties>
+            <bold>true</bold>
+            <size>20</size>
+            <text>1.</text>
+          </controlProperties>
+        </control>
+        <control controlID="4" controlTypeID="com.balsamiq.mockups::Label" x="42" y="10" w="-1" h="-1" measuredW="135" measuredH="28" zOrder="4" locked="false" isInGroup="106">
+          <controlProperties>
+            <bold>true</bold>
+            <size>20</size>
+            <text>Angela%20Merkel</text>
+          </controlProperties>
+        </control>
+        <control controlID="5" controlTypeID="com.balsamiq.mockups::Paragraph" x="42" y="40" w="137" h="50" measuredW="200" measuredH="80" zOrder="5" locked="false" isInGroup="106">
+          <controlProperties>
+            <text>Beruf%0AHauptstra%DFe%2013%0A12345%20Berlin</text>
+          </controlProperties>
+        </control>
+      </groupChildrenDescriptors>
+    </control>
+    <control controlID="117" controlTypeID="__group__" x="684" y="637" w="319" h="116" measuredW="319" measuredH="116" zOrder="27" locked="true" isInGroup="-1">
+      <groupChildrenDescriptors>
+        <control controlID="0" controlTypeID="com.balsamiq.mockups::Canvas" x="0" y="0" w="319" h="90" measuredW="100" measuredH="70" zOrder="0" locked="false" isInGroup="117"/>
+        <control controlID="1" controlTypeID="com.balsamiq.mockups::CheckBox" x="8" y="8" w="34" h="32" measuredW="20" measuredH="21" zOrder="1" locked="false" isInGroup="117">
+          <controlProperties>
+            <size>16</size>
+            <text/>
+          </controlProperties>
+        </control>
+        <control controlID="2" controlTypeID="com.balsamiq.mockups::Label" x="287" y="31" w="-1" h="-1" measuredW="13" measuredH="28" zOrder="2" locked="false" isInGroup="117">
+          <controlProperties>
+            <bold>true</bold>
+            <size>20</size>
+            <text>1.</text>
+          </controlProperties>
+        </control>
+        <control controlID="3" controlTypeID="com.balsamiq.mockups::Paragraph" x="113" y="9" w="175" h="80" measuredW="200" measuredH="80" zOrder="3" locked="false" isInGroup="117">
+          <controlProperties>
+            <bold>true</bold>
+            <size>20</size>
+            <text>Christlich-Soziale%0AUnion</text>
+          </controlProperties>
+        </control>
+        <control controlID="4" controlTypeID="com.balsamiq.mockups::Label" x="42" y="10" w="-1" h="-1" measuredW="43" measuredH="28" zOrder="4" locked="false" isInGroup="117">
+          <controlProperties>
+            <bold>true</bold>
+            <size>20</size>
+            <text>CDU</text>
+          </controlProperties>
+        </control>
+        <control controlID="5" controlTypeID="com.balsamiq.mockups::Paragraph" x="113" y="59" w="200" h="57" measuredW="200" measuredH="80" zOrder="5" locked="false" isInGroup="117">
+          <controlProperties>
+            <text>Hugo%20Slawien%2C%20Immo%20Bilie%2C%20%0AInge%20Neur%2C%20Ingo%20Nesien</text>
+          </controlProperties>
+        </control>
+      </groupChildrenDescriptors>
+    </control>
+    <control controlID="120" controlTypeID="com.balsamiq.mockups::Canvas" x="684" y="743" w="319" h="90" measuredW="100" measuredH="70" zOrder="28" locked="false" isInGroup="-1"/>
+    <control controlID="121" controlTypeID="com.balsamiq.mockups::CheckBox" x="692" y="751" w="34" h="32" measuredW="20" measuredH="21" zOrder="29" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>16</size>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="122" controlTypeID="com.balsamiq.mockups::Label" x="971" y="774" w="-1" h="-1" measuredW="18" measuredH="28" zOrder="30" locked="false" isInGroup="-1">
+      <controlProperties>
+        <bold>true</bold>
+        <size>20</size>
+        <text>2.</text>
+      </controlProperties>
+    </control>
+    <control controlID="123" controlTypeID="com.balsamiq.mockups::Paragraph" x="799" y="752" w="172" h="80" measuredW="200" measuredH="80" zOrder="31" locked="false" isInGroup="-1">
+      <controlProperties>
+        <bold>true</bold>
+        <size>20</size>
+        <text>Sozial%20Demokr.%0APartei</text>
+      </controlProperties>
+    </control>
+    <control controlID="124" controlTypeID="com.balsamiq.mockups::Label" x="726" y="753" w="-1" h="-1" measuredW="40" measuredH="28" zOrder="32" locked="false" isInGroup="-1">
+      <controlProperties>
+        <bold>true</bold>
+        <size>20</size>
+        <text>SPD</text>
+      </controlProperties>
+    </control>
+    <control controlID="125" controlTypeID="com.balsamiq.mockups::Paragraph" x="797" y="802" w="200" h="57" measuredW="200" measuredH="80" zOrder="33" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Klaus%20Trophobie%2C%20Klaus%20Uhr%2C%20Knut%20Schfleck%2C%20Konstantin%20Opel</text>
+      </controlProperties>
+    </control>
+    <control controlID="126" controlTypeID="com.balsamiq.mockups::Canvas" x="684" y="851" w="319" h="90" measuredW="100" measuredH="70" zOrder="34" locked="false" isInGroup="-1"/>
+    <control controlID="127" controlTypeID="com.balsamiq.mockups::CheckBox" x="692" y="859" w="34" h="32" measuredW="20" measuredH="21" zOrder="35" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>16</size>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="128" controlTypeID="com.balsamiq.mockups::Label" x="971" y="882" w="-1" h="-1" measuredW="13" measuredH="28" zOrder="36" locked="false" isInGroup="-1">
+      <controlProperties>
+        <bold>true</bold>
+        <size>20</size>
+        <text>1.</text>
+      </controlProperties>
+    </control>
+    <control controlID="129" controlTypeID="com.balsamiq.mockups::Paragraph" x="797" y="860" w="175" h="80" measuredW="200" measuredH="80" zOrder="37" locked="false" isInGroup="-1">
+      <controlProperties>
+        <bold>true</bold>
+        <size>20</size>
+        <text>Freie%20Demokr.%0APartei</text>
+      </controlProperties>
+    </control>
+    <control controlID="130" controlTypeID="com.balsamiq.mockups::Label" x="726" y="861" w="-1" h="-1" measuredW="39" measuredH="28" zOrder="38" locked="false" isInGroup="-1">
+      <controlProperties>
+        <bold>true</bold>
+        <size>20</size>
+        <text>FDP</text>
+      </controlProperties>
+    </control>
+    <control controlID="131" controlTypeID="com.balsamiq.mockups::Paragraph" x="797" y="910" w="200" h="57" measuredW="200" measuredH="80" zOrder="39" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Matt%20Erial%2C%20Matt%20Ritze%2C%20Matz%20I.Pan%2C%20Maud%20Geb%FChr</text>
+      </controlProperties>
+    </control>
+    <control controlID="132" controlTypeID="com.balsamiq.mockups::Button" x="870" y="982" w="-1" h="-1" measuredW="133" measuredH="27" zOrder="40" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>verbindlich%20W%E4hlen</text>
+      </controlProperties>
+    </control>
+    <control controlID="133" controlTypeID="com.balsamiq.mockups::Label" x="62" y="230" w="-1" h="-1" measuredW="288" measuredH="21" zOrder="41" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Sie%20sind%20eingeloggt%20als%20HADFHJKASKD%20%28W%E4hler%29</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>
