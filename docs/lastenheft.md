@@ -25,7 +25,7 @@ Administratoren des Systems haben die Verantwortlichkeit der Stammdatenverwaltun
 ## Benutzer-Schnittstelle
 Wie bereits angesprochen wird das Wahlinformationssystem über ein Web-Frontend den verschiedenen Benutzergruppen zur Verfügung gestellt. Dabei stellt die nachfolgende Abbildung die angesprochenen Akteure und dessen Anwendungsfälle auf einem hohen Abstraktionslevel dar.
 
-->![Usecase diagram](usecases-highlevel.png)<-
+![Usecase diagram](usecases-highlevel.png)
 
 
 ## Funktionale Anforderungen

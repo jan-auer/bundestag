@@ -25,7 +25,7 @@ Administratoren des Systems haben die Verantwortlichkeit der Stammdatenverwaltun
 ## Benutzer-Schnittstelle
 Wie bereits angesprochen wird das Wahlinformationssystem über ein Web-Frontend den verschiedenen Benutzergruppen zur Verfügung gestellt. Dabei stellt die nachfolgende Abbildung die angesprochenen Akteure und dessen Anwendungsfälle auf einem hohen Abstraktionslevel dar.
 
-->![Usecase diagram](usecases-highlevel.png)<-
+![Usecase diagram](usecases-highlevel.png)
 
 
 ## Funktionale Anforderungen
@@ -84,7 +84,7 @@ Technologien:
 ### GUI-Mockups
 Die nachfolgende Übersicht gibt einen Einblick in die Navigation der Webapplikation. Dabei besteht die Webseite aus zwei zentralen Startpunkten: Zum einen der Login-Bereich für Wähler, der nur innerhalb eines Wahllokals aufrufbar ist und das Abgeben einer Stimme vom Wähler direkt ermöglichen wird. Dem gegenüber steht die Startseite des **WIS**, die im Internet erreichbar ist und den Zugriff auf weitere Analysen, sowie dem Administrations- und Wahllokalbereich ermöglicht.
 
-->![Überblick GUI Mockups](guimockups/overview.png)<-
+![Überblick GUI Mockups](guimockups/overview.png)
 
 ## Abnahmeszenarien
 
