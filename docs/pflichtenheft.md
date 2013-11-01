@@ -81,11 +81,10 @@ Technologien:
  - Framework: Symfony
  - Frontend: Bootstrap
 
-UIs:
+### GUI-Mockups
+Die nachfolgende Übersicht gibt einen Einblick in die Navigation der Webapplikation. Dabei besteht die Webseite aus zwei zentralen Startpunkten: Zum einen der Login-Bereich für Wähler, der nur innerhalb eines Wahllokals aufrufbar ist und das Abgeben einer Stimme vom Wähler direkt ermöglichen wird. Dem gegenüber steht die Startseite des **WIS**, die im Internet erreichbar ist und den Zugriff auf weitere Analysen, sowie dem Administrations- und Wahllokalbereich ermöglicht.
 
- - Info-Frontend
- - Wahl-Screen (Login)
- - Administration (Login)
+->![Überblick GUI Mockups](guimockups/overview.png)<-
 
 ## Abnahmeszenarien
 

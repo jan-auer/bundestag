@@ -1,0 +1,74 @@
+<mockup version="1.0" skin="sketch" fontFace="Balsamiq Sans" measuredW="1238" measuredH="1151" mockupW="1191" mockupH="1105">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="47" y="46" w="1191" h="1105" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>A%20Web%20Page%0Ahttp%3A//www.wis.de</text>
+      </controlProperties>
+    </control>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::Image" x="1018" y="135" w="189" h="95" measuredW="585" measuredH="293" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <src>http%3A//derwahlberliner.files.wordpress.com/2013/08/2013-08-30-bundestagswahl-2013.jpg</src>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="28" controlTypeID="com.balsamiq.mockups::SubTitle" x="515" y="1098" w="-1" h="-1" measuredW="255" measuredH="19" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>16</size>
+        <text>Kontakt%20%7C%20Impressum%20%7C%20Datenschutz</text>
+      </controlProperties>
+    </control>
+    <control controlID="29" controlTypeID="com.balsamiq.mockups::SubTitle" x="1091" y="1098" w="-1" h="-1" measuredW="124" measuredH="19" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>16</size>
+        <text>Admin%20%7C%20Wahllokal</text>
+      </controlProperties>
+    </control>
+    <control controlID="30" controlTypeID="com.balsamiq.mockups::SubTitle" x="62" y="1098" w="-1" h="-1" measuredW="120" measuredH="19" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>16</size>
+        <text>%28c%29%202013%20by%20WIS</text>
+      </controlProperties>
+    </control>
+    <control controlID="33" controlTypeID="com.balsamiq.mockups::Canvas" x="62" y="259" w="1160" h="824" measuredW="100" measuredH="70" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>15658734</color>
+      </controlProperties>
+    </control>
+    <control controlID="38" controlTypeID="com.balsamiq.mockups::PieChart" x="793" y="391" w="257" h="257" measuredW="180" measuredH="180" zOrder="3" locked="false" isInGroup="-1"/>
+    <control controlID="40" controlTypeID="com.balsamiq.mockups::Title" x="80" y="286" w="445" h="-1" measuredW="397" measuredH="43" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Bundestagswahl%202013</text>
+      </controlProperties>
+    </control>
+    <control controlID="42" controlTypeID="com.balsamiq.mockups::DataGrid" x="102" y="459" w="516" h="121" measuredW="296" measuredH="171" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Partei%20%5Ev%2C%20Sitze%20%5Ev%2C%20Wahlkreissitze%20%5Ev%2C%20%25%20%5Ev%0ACDU%2C%20255%2C%20191%2C%2034.1%20%25%0ASPD%2C%20192%2C%2058%2C%2025.7%20%25%0ADIE%20LINKE%2C%2064%2C%204%2C%208.6%20%25%0AGR%DCNE%2C%2063%2C%201%2C%208.4%20%25%0A...</text>
+      </controlProperties>
+    </control>
+    <control controlID="55" controlTypeID="com.balsamiq.mockups::Paragraph" x="102" y="330" w="1113" h="81" measuredW="200" measuredH="80" zOrder="9" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Lorem%20ipsum%20dolor%20sit%20amet%2C%20consetetur%20sadipscing%20elitr%2C%20sed%20diam%20nonumy%20eirmod%20tempor%20invidunt%20ut%20labore%20et%20dolore%20magna%20aliquyam%20erat%2C%20sed%20diam%20voluptua.%20At%20vero%20eos%20et%20accusam%20et%20justo%20duo%20dolores%20et%20ea%20rebum.%20Stet%20clita%20kasd%20gubergren%2C%20no%20sea%20takimata%20sanctus%20est%20Lorem%20ipsum%20dolor%20sit%20amet.%20Lorem%20ipsum%20dolor%20sit%20amet%2C%20consetetur%20sadipscing%20elitr%2C%20sed%20diam%20nonumy%20eirmod%20tempor%20invidunt%20ut%20labore%20et%20dolore%20magna%20aliquyam%20erat%2C%20sed%20diam%20voluptua.%20At%20vero%20eos%20et%20accusam%20et%20justo%20duo%20dolores%20et%20ea%20rebum.%20Stet%20clita%20kasd%20gubergren%2C%20no%20sea%20takimata%20sanctus%20est%20Lorem%20ipsum%20dolor%20sit%20amet.</text>
+      </controlProperties>
+    </control>
+    <control controlID="56" controlTypeID="com.balsamiq.mockups::Label" x="1050" y="731" w="-1" h="-1" measuredW="102" measuredH="21" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>weitere%20Analysen</text>
+      </controlProperties>
+    </control>
+    <control controlID="57" controlTypeID="com.balsamiq.mockups::DataGrid" x="102" y="645" w="516" h="86" measuredW="104" measuredH="81" zOrder="11" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Partei%20%5Ev%2C%20%25%20%5Ev%0AFDP%2C%204.8%25%0AAfD%2C%204.7%25</text>
+      </controlProperties>
+    </control>
+    <control controlID="59" controlTypeID="com.balsamiq.mockups::SubTitle" x="108" y="426" w="-1" h="-1" measuredW="118" measuredH="27" zOrder="12" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Bundestag</text>
+      </controlProperties>
+    </control>
+    <control controlID="60" controlTypeID="com.balsamiq.mockups::SubTitle" x="102" y="612" w="-1" h="-1" measuredW="211" measuredH="27" zOrder="13" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Nicht%20im%20Bundestag</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>
