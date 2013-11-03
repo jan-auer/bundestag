@@ -80,6 +80,12 @@ Technologien:
  - OR-Mapper: Doctrine
  - Framework: Symfony
  - Frontend: Bootstrap
+ 
+### Persistierung der Daten
+
+Relevante Daten sollen in einem RDBMS persistiert werden (Technologie s. Abs. *Technologien*). Grundlage zur logischen Datenorganisation bildet hierbei unten stehendes E/R-Diagramm:
+
+![Datenmodell](datenmodell.png)
 
 ### GUI-Mockups
 Die nachfolgende Übersicht gibt einen Einblick in die Navigation der Webapplikation. Dabei besteht die Webseite aus zwei zentralen Startpunkten: Zum einen der Login-Bereich für Wähler, der nur innerhalb eines Wahllokals aufrufbar ist und das Abgeben einer Stimme vom Wähler direkt ermöglichen wird. Dem gegenüber steht die Startseite des **WIS**, die im Internet erreichbar ist und den Zugriff auf weitere Analysen, sowie dem Administrations- und Wahllokalbereich ermöglicht.
