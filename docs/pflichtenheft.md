@@ -32,44 +32,158 @@ Wie bereits angesprochen wird das Wahlinformationssystem über ein Web-Frontend 
 
 ### Analytiker
 
-1. Als Analytiker möchte ich Wahlergebnisse bundesweit, pro Bundesland sowie pro Wahlkreis vergleichen.
-2. Als Analytiker möchte ich Wahlergebnisse (bundesweit, pro Bundesland sowie pro Wahlkreis) aus verschiedenen Jahren vergleichen.
-3. Als Analytiker möchte ich den Gewinner eines Wahlkreises (vgl. Direktmandat) ermitteln.
-4. Als Analytiker möchte ich alle Mandate innerhalb eines Bundeslands (bzw. auch bundesweit) auflisten.
-5. Als Analytiker möchte ich alle Koalitionsmöglichkeiten für ein beliebiges Wahlergebnis bestimmen.
-6. Als Analytiker möchte ich die Anzahl der Sitze im Bundestag eines beliebigen Bundeslands bestimmen.
-7. Als Analytiker möchte ich die Sitzverteilung auf Parteien für ein beliebiges Bundesland bestimmen.
+`AL01` `Must-Have`
+Als Analytiker möchte ich Wahlergebnisse bundesweit, pro Bundesland sowie pro Wahlkreis vergleichen.
+
+-----
+
+`AL02` `Must-Have`
+
+Als Analytiker möchte ich Wahlergebnisse (bundesweit, pro Bundesland sowie pro Wahlkreis) aus verschiedenen Jahren vergleichen.
+
+-----
+
+`AL03` `Must-Have`
+
+Als Analytiker möchte ich den Gewinner eines Wahlkreises (vgl. Direktmandat) ermitteln.
+
+-----
+
+`AL04` `Must-Have`
+
+Als Analytiker möchte ich alle Mandate innerhalb eines Bundeslands (bzw. auch bundesweit) auflisten.
+
+-----
+
+`AL05` `Should-Have`
+
+Als Analytiker möchte ich alle Koalitionsmöglichkeiten für ein beliebiges Wahlergebnis bestimmen.
+
+-----
+
+`AL06` `Could-Have`
+
+Als Analytiker möchte ich die Anzahl der Sitze im Bundestag eines beliebigen Bundeslands bestimmen.
+
+-----
+
+`AL07` `Could-Have`
+
+Als Analytiker möchte ich die Sitzverteilung auf Parteien für ein beliebiges Bundesland bestimmen.
 
 ### Wähler
 
-1. Als Wähler möchte ich die Möglichkeit haben, eine Erst- und eine Zweitstimme für eine laufende Bundestagswahl abzugeben.
-2. Als Wähler muss ich mich eindeutig authentifiziert haben, um eine Stimme abgeben zu können.
+`WA01` `Must-Have`
+
+Als Wähler möchte ich die Möglichkeit haben, eine Erst- und eine Zweitstimme für eine laufende Bundestagswahl abzugeben.
+
+-----
+
+`WA02` `Must-Have`
+
+Als Wähler muss ich mich eindeutig authentifiziert haben, um eine Stimme abgeben zu können.
 
 ### Wahllokalleiter
 
-1. Als Wahllokalleiter möchte ich abgegebene Stimmen in das System einpflegen können.
-2. Als Wahllokalleiter möchte ich im Fehlerfall Wahlstimmen einer aktuellen Wahl ändern können.
-3. Als Wahllokalleiter muss ich mich eindeutig authentifiziert haben, um auf das System zugreifen zu können.
+`WL01` `Must-Have`
+
+Als Wahllokalleiter möchte ich abgegebene Stimmen in das System einpflegen können.
+
+-----
+
+`WL02` `Must-Have`
+
+Als Wahllokalleiter möchte ich im Fehlerfall Wahlstimmen einer aktuellen Wahl ändern können.
+
+-----
+
+`WL03` `Must-Have`
+
+Als Wahllokalleiter muss ich mich eindeutig authentifiziert haben, um auf das System zugreifen zu können.
 
 ### Administrator
 
-1. Als Administrator möchte ich eine anstehende Wahl hinzufügen, ändern oder löschen.
-2. Als Administrator möchte ich eine beliebige Partei hinzufügen, ändern oder löschen.
-3. Als Administrator möchte ich die Länderliste einer beliebigen Partei für eine anstehende Wahl hinzufügen, ändern oder löschen. 
-4. Als Administrator möchte ich den Direktkandidaten eines beliebigen Wahlkreises für eine anstehende Wahl hinzufügen, ändern oder löschen.
-5. Als Administrator möchte ich ein beliebiges Bundesland hinzufügen, ändern oder löschen.
-6. Als Administrator möchte ich einen beliebigen Wahlkreis hinzufügen, ändern oder löschen.
-7. Als Administrator möchte ich einen beliebigen Wahlbezirk hinzufügen, ändern oder löschen.
-8. Als Administrator möchte ich ein beliebiges Wahllokal hinzufügen, ändern oder löschen.
-9. Als Administrator muss ich mich eindeutig authentifiziert haben, um auf das System zugreifen zu können.
+`AD01` `Must-Have`
+
+Als Administrator möchte ich eine anstehende Wahl hinzufügen, ändern oder löschen.
+
+-----
+
+`AD02` `Must-Have`
+
+Als Administrator möchte ich eine beliebige Partei hinzufügen, ändern oder löschen.
+
+-----
+
+`AD03` `Must-Have`
+
+Als Administrator möchte ich die Länderliste einer beliebigen Partei für eine anstehende Wahl hinzufügen, ändern oder löschen. 
+
+-----
+
+`AD04` `Must-Have`
+
+Als Administrator möchte ich den Direktkandidaten eines beliebigen Wahlkreises für eine anstehende Wahl hinzufügen, ändern oder löschen.
+
+-----
+
+`AD05` `Must-Have`
+
+Als Administrator möchte ich ein beliebiges Bundesland hinzufügen, ändern oder löschen.
+
+-----
+
+`AD06` `Must-Have`
+
+Als Administrator möchte ich einen beliebigen Wahlkreis hinzufügen, ändern oder löschen.
+
+-----
+
+`AD07` `Must-Have`
+
+Als Administrator möchte ich einen beliebigen Wahlbezirk hinzufügen, ändern oder löschen.
+
+-----
+
+`AD08` `Must-Have`
+
+Als Administrator möchte ich ein beliebiges Wahllokal hinzufügen, ändern oder löschen.
+
+-----
+
+`AD09` `Must-Have`
+
+Als Administrator muss ich mich eindeutig authentifiziert haben, um auf das System zugreifen zu können.
 
 ## Nicht-Funktionale Anforderungen
 
-- Datenschutzrichtlinien müssen berücksichtigt werden
-- Webinterface nutzbar mit Firefox 24.0, Chrome 30.0.1599.101 und Safari 7.0
-- Ermittlung der Wahlergebnisse muss in unter 1 Minute erfolgen
-- Das System muss am Wahltag bis zu 20.000 Inserts pro Stunde unterstützen
-- Das Server-System muss auf Windows und Linux portierbar sein
+`NF01` `Must-Have`
+
+Datenschutzrichtlinien müssen berücksichtigt werden.
+
+-----
+
+`NF02` `Must-Have`
+
+Webinterface nutzbar mit Firefox 24.0, Chrome 30.0.1599.101 und Safari 7.0.
+
+-----
+
+`NF03` `Must-Have`
+
+Ermittlung der Wahlergebnisse muss in unter 1 Minute erfolgen.
+
+-----
+
+`NF04` `Must-Have`
+
+Das System muss am Wahltag bis zu 20.000 Inserts pro Stunde unterstützen.
+
+-----
+
+`NF05` `Must-Have`
+
+Das Server-System muss auf Windows und Linux portierbar sein.
 
 ## Entwurf
 
