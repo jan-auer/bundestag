@@ -1,4 +1,4 @@
-﻿# Glossar
+# Glossar
 
 **DB**. *(Abk.)* Datenbank.
 
