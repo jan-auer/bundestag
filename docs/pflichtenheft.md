@@ -33,6 +33,7 @@ Wie bereits angesprochen wird das Wahlinformationssystem über ein Web-Frontend 
 ### Analytiker
 
 `AL01` `Must-Have`
+
 Als Analytiker möchte ich Wahlergebnisse bundesweit, pro Bundesland sowie pro Wahlkreis vergleichen.
 
 -----
