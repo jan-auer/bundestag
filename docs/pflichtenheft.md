@@ -188,19 +188,29 @@ Das Server-System muss auf Windows und Linux portierbar sein.
 
 ## Entwurf
 
-Technologien:
+### Technologien:
 
- - DB: Postgres
- - Sprache: PHP
- - OR-Mapper: Doctrine
- - Framework: Symfony
- - Frontend: Bootstrap
+ - **Datenbank**: [PostgreSQL](http://www.postgresql.org/)
+ - **Programmiersprache**: [PHP](http://php.net/)
+ - **Backend-Framework**: [Symfony](http://symfony.com/)
+ - **OR-Mapper**: [Doctrine DBAL & ORM](http://www.doctrine-project.org/)
+ - **Frontend-Framework**: [Bootstrap](http://getbootstrap.com/)
  
-### Persistierung der Daten
+### Architektur
+
+#### Persistierung der Daten
 
 Relevante Daten sollen in einem RDBMS persistiert werden (Technologie s. Abs. *Technologien*). Grundlage zur logischen Datenorganisation bildet hierbei unten stehendes E/R-Diagramm:
 
 ![Datenmodell](datenmodell.png)
+
+Die Datenbank wird aus der Anwendung durch den OR-Mapper *Doctrine* angesprochen, der die Ergebnisse der Datenbank automatisch in typisierte PHP-Objekte umwandelt. Es besteht neben dem direkten Ausführen von SQL-Statements auch die Möglichkeit der Formulierung in DQL, einer SQL-ähnlichen Sprache die auf objektrelationalen Konzepten aufbaut. 
+
+Doctrine erhält das Schema der Datenbank durch anotierte Datenklassen, sogenannte Entities. Die Modellierung der Entities kann mit einem Tool gegen die Datenbank validiert werden, um "Überführungsfehler" auszuschließen.
+
+#### Backend
+
+*Hier wird die Grobarchitektur des Systems nach den ersten Designschritten festgehalten.*
 
 ### GUI-Mockups
 Die nachfolgende Übersicht gibt einen Einblick in die Navigation der Webapplikation. Dabei besteht die Webseite aus zwei zentralen Startpunkten: Zum einen der Login-Bereich für Wähler, der nur innerhalb eines Wahllokals aufrufbar ist und das Abgeben einer Stimme vom Wähler direkt ermöglichen wird. Dem gegenüber steht die Startseite des **WIS**, die im Internet erreichbar ist und den Zugriff auf weitere Analysen, sowie dem Administrations- und Wahllokalbereich ermöglicht.
