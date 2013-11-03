@@ -8,6 +8,8 @@
 
 **Direktmandat**. Bezeichnet das Mandat, welches derjenige Direktkandidat erhält, der innerhalb seines Wahlkreises eine relative Mehrheit an Wählerstimmen erhält.
 
+**E/R-Diagramm**. Entity-Relationship-Diagramm.
+
 **GUI**. *(Abk.)* Graphical User Interface, bezeichnet eine graphische Benuterschnittstelle beliebiger Form.
 
 **Landesliste**. Bezeichnet eine Liste von Kandidaten einer Partei, welche per Zweitstimme in den Bundestsag gewählt werden können.
