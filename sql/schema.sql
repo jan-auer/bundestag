@@ -24,6 +24,13 @@ CREATE TABLE party
 	minority_representation BOOLEAN
 );
 
+CREATE TABLE state_list
+(
+	id 			SERIAL PRIMARY KEY,
+	election_id	INTEGER NOT NULL REFERENCES election(id),
+	party_id	INTEGER NOT NULL REFERENCES party(id)
+);
+
 CREATE TABLE candidate
 (
 	id 		 SERIAL PRIMARY KEY,
@@ -96,11 +103,4 @@ CREATE TABLE district
 (
 	id 		INTEGER,
 	name 	VARCHAR
-);
-
-CREATE TABLE state_list
-(
-	id 			SERIAL PRIMARY KEY,
-	election_id	INTEGER NOT NULL REFERENCES election(id),
-	party_id	INTEGER NOT NULL REFERENCES party(id)
 );
