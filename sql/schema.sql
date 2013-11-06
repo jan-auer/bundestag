@@ -2,7 +2,7 @@ CREATE TABLE election
 (
 	id 		SERIAL PRIMARY KEY,
 	number 	INTEGER,
-	e_date 	DATE
+	date 	DATE
 );
 
 CREATE TABLE voter 
@@ -43,6 +43,7 @@ CREATE TABLE state_candidate
 	state_list_id	INTEGER NOT NULL REFERENCES state_list(id),
 	candidate_id	INTEGER NOT NULL REFERENCES candidate(id),
 	position 		INTEGER,
+	
 	PRIMARY KEY (state_list_id, candidate_id)
 );
 
@@ -69,7 +70,7 @@ CREATE TABLE site
 CREATE TABLE result
 (
 	id				SERIAL PRIMARY KEY,
-	r_count			INTEGER,
+	count			INTEGER,
 	result_type_id	INTEGER NOT NULL REFERENCES result_type(id),
 	site_id			INTEGER NOT NULL REFERENCES site(id)
 );
@@ -88,15 +89,18 @@ CREATE TABLE second_result
 
 CREATE TABLE state
 (
-	id 			INTEGER,
+	id 			SERIAL PRIMARY KEY,
 	name 		VARCHAR,
 	population 	INTEGER
 );
 
 CREATE TABLE constituency
 (
-	c_number 	INTEGER,
-	name 		VARCHAR
+	state_id	INTEGER NOT NULL REFERENCES state(id),
+	number 		INTEGER,
+	name 		VARCHAR,
+	
+	PRIMARY KEY(state_id, number)
 );
 
 CREATE TABLE district
