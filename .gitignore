@@ -1,2 +1,8 @@
+# Composer
+composer.lock
+vendor/
+
+# OS specific
 *.vpp~*
 *.DS_STORE
+
