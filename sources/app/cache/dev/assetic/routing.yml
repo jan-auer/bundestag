@@ -1,5 +1,0 @@
-_assetic:
-    resource: .
-    type: assetic
-_app:
-    resource: /Users/jauer/Coding/Web/Bundestag/Symfony/app/config/routing_dev.yml
