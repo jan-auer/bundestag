@@ -2,6 +2,9 @@
 composer.lock
 vendor/
 
+# PhpStorm
+.idea/
+
 # OS specific
 *.vpp~*
 *.DS_STORE
