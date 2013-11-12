@@ -44,6 +44,8 @@ class Importer
 
 	private function importElection(array $data)
 	{
+		$election = $this->factory->createElection($data[0]);
+		$this->em->persist($election);
 	}
 
 	private function importDemography(array $data)
