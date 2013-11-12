@@ -1,6 +1,7 @@
 <?php
 namespace Btw\Bundle\ImporterBundle\Import;
 
+use Btw\Bundle\PersistenceBundle\Entity\Constituency;
 use Btw\Bundle\PersistenceBundle\Entity\Election;
 use Btw\Bundle\PersistenceBundle\Entity\State;
 use Symfony\Component\Intl\NumberFormatter\NumberFormatter;
@@ -20,11 +21,15 @@ class EntityFactory
 	private $election;
 	/** @var  State[] */
 	private $states;
+	/** @var  Constituency[] */
+	private $constituencies;
 
 	function __construct()
 	{
 		$this->formatter = new \NumberFormatter('de_DE', NumberFormatter::DECIMAL);
-		$this->states = array();
+
+		$this->states         = array();
+		$this->constituencies = array();
 	}
 
 	public function createElection(array $data)
@@ -46,6 +51,17 @@ class EntityFactory
 
 		$this->states[$state->getName()] = $state;
 		return $state;
+	}
+
+	public function createConstituency($row)
+	{
+		$constituency = new Constituency();
+		$constituency->setName($row[2]);
+		$constituency->setNumber($row[1]);
+		$constituency->setState($this->states[$row[0]]);
+
+		$this->constituencies[$constituency->getNumber()] = $constituency;
+		return $constituency;
 	}
 
 }

@@ -55,6 +55,12 @@ class Importer
 			$state = $this->factory->createState($row);
 			$this->em->persist($state);
 		}
+
+		foreach ($data as $row) {
+			if ($row[1] > 900) continue;
+			$constituency = $this->factory->createConstituency($row);
+			$this->em->persist($constituency);
+		}
 	}
 
 	private function importCandidates(array $data)
