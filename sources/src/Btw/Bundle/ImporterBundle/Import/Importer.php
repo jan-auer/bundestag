@@ -50,6 +50,11 @@ class Importer
 
 	private function importDemography(array $data)
 	{
+		foreach ($data as $row) {
+			if ($row[1] < 900 || $row[1] > 920) continue;
+			$state = $this->factory->createState($row);
+			$this->em->persist($state);
+		}
 	}
 
 	private function importCandidates(array $data)

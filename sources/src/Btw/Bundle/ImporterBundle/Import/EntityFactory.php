@@ -2,6 +2,8 @@
 namespace Btw\Bundle\ImporterBundle\Import;
 
 use Btw\Bundle\PersistenceBundle\Entity\Election;
+use Btw\Bundle\PersistenceBundle\Entity\State;
+use Symfony\Component\Intl\NumberFormatter\NumberFormatter;
 
 /**
  * Creates Entity objects and also performs correct wiring.
@@ -11,13 +13,20 @@ use Btw\Bundle\PersistenceBundle\Entity\Election;
 class EntityFactory
 {
 
-	private $election;
+	/** @var \NumberFormatter */
+	private $formatter;
 
-	/**
-	 * @param array $data
-	 *
-	 * @return Election
-	 */
+	/** @var  Election */
+	private $election;
+	/** @var  State[] */
+	private $states;
+
+	function __construct()
+	{
+		$this->formatter = new \NumberFormatter('de_DE', NumberFormatter::DECIMAL);
+		$this->states = array();
+	}
+
 	public function createElection(array $data)
 	{
 		$election = new Election();
@@ -26,6 +35,17 @@ class EntityFactory
 
 		$this->election = $election;
 		return $election;
+	}
+
+	public function createState(array $row)
+	{
+		$state = new State();
+		$state->setName($row[0]);
+		$state->setPopulation($this->formatter->parse($row[5]) * 1000);
+		$state->setElection($this->election);
+
+		$this->states[$state->getName()] = $state;
+		return $state;
 	}
 
 }
