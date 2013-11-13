@@ -37,6 +37,7 @@ class Importer
 		$this->importElection($election);
 		$this->importStates($demography);
 		$this->importConstituencies($demography);
+		$this->importParties($results);
 		$this->importCandidates($candidates);
 		$this->importResults($results);
 
@@ -64,6 +65,17 @@ class Importer
 			if ($row[1] > 900) continue;
 			$constituency = $this->factory->createConstituency($row);
 			$this->em->persist($constituency);
+		}
+	}
+
+	private function importParties(array &$data)
+	{
+		$i = 0;
+		foreach ($data[0] as $column) {
+			if (empty($column)) continue;
+			if ($i++ < 7) continue;
+			$party = $this->factory->createParty($column);
+			$this->em->persist($party);
 		}
 	}
 

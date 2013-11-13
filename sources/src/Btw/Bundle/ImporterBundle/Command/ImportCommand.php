@@ -36,7 +36,7 @@ class ImportCommand extends ContainerAwareCommand
 		$election   = Parser::parse($electionPath,   true);
 		$demography = Parser::parse($demographyPath, true);
 		$candidates = Parser::parse($candidatesPath, true);
-		$results    = Parser::parse($resultsPath,    true);
+		$results    = Parser::parse($resultsPath,    false);
 
 		$importer = new Importer($this->getEntityManager());
 		$importer->import($election, $demography, $candidates, $results);

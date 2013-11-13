@@ -3,6 +3,7 @@ namespace Btw\Bundle\ImporterBundle\Import;
 
 use Btw\Bundle\PersistenceBundle\Entity\Constituency;
 use Btw\Bundle\PersistenceBundle\Entity\Election;
+use Btw\Bundle\PersistenceBundle\Entity\Party;
 use Btw\Bundle\PersistenceBundle\Entity\State;
 use Symfony\Component\Intl\NumberFormatter\NumberFormatter;
 
@@ -23,6 +24,8 @@ class EntityFactory
 	private $states;
 	/** @var  Constituency[] */
 	private $constituencies;
+	/** @var  Party[] */
+	private $parties;
 
 	function __construct()
 	{
@@ -62,6 +65,17 @@ class EntityFactory
 
 		$this->constituencies[$constituency->getNumber()] = $constituency;
 		return $constituency;
+	}
+
+	public function createParty($name)
+	{
+		$party = new Party();
+		$party->setName($name);
+		$party->setAbbreviation($name);
+		$party->setMinorityRepresentation(false);
+
+		$this->parties[$name] = $party;
+		return $party;
 	}
 
 }
