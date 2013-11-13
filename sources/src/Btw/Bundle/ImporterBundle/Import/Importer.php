@@ -30,7 +30,7 @@ class Importer
 	 * @param array $candidates An array containing all candidates and their parties.
 	 * @param array $results    An array containing aggregated results of the election.
 	 */
-	public function import(array $election, array $demography, array $candidates, array $results)
+	public function import(array &$election, array &$demography, array &$candidates, array &$results)
 	{
 		$this->factory = new EntityFactory();
 
@@ -43,13 +43,13 @@ class Importer
 		$this->em->flush();
 	}
 
-	private function importElection(array $data)
+	private function importElection(array &$data)
 	{
 		$election = $this->factory->createElection($data[0]);
 		$this->em->persist($election);
 	}
 
-	private function importStates(array $data)
+	private function importStates(array &$data)
 	{
 		foreach ($data as $row) {
 			if ($row[1] < 900 || $row[1] > 920) continue;
@@ -58,7 +58,7 @@ class Importer
 		}
 	}
 
-	private function importConstituencies(array $data)
+	private function importConstituencies(array &$data)
 	{
 		foreach ($data as $row) {
 			if ($row[1] > 900) continue;
@@ -67,11 +67,11 @@ class Importer
 		}
 	}
 
-	private function importCandidates(array $data)
+	private function importCandidates(array &$data)
 	{
 	}
 
-	private function importResults(array $data)
+	private function importResults(array &$data)
 	{
 	}
 

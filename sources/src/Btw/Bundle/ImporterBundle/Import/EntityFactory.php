@@ -32,7 +32,7 @@ class EntityFactory
 		$this->constituencies = array();
 	}
 
-	public function createElection(array $data)
+	public function createElection(array &$data)
 	{
 		$election = new Election();
 		$election->setNumber($data[0]);
@@ -42,7 +42,7 @@ class EntityFactory
 		return $election;
 	}
 
-	public function createState(array $row)
+	public function createState(array &$row)
 	{
 		$state = new State();
 		$state->setName($row[0]);
@@ -53,7 +53,7 @@ class EntityFactory
 		return $state;
 	}
 
-	public function createConstituency($row)
+	public function createConstituency(array &$row)
 	{
 		$constituency = new Constituency();
 		$constituency->setName($row[2]);
