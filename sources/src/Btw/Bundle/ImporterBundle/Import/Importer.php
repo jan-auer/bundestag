@@ -35,7 +35,8 @@ class Importer
 		$this->factory = new EntityFactory();
 
 		$this->importElection($election);
-		$this->importDemography($demography);
+		$this->importStates($demography);
+		$this->importConstituencies($demography);
 		$this->importCandidates($candidates);
 		$this->importResults($results);
 
@@ -48,14 +49,17 @@ class Importer
 		$this->em->persist($election);
 	}
 
-	private function importDemography(array $data)
+	private function importStates(array $data)
 	{
 		foreach ($data as $row) {
 			if ($row[1] < 900 || $row[1] > 920) continue;
 			$state = $this->factory->createState($row);
 			$this->em->persist($state);
 		}
+	}
 
+	private function importConstituencies(array $data)
+	{
 		foreach ($data as $row) {
 			if ($row[1] > 900) continue;
 			$constituency = $this->factory->createConstituency($row);
