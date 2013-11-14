@@ -124,11 +124,16 @@ class Importer
 		foreach($data as $row){
 			$name = $row[0];
 			$partyAbbr = $row[2];
+			$constituencyNo = $row[3];
 
 			$candidate = $this->factory->createCandidate($name, $partyAbbr);
 			if(is_null($candidate)) continue;
 
 			$this->em->persist($candidate);
+			if(empty($constituencyNo))continue;
+
+			$constituencyCandidacy = $this->factory->createConstituencyCandidacy($candidate, $constituencyNo);
+			$this->em->persist($constituencyCandidacy);
 		}
 	}
 
