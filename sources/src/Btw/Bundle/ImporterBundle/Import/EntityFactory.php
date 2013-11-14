@@ -71,29 +71,22 @@ class EntityFactory
 		return $constituency;
 	}
 
-	public function createParty($name)
+	public function createParty($partyAbbr)
 	{
 		$party = new Party();
-		$party->setName($name);
-		$party->setAbbreviation($name);
+		$party->setName($partyAbbr);
+		$party->setAbbreviation($partyAbbr);
 		$party->setMinorityRepresentation(false);
 
-		$this->parties[$name] = $party;
+		$this->parties[$partyAbbr] = $party;
 		return $party;
 	}
 
 	public function createStateList($stateName, $partyAbbr)
 	{
 		$state = $this->states[$stateName];
-
-		$party = null;
-		foreach ($this->parties as $p) {
-			if ($p->getAbbreviation() == $partyAbbr) {
-				$party = $p;
-				break;
-			}
-		}
-
+		$party = $this->parties[$partyAbbr];
+		
 		$stateList = new StateList();
 		$stateList->setParty($party);
 		$stateList->setState($state);
