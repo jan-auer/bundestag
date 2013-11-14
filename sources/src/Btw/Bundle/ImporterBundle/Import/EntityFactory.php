@@ -99,7 +99,7 @@ class EntityFactory
 		return $stateList;
 	}
 
-	public function createCandidate($name, $constituencyNo, $partyAbbr)
+	public function createCandidate($name, $partyAbbr)
 	{
 		if(!array_key_exists($partyAbbr, $this->parties)) return null;
 
@@ -108,10 +108,8 @@ class EntityFactory
 		$candidate = new Candidate();
 		$candidate->setName($name);
 		$candidate->setParty($party);
-		if(empty($constituencyNo)) return $candidate;
 
-		$constituency = $this->constituencies[$constituencyNo];
-		$candidate->setConstituency($constituency);
+		$this->candidates[] = $candidate;
 		return $candidate;
 	}
 }
