@@ -22,6 +22,12 @@ class State
      */
     private $id;
 
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="number", type="integer", nullable=false)
+	 */
+	private $number;
     /**
      * @var string
      *
@@ -29,12 +35,12 @@ class State
      */
     private $name;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="population", type="integer", nullable=false)
-     */
-    private $population;
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="population", type="integer", nullable=false)
+	 */
+	private $population;
 
     /**
      * @var Election
@@ -120,6 +126,22 @@ class State
 	public function getPopulation()
 	{
 		return $this->population;
+	}
+
+	/**
+	 * @param int $number
+	 */
+	public function setNumber($number)
+	{
+		$this->number = $number;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getNumber()
+	{
+		return $this->number;
 	}
 
 }
