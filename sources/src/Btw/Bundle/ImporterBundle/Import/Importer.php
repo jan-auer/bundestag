@@ -103,12 +103,11 @@ class Importer
 
 	private function importFreeCandidates(array $parties, array $constituencies)
 	{
+		$i=0;
 		foreach ($constituencies as $constituency) {
 			$stateNo = str_pad($constituency->getState()->getNumber(), 2, '0', STR_PAD_LEFT);
 			$constituencyNo = str_pad($constituency->getNumber(), 3, '0', STR_PAD_LEFT);
 
-			$stateNo = "09";
-			$constituencyNo = "221";
 			$url = sprintf(Importer::ELECTIONS_ADMINISTRATION_CONSTITUENCY_URL, $stateNo, $constituencyNo);
 
 			$results = HtmlParser::parseResultTableBody($url);
@@ -131,9 +130,9 @@ class Importer
 				$constituencyCandidacy->setCandidate($freeCandidate);
 				$this->em->persist($constituencyCandidacy);
 				$this->em->flush();
-				exit;
 			}
-
+			$i++;
+			var_dump($i);
 		}
 	}
 

@@ -49,21 +49,6 @@ class Candidate
      */
     private $party;
 
-	/**
-	 * @var Constituency
-	 *
-	 * @ORM\ManyToOne(targetEntity="Constituency", inversedBy="candidates")
-	 * @ORM\JoinTable(name="constituency_candidacy",
-	 *   joinColumns={
-	 *     @ORM\JoinColumn(name="candidate_id", referencedColumnName="id")
-	 *   },
-	 *   inverseJoinColumns={
-	 *     @ORM\JoinColumn(name="constituency_id", referencedColumnName="id")
-	 *   }
-	 * )
-	 */
-	private $constituency;
-
     /**
      * Constructor
      */
@@ -89,25 +74,6 @@ class Candidate
 	public function getBirthday()
 	{
 		return $this->birthday;
-	}
-
-	/**
-	 * @param Constituency $constituency
-	 *
-	 * @return Candidate
-	 */
-	public function setConstituency(Constituency $constituency)
-	{
-		$this->constituency = $constituency;
-		return $this;
-	}
-
-	/**
-	 * @return Constituency
-	 */
-	public function getConstituency()
-	{
-		return $this->constituency;
 	}
 
 	/**

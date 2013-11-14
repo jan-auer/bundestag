@@ -6,63 +6,65 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * ConstituencyCandidacy
+ *
+ * @ORM\Table(name="constituency_candidacy")
+ * @ORM\Entity
  */
 class ConstituencyCandidacy
 {
-    /**
-     * @var \Btw\Bundle\PersistenceBundle\Entity\Candidate
-     */
-    private $candidate;
+	/**
+	 * @var \Btw\Bundle\PersistenceBundle\Entity\Candidate
+	 *
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="NONE")
+	 * @ORM\OneToOne(targetEntity="Btw\Bundle\PersistenceBundle\Entity\Candidate")
+	 * @ORM\JoinColumns({
+	 *   @ORM\JoinColumn(name="candidate_id", referencedColumnName="id", unique=true)
+	 * })
+	 */
+	private $candidate;
 
-    /**
-     * @var \Btw\Bundle\PersistenceBundle\Entity\Constituency
-     */
-    private $constituency;
+	/**
+	 * @var \Btw\Bundle\PersistenceBundle\Entity\Constituency
+	 *
+	 * @ORM\ManyToOne(targetEntity="Btw\Bundle\PersistenceBundle\Entity\Constituency")
+	 * @ORM\JoinColumns({
+	 *   @ORM\JoinColumn(name="constituency_id", referencedColumnName="id")
+	 * })
+	 */
+	private $constituency;
+
+	/**
+	 * @param mixed $candidate
+	 */
+	public function setCandidate(Candidate $candidate)
+	{
+		$this->candidate = $candidate;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCandidate()
+	{
+		return $this->candidate;
+	}
+
+	/**
+	 * @param mixed $constituency
+	 */
+	public function setConstituency(Constituency $constituency)
+	{
+		$this->constituency = $constituency;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getConstituency()
+	{
+		return $this->constituency;
+	}
 
 
-    /**
-     * Set candidate
-     *
-     * @param \Btw\Bundle\PersistenceBundle\Entity\Candidate $candidate
-     * @return ConstituencyCandidacy
-     */
-    public function setCandidate(\Btw\Bundle\PersistenceBundle\Entity\Candidate $candidate = null)
-    {
-        $this->candidate = $candidate;
-    
-        return $this;
-    }
-
-    /**
-     * Get candidate
-     *
-     * @return \Btw\Bundle\PersistenceBundle\Entity\Candidate 
-     */
-    public function getCandidate()
-    {
-        return $this->candidate;
-    }
-
-    /**
-     * Set constituency
-     *
-     * @param \Btw\Bundle\PersistenceBundle\Entity\Constituency $constituency
-     * @return ConstituencyCandidacy
-     */
-    public function setConstituency(\Btw\Bundle\PersistenceBundle\Entity\Constituency $constituency = null)
-    {
-        $this->constituency = $constituency;
-    
-        return $this;
-    }
-
-    /**
-     * Get constituency
-     *
-     * @return \Btw\Bundle\PersistenceBundle\Entity\Constituency 
-     */
-    public function getConstituency()
-    {
-        return $this->constituency;
-    }
 }
