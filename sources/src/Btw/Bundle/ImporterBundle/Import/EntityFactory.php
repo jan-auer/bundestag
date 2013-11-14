@@ -31,7 +31,7 @@ class EntityFactory
 	{
 		$this->formatter = new \NumberFormatter('de_DE', NumberFormatter::DECIMAL);
 
-		$this->states         = array();
+		$this->states = array();
 		$this->constituencies = array();
 	}
 
