@@ -103,7 +103,6 @@ class Importer
 
 	private function importFreeCandidates(array $parties, array $constituencies)
 	{
-		$i=0;
 		foreach ($constituencies as $constituency) {
 			$stateNo = str_pad($constituency->getState()->getNumber(), 2, '0', STR_PAD_LEFT);
 			$constituencyNo = str_pad($constituency->getNumber(), 3, '0', STR_PAD_LEFT);
@@ -121,6 +120,7 @@ class Importer
 			}
 
 			foreach ($results as $name => $votes) {
+				if($name=='ÖDP / Familie ..') continue;
 				$freeCandidate = new Candidate();
 				$freeCandidate->setName($name);
 				$this->em->persist($freeCandidate);
@@ -131,8 +131,6 @@ class Importer
 				$this->em->persist($constituencyCandidacy);
 				$this->em->flush();
 			}
-			$i++;
-			var_dump($i);
 		}
 	}
 
