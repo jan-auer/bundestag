@@ -3,6 +3,7 @@ namespace Btw\Bundle\ImporterBundle\Import;
 
 use Btw\Bundle\ImporterBundle\CSV\HtmlParser;
 use Btw\Bundle\PersistenceBundle\Entity\Candidate;
+use Btw\Bundle\PersistenceBundle\Entity\ConstituencyCandidacy;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -106,8 +107,8 @@ class Importer
 			$stateNo = str_pad($constituency->getState()->getNumber(), 2, '0', STR_PAD_LEFT);
 			$constituencyNo = str_pad($constituency->getNumber(), 3, '0', STR_PAD_LEFT);
 
-			//$stateNo = "09";
-			//$constituencyNo = "221";
+			$stateNo = "09";
+			$constituencyNo = "221";
 			$url = sprintf(Importer::ELECTIONS_ADMINISTRATION_CONSTITUENCY_URL, $stateNo, $constituencyNo);
 
 			$results = HtmlParser::parseResultTableBody($url);
@@ -123,8 +124,12 @@ class Importer
 			foreach ($results as $name => $votes) {
 				$freeCandidate = new Candidate();
 				$freeCandidate->setName($name);
-				$freeCandidate->setConstituency($constituency);
 				$this->em->persist($freeCandidate);
+
+				$constituencyCandidacy = new ConstituencyCandidacy();
+				$constituencyCandidacy->setConstituency($constituency);
+				$constituencyCandidacy->setCandidate($freeCandidate);
+				$this->em->persist($constituencyCandidacy);
 				$this->em->flush();
 				exit;
 			}
