@@ -7,7 +7,7 @@ use Btw\Bundle\PersistenceBundle\Entity\ConstituencyCandidacy;
 use Btw\Bundle\PersistenceBundle\Entity\Election;
 use Btw\Bundle\PersistenceBundle\Entity\Party;
 use Btw\Bundle\PersistenceBundle\Entity\State;
-use Btw\Bundle\PersistenceBundle\Entity\FirstResult;
+use Btw\Bundle\PersistenceBundle\Entity\StateList;
 use Symfony\Component\Intl\NumberFormatter\NumberFormatter;
 
 /**
@@ -29,6 +29,12 @@ class EntityFactory
 	private $constituencies;
 	/** @var  Party[] */
 	private $parties;
+	/** @var StateList[][] */
+	private $stateLists;
+	/** @var Candidate[] */
+	private $candidates;
+	/** @var ConstituencyCandidacy[][] */
+	private $constituencyCandidacies;
 
 	function __construct()
 	{
@@ -36,6 +42,7 @@ class EntityFactory
 
 		$this->states = array();
 		$this->constituencies = array();
+		$this->parties = array();
 	}
 
 	public function createElection(array &$data)
@@ -71,30 +78,53 @@ class EntityFactory
 		return $constituency;
 	}
 
-	public function createParty($name)
+	public function createParty($partyAbbr)
 	{
 		$party = new Party();
-		$party->setName($name);
-		$party->setAbbreviation($name);
+		$party->setName($partyAbbr);
+		$party->setAbbreviation($partyAbbr);
 		$party->setMinorityRepresentation(false);
 
-		$this->parties[$name] = $party;
+		$this->parties[$partyAbbr] = $party;
 		return $party;
 	}
 
-	public function createCandidateConstituency($candidate, $constituency)
+	public function createStateList($stateName, $partyAbbr)
 	{
-		$constituencyCandidacy = new ConstituencyCandidacy();
-		$constituencyCandidacy->setConstituency($constituency);
-		$constituencyCandidacy->setCandidate($candidate);
+		$state = $this->states[$stateName];
+		$party = $this->parties[$partyAbbr];
 
+		$stateList = new StateList();
+		$stateList->setParty($party);
+		$stateList->setState($state);
+
+		$this->stateLists[$party->getAbbreviation()][$state->getName()] = $stateList;
+		return $stateList;
+	}
+
+	public function createCandidate($name, $partyAbbr)
+	{
+		if(!array_key_exists($partyAbbr, $this->parties)) return null;
+
+		$party = $this->parties[$partyAbbr];
+
+		$candidate = new Candidate();
+		$candidate->setName($name);
+		$candidate->setParty($party);
+
+		$this->candidates[] = $candidate;
+		return $candidate;
+	}
+
+	public function createConstituencyCandidacy($candidate, $constituencyId)
+	{
+		$constituency = $this->constituencies[$constituencyId];
+
+		$constituencyCandidacy = new ConstituencyCandidacy();
+		$constituencyCandidacy->setCandidate($candidate);
+		$constituencyCandidacy->setConstituency($constituency);
+
+		$this->constituencyCandidacies[$constituencyId][] = $candidate;
 		return $constituencyCandidacy;
 	}
-
-	public function createFirstResult($freeConstituencyCandidate) {
-		$firstResult = new FirstResult();
-		$firstResult->setConstituencyCandidacy($freeConstituencyCandidate);
-		return $firstResult;
-	}
-
 }

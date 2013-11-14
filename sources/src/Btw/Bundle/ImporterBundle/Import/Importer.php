@@ -49,6 +49,7 @@ class Importer
 		$this->importStates($demography);
 		$constituencies = $this->importConstituencies($demography);
 		$parties = $this->importParties($results);
+		$this->importStateLists($results);
 		$this->importCandidates($candidates);
 		$this->importFreeCandidates($parties, $constituencies);
 		$this->importResults($results);
@@ -74,7 +75,7 @@ class Importer
 		return $states;
 	}
 
-	private function importConstituencies(array &$data)
+	private function importConstituencies(array $data)
 	{
 		$constituencies = array();
 		foreach ($data as $row) {
@@ -101,8 +102,43 @@ class Importer
 		return $parties;
 	}
 
+	private function importStateLists(array $data)
+	{
+		foreach ($data as $row) {
+			if (count($row) < 2) continue;
+			if ($row[2] == 99) {
+				$stateName = $row[1];
+
+				for ($i = 19; $i < count($row) - 2; $i += 4) {
+					$partyAbbr = $data[0][$i];
+					$firstresult = $row[$i];
+					$secondresult = $row[$i + 2];
+
+					if (!empty($firstresult) && !empty($secondresult)) {
+						$stateList = $this->factory->createStateList($stateName, $partyAbbr);
+						$this->em->persist($stateList);
+					}
+				}
+			}
+		}
+	}
+
 	private function importCandidates(array &$data)
 	{
+		foreach($data as $row){
+			$name = $row[0];
+			$partyAbbr = $row[2];
+			$constituencyNo = $row[3];
+
+			$candidate = $this->factory->createCandidate($name, $partyAbbr);
+			if(is_null($candidate)) continue;
+
+			$this->em->persist($candidate);
+			if(empty($constituencyNo))continue;
+
+			$constituencyCandidacy = $this->factory->createConstituencyCandidacy($candidate, $constituencyNo);
+			$this->em->persist($constituencyCandidacy);
+		}
 	}
 
 	private function importFreeCandidates(array $parties, array $constituencies)
