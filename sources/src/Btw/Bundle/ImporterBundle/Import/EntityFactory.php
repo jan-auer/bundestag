@@ -58,7 +58,7 @@ class EntityFactory
 	public function createState(array &$row)
 	{
 		$state = new State();
-		$state->setNumber($row[1]-900);
+		$state->setNumber($row[1] - 900);
 		$state->setName($row[0]);
 		$state->setPopulation($this->formatter->parse($row[5]) * 1000);
 		$state->setElection($this->election);
@@ -104,7 +104,7 @@ class EntityFactory
 
 	public function createCandidate($name, $partyAbbr)
 	{
-		if(!array_key_exists($partyAbbr, $this->parties)) return null;
+		if (!array_key_exists($partyAbbr, $this->parties)) return null;
 
 		$party = $this->parties[$partyAbbr];
 

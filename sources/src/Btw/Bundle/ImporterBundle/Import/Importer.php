@@ -121,16 +121,16 @@ class Importer
 
 	private function importCandidates(array &$data)
 	{
-		foreach($data as $row){
+		foreach ($data as $row) {
 			$name = $row[0];
 			$partyAbbr = $row[2];
 			$constituencyNo = $row[3];
 
 			$candidate = $this->factory->createCandidate($name, $partyAbbr);
-			if(is_null($candidate)) continue;
+			if (is_null($candidate)) continue;
 
 			$this->em->persist($candidate);
-			if(empty($constituencyNo))continue;
+			if (empty($constituencyNo)) continue;
 
 			$constituencyCandidacy = $this->factory->createConstituencyCandidacy($candidate, $constituencyNo);
 			$this->em->persist($constituencyCandidacy);
@@ -156,7 +156,7 @@ class Importer
 			}
 
 			foreach ($results as $name => $votes) {
-				if($name=='ÖDP / Familie ..') continue;
+				if ($name == 'ÖDP / Familie ..') continue;
 				$freeCandidate = new Candidate();
 				$freeCandidate->setName($name);
 				$this->em->persist($freeCandidate);
