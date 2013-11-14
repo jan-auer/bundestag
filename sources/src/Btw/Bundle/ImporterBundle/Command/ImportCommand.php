@@ -1,6 +1,7 @@
 <?php
 namespace Btw\Bundle\ImporterBundle\Command;
 
+use Btw\Bundle\ImporterBundle\CSV\HtmlParser;
 use Btw\Bundle\ImporterBundle\CSV\Parser;
 use Btw\Bundle\ImporterBundle\Import\Importer;
 use Doctrine\ORM\EntityManager;

@@ -48,6 +48,7 @@ class EntityFactory
 	public function createState(array &$row)
 	{
 		$state = new State();
+		$state->setNumber($row[1]-900);
 		$state->setName($row[0]);
 		$state->setPopulation($this->formatter->parse($row[5]) * 1000);
 		$state->setElection($this->election);
