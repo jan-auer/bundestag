@@ -27,8 +27,8 @@ class HtmlParser
 				if ($i == 0) {
 					$type = $rowColumn->nodeValue;
 				} else if ($i == 2) {
-					$value = $rowColumn->nodeValue;
-				} else if($i>2) {
+					$value = (int)(str_replace(".", "", $rowColumn->nodeValue));
+				} else if ($i > 2) {
 					break;
 				}
 				$i++;

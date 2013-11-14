@@ -7,6 +7,7 @@ use Btw\Bundle\PersistenceBundle\Entity\ConstituencyCandidacy;
 use Btw\Bundle\PersistenceBundle\Entity\Election;
 use Btw\Bundle\PersistenceBundle\Entity\Party;
 use Btw\Bundle\PersistenceBundle\Entity\State;
+use Btw\Bundle\PersistenceBundle\Entity\FirstResult;
 use Btw\Bundle\PersistenceBundle\Entity\StateList;
 use Symfony\Component\Intl\NumberFormatter\NumberFormatter;
 
@@ -89,6 +90,12 @@ class EntityFactory
 		return $party;
 	}
 
+	public function createFirstResult($freeConstituencyCandidate) {
+		$firstResult = new FirstResult();
+		$firstResult->setConstituencyCandidacy($freeConstituencyCandidate);
+		return $firstResult;
+	}
+
 	public function createStateList($stateName, $partyAbbr)
 	{
 		$state = $this->states[$stateName];
@@ -114,6 +121,15 @@ class EntityFactory
 
 		$this->candidates[] = $candidate;
 		return $candidate;
+	}
+
+	public function createCandidateConstituency($candidate, $constituency)
+	{
+		$constituencyCandidacy = new ConstituencyCandidacy();
+		$constituencyCandidacy->setConstituency($constituency);
+		$constituencyCandidacy->setCandidate($candidate);
+
+		return $constituencyCandidacy;
 	}
 
 	public function createConstituencyCandidacy($candidate, $constituencyId)

@@ -170,8 +170,6 @@ class Importer
 				$this->em->persist($constituencyCandidacy);
 
 				$this->freeConstituencyCandidateResults[] = array($constituencyCandidacy, $votes);
-				$totalVotes+=$votes;
-
 			}
 		}
 		var_dump($totalVotes);exit;
