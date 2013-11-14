@@ -4,6 +4,7 @@ namespace Btw\Bundle\ImporterBundle\Import;
 use Btw\Bundle\ImporterBundle\CSV\HtmlParser;
 use Btw\Bundle\PersistenceBundle\Entity\Candidate;
 use Btw\Bundle\PersistenceBundle\Entity\ConstituencyCandidacy;
+use Btw\Bundle\PersistenceBundle\Entity\FirstResult;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -21,11 +22,14 @@ class Importer
 	private $factory;
 	/** @var  Array of Keys which should be ignored in the result table on website of elections administration. */
 	private $electionsAdministrationIgnoreKeys;
+	/** @var  Array of first results for free candidates. */
+	private $freeCandidateResults;
 
 	function __construct(EntityManager $entityManager)
 	{
 		$this->em = $entityManager;
 		$this->electionsAdministrationIgnoreKeys = array('Wahlberechtigte', 'Wähler', 'Ungültige', 'Gültige');
+		$this->freeCandidateResults = array();
 	}
 
 	/**
@@ -125,17 +129,28 @@ class Importer
 				$freeCandidate->setName($name);
 				$this->em->persist($freeCandidate);
 
-				$constituencyCandidacy = new ConstituencyCandidacy();
-				$constituencyCandidacy->setConstituency($constituency);
-				$constituencyCandidacy->setCandidate($freeCandidate);
+				$constituencyCandidacy = $this->factory->createCandidateConstituency($freeCandidate, $constituency);
 				$this->em->persist($constituencyCandidacy);
-				$this->em->flush();
+
+				$this->freeCandidateResults[] = array($freeCandidate, $votes);
 			}
 		}
 	}
 
 	private function importResults(array &$data)
 	{
+		//first results
+		//free candidates
+		foreach($this->freeCandidateResults as $freeCandidateVotes) {
+			$freeCandidate = $freeCandidateVotes[0];
+			$votes = $freeCandidateVotes[1];
+
+			for($i=0;$i<$votes;$i++) {
+				$firstResult = $this->factory->createFirstResult($freeCandidate);
+				$this->em->persist($firstResult);
+			}
+		}
+		//second results
 	}
 
 }

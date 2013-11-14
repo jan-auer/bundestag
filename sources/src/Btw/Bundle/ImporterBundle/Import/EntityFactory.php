@@ -1,10 +1,13 @@
 <?php
 namespace Btw\Bundle\ImporterBundle\Import;
 
+use Btw\Bundle\PersistenceBundle\Entity\Candidate;
 use Btw\Bundle\PersistenceBundle\Entity\Constituency;
+use Btw\Bundle\PersistenceBundle\Entity\ConstituencyCandidacy;
 use Btw\Bundle\PersistenceBundle\Entity\Election;
 use Btw\Bundle\PersistenceBundle\Entity\Party;
 use Btw\Bundle\PersistenceBundle\Entity\State;
+use Btw\Bundle\PersistenceBundle\Entity\FirstResult;
 use Symfony\Component\Intl\NumberFormatter\NumberFormatter;
 
 /**
@@ -31,7 +34,7 @@ class EntityFactory
 	{
 		$this->formatter = new \NumberFormatter('de_DE', NumberFormatter::DECIMAL);
 
-		$this->states         = array();
+		$this->states = array();
 		$this->constituencies = array();
 	}
 
@@ -48,7 +51,7 @@ class EntityFactory
 	public function createState(array &$row)
 	{
 		$state = new State();
-		$state->setNumber($row[1]-900);
+		$state->setNumber($row[1] - 900);
 		$state->setName($row[0]);
 		$state->setPopulation($this->formatter->parse($row[5]) * 1000);
 		$state->setElection($this->election);
@@ -77,6 +80,22 @@ class EntityFactory
 
 		$this->parties[$name] = $party;
 		return $party;
+	}
+
+	public function createCandidateConstituency($candidate, $constituency)
+	{
+		$constituencyCandidacy = new ConstituencyCandidacy();
+		$constituencyCandidacy->setConstituency($constituency);
+		$constituencyCandidacy->setCandidate($candidate);
+
+		return $constituencyCandidacy;
+	}
+
+	public function createFirstResult($candidate) {
+		$firstResult = new FirstResult();
+		$firstResult->setCandidate($candidate);
+		return $firstResult;
+		//TODO
 	}
 
 }
