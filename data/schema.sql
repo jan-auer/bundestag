@@ -16,6 +16,7 @@ CREATE TABLE voter
 CREATE TABLE state
 (
   id          SERIAL PRIMARY KEY,
+  number      INTEGER NOT NULL,
   name        TEXT    NOT NULL,
   population  INTEGER NOT NULL,
   election_id INTEGER NOT NULL REFERENCES election (id) ON DELETE CASCADE
