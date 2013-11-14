@@ -1,11 +1,12 @@
 <?php
 namespace Btw\Bundle\ImporterBundle\Import;
 
-use Btw\Bundle\ImporterBundle\CSV\HtmlParser;
+use Btw\Bundle\ImporterBundle\Parser\HtmlParser;
 use Btw\Bundle\PersistenceBundle\Entity\Candidate;
 use Btw\Bundle\PersistenceBundle\Entity\ConstituencyCandidacy;
 use Btw\Bundle\PersistenceBundle\Entity\FirstResult;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * The importer class loads election data into the database.
@@ -25,8 +26,11 @@ class Importer
 	/** @var  Array of first results for free candidates. */
 	private $freeConstituencyCandidateResults;
 
-	function __construct(EntityManager $entityManager)
+	private $output;
+
+	function __construct(EntityManager $entityManager, OutputInterface $output)
 	{
+		$this->output = $output;
 		$this->em = $entityManager;
 		$this->electionsAdministrationIgnoreKeys = array('Wahlberechtigte', 'Wähler', 'Ungültige', 'Gültige');
 		$this->freeConstituencyCandidateResults = array();
@@ -45,13 +49,21 @@ class Importer
 	{
 		$this->factory = new EntityFactory();
 
+		$this->output->writeln("Importing election...");
 		$this->importElection($election);
+		$this->output->writeln("Importing states...");
 		$this->importStates($demography);
+		$this->output->writeln("Importing constituencies...");
 		$constituencies = $this->importConstituencies($demography);
+		$this->output->writeln("Importing parties...");
 		$parties = $this->importParties($results);
+		$this->output->writeln("Importing state lists...");
 		$this->importStateLists($results);
+		$this->output->writeln("Importing candidates...");
 		$this->importCandidates($candidates);
+		$this->output->writeln("Importing free candidates...");
 		$this->importFreeCandidates($parties, $constituencies);
+		$this->output->writeln("Importing results...");
 		$this->importResults($results);
 
 		$this->em->flush();
@@ -143,7 +155,6 @@ class Importer
 
 	private function importFreeCandidates(array $parties, array $constituencies)
 	{
-		$totalVotes = 0;
 		foreach ($constituencies as $constituency) {
 			$stateNo = str_pad($constituency->getState()->getNumber(), 2, '0', STR_PAD_LEFT);
 			$constituencyNo = str_pad($constituency->getNumber(), 3, '0', STR_PAD_LEFT);
@@ -172,7 +183,6 @@ class Importer
 				$this->freeConstituencyCandidateResults[] = array($constituencyCandidacy, $votes);
 			}
 		}
-		var_dump($totalVotes);exit;
 	}
 
 	private function importResults(array &$data)
@@ -180,6 +190,7 @@ class Importer
 		//first results
 		//candidates
 		//free candidates
+		$k=0;
 		foreach($this->freeConstituencyCandidateResults as $freeConstituencyCandidateResults) {
 			$freeConstituencyCandidate = $freeConstituencyCandidateResults[0];
 			$votes = $freeConstituencyCandidateResults[1];
@@ -187,7 +198,16 @@ class Importer
 			for($i=0;$i<$votes;$i++) {
 				$firstResult = $this->factory->createFirstResult($freeConstituencyCandidate);
 				$this->em->persist($firstResult);
+
+
+				if($k%1000 == 1) {
+					$this->em->flush();
+					$this->output->writeln("Flushing...");
+					$i=0;
+				}
+				$k++;
 			}
+
 		}
 		//second results
 	}

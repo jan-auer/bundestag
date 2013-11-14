@@ -1,12 +1,12 @@
 <?php
-namespace Btw\Bundle\ImporterBundle\CSV;
+namespace Btw\Bundle\ImporterBundle\Parser;
 
 /**
  * The Parser class handles CSV formatted files.
  *
- * @package Btw\Bundle\ImporterBundle\CSV
+ * @package Btw\Bundle\ImporterBundle\Parser
  */
-class Parser
+class CsvParser
 {
 
 	const COLUMN_SEPARATOR = ';';

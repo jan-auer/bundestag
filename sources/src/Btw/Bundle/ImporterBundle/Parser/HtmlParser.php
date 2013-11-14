@@ -1,12 +1,12 @@
 <?php
-namespace Btw\Bundle\ImporterBundle\CSV;
+namespace Btw\Bundle\ImporterBundle\Parser;
 
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
  *
  * The class handles parsing of HTML.
- * @package Btw\Bundle\ImporterBundle\CSV
+ * @package Btw\Bundle\ImporterBundle\Parser
  */
 
 class HtmlParser
@@ -27,7 +27,7 @@ class HtmlParser
 				if ($i == 0) {
 					$type = $rowColumn->nodeValue;
 				} else if ($i == 2) {
-					$value = (int)(str_replace(".", "", $rowColumn->nodeValue));
+					$value = intval(str_replace(".", "", $rowColumn->nodeValue));
 				} else if ($i > 2) {
 					break;
 				}
