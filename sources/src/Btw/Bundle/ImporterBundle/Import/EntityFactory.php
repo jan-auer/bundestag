@@ -33,6 +33,7 @@ class EntityFactory
 
 		$this->states = array();
 		$this->constituencies = array();
+		$this->parties = array();
 	}
 
 	public function createElection(array &$data)
