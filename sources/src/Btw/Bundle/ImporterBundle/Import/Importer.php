@@ -71,9 +71,11 @@ class Importer
 	private function importParties(array &$data)
 	{
 		$i = 0;
+		$countColumn = count($data);
 		foreach ($data[0] as $column) {
 			if (empty($column)) continue;
 			if ($i++ < 7) continue;
+			if($column == 'Übrige') continue;
 			$party = $this->factory->createParty($column);
 			$this->em->persist($party);
 		}
