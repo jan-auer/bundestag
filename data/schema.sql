@@ -69,31 +69,14 @@ CREATE TABLE constituency_candidacy
   constituency_id INTEGER NOT NULL REFERENCES constituency (id) ON DELETE CASCADE
 );
 
-CREATE TABLE site
-(
-  id              SERIAL PRIMARY KEY,
-  name            TEXT,
-  constituency_id INTEGER NOT NULL REFERENCES constituency (id) ON DELETE CASCADE
-);
-
-CREATE TABLE result_type
-(
-  id   SERIAL PRIMARY KEY,
-  name TEXT NOT NULL
-);
-
 CREATE TABLE first_result
 (
   id             SERIAL PRIMARY KEY,
-  result_type_id INTEGER NOT NULL REFERENCES result_type (id),
-  site_id        INTEGER NOT NULL REFERENCES site (id),
   candidate_id   INTEGER NOT NULL REFERENCES constituency_candidacy (candidate_id)
 );
 
 CREATE TABLE second_result
 (
   id             SERIAL PRIMARY KEY,
-  result_type_id INTEGER NOT NULL REFERENCES result_type (id),
-  site_id        INTEGER NOT NULL REFERENCES site (id),
   state_list_id  INTEGER NOT NULL REFERENCES state_list (id)
 );

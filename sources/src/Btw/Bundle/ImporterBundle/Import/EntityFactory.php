@@ -91,11 +91,10 @@ class EntityFactory
 		return $constituencyCandidacy;
 	}
 
-	public function createFirstResult($candidate) {
+	public function createFirstResult($freeConstituencyCandidate) {
 		$firstResult = new FirstResult();
-		$firstResult->setCandidate($candidate);
+		$firstResult->setConstituencyCandidacy($freeConstituencyCandidate);
 		return $firstResult;
-		//TODO
 	}
 
 }

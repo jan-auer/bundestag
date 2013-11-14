@@ -39,14 +39,14 @@ class Candidate
      */
     private $birthday;
 
-    /**
-     * @var Party
-     *
-     * @ORM\ManyToOne(targetEntity="Party")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="party_id", referencedColumnName="id")
-     * })
-     */
+	/**
+	 * @var Party
+	 *
+	 * @ORM\ManyToOne(targetEntity="Party")
+	 * @ORM\JoinColumns({
+	 *   @ORM\JoinColumn(name="party_id", referencedColumnName="id")
+	 * })
+	 */
     private $party;
 
     /**

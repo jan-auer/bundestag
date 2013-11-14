@@ -23,13 +23,13 @@ class Importer
 	/** @var  Array of Keys which should be ignored in the result table on website of elections administration. */
 	private $electionsAdministrationIgnoreKeys;
 	/** @var  Array of first results for free candidates. */
-	private $freeCandidateResults;
+	private $freeConstituencyCandidateResults;
 
 	function __construct(EntityManager $entityManager)
 	{
 		$this->em = $entityManager;
 		$this->electionsAdministrationIgnoreKeys = array('Wahlberechtigte', 'Wähler', 'Ungültige', 'Gültige');
-		$this->freeCandidateResults = array();
+		$this->freeConstituencyCandidateResults = array();
 	}
 
 	/**
@@ -107,6 +107,7 @@ class Importer
 
 	private function importFreeCandidates(array $parties, array $constituencies)
 	{
+		$totalVotes = 0;
 		foreach ($constituencies as $constituency) {
 			$stateNo = str_pad($constituency->getState()->getNumber(), 2, '0', STR_PAD_LEFT);
 			$constituencyNo = str_pad($constituency->getNumber(), 3, '0', STR_PAD_LEFT);
@@ -132,21 +133,25 @@ class Importer
 				$constituencyCandidacy = $this->factory->createCandidateConstituency($freeCandidate, $constituency);
 				$this->em->persist($constituencyCandidacy);
 
-				$this->freeCandidateResults[] = array($freeCandidate, $votes);
+				$this->freeConstituencyCandidateResults[] = array($constituencyCandidacy, $votes);
+				$totalVotes+=$votes;
+
 			}
 		}
+		var_dump($totalVotes);exit;
 	}
 
 	private function importResults(array &$data)
 	{
 		//first results
+		//candidates
 		//free candidates
-		foreach($this->freeCandidateResults as $freeCandidateVotes) {
-			$freeCandidate = $freeCandidateVotes[0];
-			$votes = $freeCandidateVotes[1];
+		foreach($this->freeConstituencyCandidateResults as $freeConstituencyCandidateResults) {
+			$freeConstituencyCandidate = $freeConstituencyCandidateResults[0];
+			$votes = $freeConstituencyCandidateResults[1];
 
 			for($i=0;$i<$votes;$i++) {
-				$firstResult = $this->factory->createFirstResult($freeCandidate);
+				$firstResult = $this->factory->createFirstResult($freeConstituencyCandidate);
 				$this->em->persist($firstResult);
 			}
 		}

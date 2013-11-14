@@ -40,6 +40,7 @@ class ConstituencyCandidacy
 	public function setCandidate(Candidate $candidate)
 	{
 		$this->candidate = $candidate;
+		return $this;
 	}
 
 	/**
@@ -56,6 +57,7 @@ class ConstituencyCandidacy
 	public function setConstituency(Constituency $constituency)
 	{
 		$this->constituency = $constituency;
+		return $this;
 	}
 
 	/**
