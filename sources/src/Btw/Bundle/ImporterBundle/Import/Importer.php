@@ -25,10 +25,10 @@ class Importer
 	 * Imports the given election data into the database.
 	 * Before inserting, all information is correctly wired up.
 	 *
-	 * @param array $election   An array containing the collection number and date.
+	 * @param array $election An array containing the collection number and date.
 	 * @param array $demography An array containing all states and constituencies.
 	 * @param array $candidates An array containing all candidates and their parties.
-	 * @param array $results    An array containing aggregated results of the election.
+	 * @param array $results An array containing aggregated results of the election.
 	 */
 	public function import(array &$election, array &$demography, array &$candidates, array &$results)
 	{
@@ -38,6 +38,7 @@ class Importer
 		$this->importStates($demography);
 		$this->importConstituencies($demography);
 		$this->importParties($results);
+		$this->importStateLists($results);
 		$this->importCandidates($candidates);
 		$this->importResults($results);
 
@@ -59,7 +60,7 @@ class Importer
 		}
 	}
 
-	private function importConstituencies(array &$data)
+	private function importConstituencies(array $data)
 	{
 		foreach ($data as $row) {
 			if ($row[1] > 900) continue;
@@ -76,6 +77,27 @@ class Importer
 			if ($i++ < 7) continue;
 			$party = $this->factory->createParty($column);
 			$this->em->persist($party);
+		}
+	}
+
+	private function importStateLists(array $data)
+	{
+		foreach ($data as $row) {
+			if (count($row) < 2) continue;
+			if ($row[2] == 99) {
+				$stateName = $row[1];
+
+				for ($i = 19; $i < count($row) - 2; $i += 4) {
+					$partyAbbr = $data[0][$i];
+					$firstresult = $row[$i];
+					$secondresult = $row[$i + 2];
+
+					if (!empty($firstresult) && !empty($secondresult)) {
+						$stateList = $this->factory->createStateList($stateName, $partyAbbr);
+						$this->em->persist($stateList);
+					}
+				}
+			}
 		}
 	}
 

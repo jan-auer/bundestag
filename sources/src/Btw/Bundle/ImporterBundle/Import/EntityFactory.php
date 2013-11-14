@@ -5,6 +5,7 @@ use Btw\Bundle\PersistenceBundle\Entity\Constituency;
 use Btw\Bundle\PersistenceBundle\Entity\Election;
 use Btw\Bundle\PersistenceBundle\Entity\Party;
 use Btw\Bundle\PersistenceBundle\Entity\State;
+use Btw\Bundle\PersistenceBundle\Entity\StateList;
 use Symfony\Component\Intl\NumberFormatter\NumberFormatter;
 
 /**
@@ -26,6 +27,8 @@ class EntityFactory
 	private $constituencies;
 	/** @var  Party[] */
 	private $parties;
+	/** @var StateList[][] */
+	private $stateLists;
 
 	function __construct()
 	{
@@ -79,4 +82,23 @@ class EntityFactory
 		return $party;
 	}
 
+	public function createStateList($stateName, $partyAbbr)
+	{
+		$state = $this->states[$stateName];
+
+		$party = null;
+		foreach ($this->parties as $p) {
+			if ($p->getAbbreviation() == $partyAbbr) {
+				$party = $p;
+				break;
+			}
+		}
+
+		$stateList = new StateList();
+		$stateList->setParty($party);
+		$stateList->setState($state);
+
+		$this->stateLists[$party->getAbbreviation()][$state->getName()] = $stateList;
+		return $stateList;
+	}
 }
