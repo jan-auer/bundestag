@@ -103,6 +103,16 @@ class Importer
 
 	private function importCandidates(array &$data)
 	{
+		foreach($data as $row){
+			$name = $row[0];
+			$partyAbbr = $row[2];
+			$constituencyNo = $row[3];
+
+			$candidate = $this->factory->createCandidate($name, $constituencyNo, $partyAbbr);
+			if(is_null($candidate)) continue;
+
+			$this->em->persist($candidate);
+		}
 	}
 
 	private function importResults(array &$data)

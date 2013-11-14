@@ -1,6 +1,7 @@
 <?php
 namespace Btw\Bundle\ImporterBundle\Import;
 
+use Btw\Bundle\PersistenceBundle\Entity\Candidate;
 use Btw\Bundle\PersistenceBundle\Entity\Constituency;
 use Btw\Bundle\PersistenceBundle\Entity\Election;
 use Btw\Bundle\PersistenceBundle\Entity\Party;
@@ -29,6 +30,8 @@ class EntityFactory
 	private $parties;
 	/** @var StateList[][] */
 	private $stateLists;
+	/** @var Candidate[] */
+	private $candidates;
 
 	function __construct()
 	{
@@ -86,12 +89,28 @@ class EntityFactory
 	{
 		$state = $this->states[$stateName];
 		$party = $this->parties[$partyAbbr];
-		
+
 		$stateList = new StateList();
 		$stateList->setParty($party);
 		$stateList->setState($state);
 
 		$this->stateLists[$party->getAbbreviation()][$state->getName()] = $stateList;
 		return $stateList;
+	}
+
+	public function createCandidate($name, $constituencyNo, $partyAbbr)
+	{
+		if(!array_key_exists($partyAbbr, $this->parties)) return null;
+
+		$party = $this->parties[$partyAbbr];
+
+		$candidate = new Candidate();
+		$candidate->setName($name);
+		$candidate->setParty($party);
+		if(empty($constituencyNo)) return $candidate;
+
+		$constituency = $this->constituencies[$constituencyNo];
+		$candidate->setConstituency($constituency);
+		return $candidate;
 	}
 }
