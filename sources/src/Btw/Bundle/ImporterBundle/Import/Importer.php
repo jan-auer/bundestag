@@ -3,6 +3,7 @@ namespace Btw\Bundle\ImporterBundle\Import;
 
 use Btw\Bundle\ImporterBundle\Parser\HtmlParser;
 use Btw\Bundle\ImporterBundle\VoteExport\FirstVotesExporter;
+use Btw\Bundle\ImporterBundle\VoteExport\SecondVotesExporter;
 use Btw\Bundle\PersistenceBundle\Entity\Election;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -30,6 +31,8 @@ class Importer
 	private $rowConstituencies;
 	/** @var  FirstVotesExporter */
 	private $firstVotesExporter;
+	/** @var  SecondVotesExporter */
+	private $secondVotesExporter;
 	/** @var  Election Current election */
 	private $election;
 
@@ -40,6 +43,7 @@ class Importer
 		$this->output = $output;
 		$this->em = $entityManager;
 		$this->firstVotesExporter = new FirstVotesExporter();
+		$this->secondVotesExporter = new SecondVotesExporter();
 		$this->electionsAdministrationIgnoreKeys = array('Wahlberechtigte', 'Wähler', 'Ungültige', 'Gültige');
 		$this->freeConstituencyCandidateResults = array();
 		$this->columnParties = array();
@@ -221,12 +225,12 @@ class Importer
 
 		$shouldGenerateVotes = !empty($generationPath);
 
-		if($shouldGenerateVotes && (substr($generationPath, -1) != '\\'))
-		{
+		if ($shouldGenerateVotes && (substr($generationPath, -1) != '\\')) {
 			$generationPath .= '\\';
 			$this->firstVotesExporter->open($this->election->getDate(), $generationPath, true);
 		}
 
+		//firstresults for candidates with party
 		foreach ($data as $row) {
 			if ($rowI++ < 3 || $rowI == $rowCount || (count($row) == 1 && is_null($row[0]))) continue; // skip first three rows, the last row and skip empty rows
 
@@ -236,8 +240,6 @@ class Importer
 			$constituencyNo = $row[0];
 
 			foreach ($this->columnParties as $column => $party) {
-				//firstresults for candidates with party
-
 				$firstResultCount = $row[$column];
 
 				if ($firstResultCount > 0) {
@@ -248,18 +250,39 @@ class Importer
 						$this->firstVotesExporter->append($aggrFirstResult->getConstituencyCandidacy()->getCandidate()->getId(), $firstResultCount);
 					}
 				}
-
-				//secondresults for party
-				$secondResultCount = $row[$column + 2];
-				if ($secondResultCount > 0) {
-					$aggrSecondResult = $this->factory->createAggregatedSecondResult($party, $stateNo, $constituencyNo, $secondResultCount);
-					$this->em->persist($aggrSecondResult);
-				}
 			}
 		}
 
 		if ($shouldGenerateVotes) {
 			$this->firstVotesExporter->close();
+			$this->secondVotesExporter->open($this->election->getDate(), $generationPath, false);
+		}
+
+		$rowI = 0;
+		//secondresults for party
+		foreach ($data as $row) {
+			if ($rowI++ < 3 || $rowI == $rowCount || (count($row) == 1 && is_null($row[0]))) continue; // skip first three rows, the last row and skip empty rows
+
+			$stateNo = $row[2];
+			if ($stateNo == 99) continue;
+
+			$constituencyNo = $row[0];
+
+			foreach ($this->columnParties as $column => $party) {
+				$secondResultCount = $row[$column + 2];
+				if ($secondResultCount > 0) {
+					$aggrSecondResult = $this->factory->createAggregatedSecondResult($party, $stateNo, $constituencyNo, $secondResultCount);
+					$this->em->persist($aggrSecondResult);
+
+					if ($shouldGenerateVotes) {
+						$this->secondVotesExporter->append($aggrSecondResult->getStateList()->getId(), $aggrSecondResult->getConstituency()->getId(), $secondResultCount);
+					}
+				}
+			}
+		}
+
+		if ($shouldGenerateVotes) {
+			$this->secondVotesExporter->close();
 			$this->firstVotesExporter->open($this->election->getDate(), $generationPath, true);
 		}
 
@@ -277,7 +300,7 @@ class Importer
 			}
 		}
 
-		if($shouldGenerateVotes){
+		if ($shouldGenerateVotes) {
 			$this->firstVotesExporter->close();
 		}
 	}
