@@ -8,7 +8,15 @@
 
 namespace Btw\Bundle\ImporterBundle\VoteExport;
 
-
+/**
+ * Class SecondVotesExporter
+ * @package Btw\Bundle\ImporterBundle\VoteExport
+ *
+ * Hint: the resulting CSV file may be imported to PSQL using the following statement:
+ * COPY second_result(state_list_id, constituency_id) FROM <path>\<election-date>fst.csv;
+ *
+ * Anyhow, pg_bulkload should be faster..
+ */
 class SecondVotesExporter extends VotesExporter
 {
 
