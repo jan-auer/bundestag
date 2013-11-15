@@ -170,7 +170,7 @@ class Importer
 			}
 
 			if (!empty($stateAbbr)) {
-				$stateName = Helpers::stateNameForStateAbbr($stateAbbr);
+				$stateName = Helpers::StateNameForStateAbbr($stateAbbr);
 				$stateCandidacy = $this->factory->createStateCandidacy($candidate, $stateName, $partyAbbr, $stateListPosition);
 				$this->em->persist($stateCandidacy);
 			}

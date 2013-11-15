@@ -84,7 +84,7 @@ class EntityFactory
 
 	public function createParty($partyAbbr, &$partynamemapping)
 	{
-		$partyName = $this->fullPartyNameForAbbreviation($partyAbbr, $partynamemapping);
+		$partyName = Helpers::FullPartyNameForAbbreviation($partyAbbr, $partynamemapping);
 
 		$party = new Party();
 		$party->setName($partyName);
@@ -100,17 +100,6 @@ class EntityFactory
 		$firstResult = new FirstResult();
 		$firstResult->setConstituencyCandidacy($freeConstituencyCandidate);
 		return $firstResult;
-	}
-
-	private function fullPartyNameForAbbreviation($partyAbbr, &$partynamemapping)
-	{
-		foreach ($partynamemapping as $partyname) {
-			if ($partyname[0] == $partyAbbr) {
-				return $partyname[1];
-			}
-		}
-
-		return $partyAbbr;
 	}
 
 	public function createStateList($stateName, $partyAbbr)

@@ -30,8 +30,19 @@ class Helpers
 		"SN" => "Sachsen"
 	);
 
-	public static function stateNameForStateAbbr($stateAbbr)
+	public static function StateNameForStateAbbr($stateAbbr)
 	{
 		return Helpers::$stateNameAbbrMap[$stateAbbr];
+	}
+
+	public static function FullPartyNameForAbbreviation($partyAbbr, $partynamemapping)
+	{
+		foreach ($partynamemapping as $partyname) {
+			if ($partyname[0] == $partyAbbr) {
+				return $partyname[1];
+			}
+		}
+
+		return $partyAbbr;
 	}
 } 
