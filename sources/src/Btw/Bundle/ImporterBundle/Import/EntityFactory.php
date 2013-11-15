@@ -156,10 +156,7 @@ class EntityFactory
 
 	public function createAggregatedFirstResultRow($constituencyId, Party $party, $votes)
 	{
-		if (!array_key_exists($constituencyId, $this->constituencyCandidacies)) {
-			var_dump($constituencyId, $party->getAbbreviation(), $votes, array_keys($this->constituencyCandidacies));exit;
-			return null;
-		}
+		if (!array_key_exists($constituencyId, $this->constituencyCandidacies)) return null;
 
 		$constituencyCandidacies = $this->constituencyCandidacies[$constituencyId];
 
