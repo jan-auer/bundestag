@@ -9,6 +9,13 @@
 namespace Btw\Bundle\ImporterBundle\VoteExport;
 
 
-class SecondVotesExporter {
+class SecondVotesExporter extends VotesExporter
+{
 
+	public function append($stateListId, $constituencyId, $count)
+	{
+		for ($i = 0; $i < $count; $i++) {
+			$this->data .= $stateListId . ';' . $constituencyId . "\n";
+		}
+	}
 } 
