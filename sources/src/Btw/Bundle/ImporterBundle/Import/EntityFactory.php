@@ -1,12 +1,15 @@
 <?php
 namespace Btw\Bundle\ImporterBundle\Import;
 
+use Btw\Bundle\PersistenceBundle\Entity\AggregatedFirstResult;
+use Btw\Bundle\PersistenceBundle\Entity\AggregatedSecondResult;
 use Btw\Bundle\PersistenceBundle\Entity\Candidate;
 use Btw\Bundle\PersistenceBundle\Entity\Constituency;
 use Btw\Bundle\PersistenceBundle\Entity\ConstituencyCandidacy;
 use Btw\Bundle\PersistenceBundle\Entity\Election;
 use Btw\Bundle\PersistenceBundle\Entity\Party;
 use Btw\Bundle\PersistenceBundle\Entity\State;
+use Btw\Bundle\PersistenceBundle\Entity\FirstResult;
 use Btw\Bundle\PersistenceBundle\Entity\StateList;
 use Symfony\Component\Intl\NumberFormatter\NumberFormatter;
 
@@ -91,6 +94,13 @@ class EntityFactory
 		return $party;
 	}
 
+	public function createFirstResult($freeConstituencyCandidate)
+	{
+		$firstResult = new FirstResult();
+		$firstResult->setConstituencyCandidacy($freeConstituencyCandidate);
+		return $firstResult;
+	}
+
 	private function fullPartyNameForAbbreviation($partyAbbr, &$partynamemapping)
 	{
 		foreach ($partynamemapping as $partyname) {
@@ -111,19 +121,22 @@ class EntityFactory
 		$stateList->setParty($party);
 		$stateList->setState($state);
 
-		$this->stateLists[$party->getAbbreviation()][$state->getName()] = $stateList;
+		$this->stateLists[$partyAbbr][$state->getNumber()] = $stateList;
 		return $stateList;
 	}
 
-	public function createCandidate($name, $partyAbbr)
+	public function createCandidate($name, $partyAbbr = null)
 	{
-		if (!array_key_exists($partyAbbr, $this->parties)) return null;
+		$candidate = new Candidate();
+		$candidate->setName($name);
+
+		if ($partyAbbr != null) {
+			if (!array_key_exists($partyAbbr, $this->parties)) return null;
 
 		$party = $this->parties[$partyAbbr];
 
-		$candidate = new Candidate();
-		$candidate->setName($name);
 		$candidate->setParty($party);
+		}
 
 		$this->candidates[] = $candidate;
 		return $candidate;
@@ -137,7 +150,60 @@ class EntityFactory
 		$constituencyCandidacy->setCandidate($candidate);
 		$constituencyCandidacy->setConstituency($constituency);
 
-		$this->constituencyCandidacies[$constituencyId][] = $candidate;
+		if ($candidate->getParty() != null) {
+			$abbr = $candidate->getParty()->getAbbreviation();
+			$this->constituencyCandidacies[$constituencyId][$abbr] = $constituencyCandidacy;
+		} else {
+			$this->constituencyCandidacies[$constituencyId]['free'][] = $constituencyCandidacy;
+		}
 		return $constituencyCandidacy;
+	}
+
+	public function createAggregatedFirstResult($constituencyCandidacy, $votes)
+	{
+		$aggrFirstResult = new AggregatedFirstResult();
+		$aggrFirstResult->setConstituencyCandidacy($constituencyCandidacy);
+		$aggrFirstResult->setCount($votes);
+		return $aggrFirstResult;
+}
+
+	public function createAggregatedFirstResultRow($constituencyId, Party $party, $votes)
+	{
+		if (!array_key_exists($constituencyId, $this->constituencyCandidacies)) return null;
+
+		$constituencyCandidacies = $this->constituencyCandidacies[$constituencyId];
+
+		if (!array_key_exists($party->getAbbreviation(), $constituencyCandidacies)) {
+			return null;
+		}
+
+		$constituencyCandidacy = $constituencyCandidacies[$party->getAbbreviation()];
+		if ($constituencyCandidacy == null) return null;
+
+		$aggrFirstResult = new AggregatedFirstResult();
+		$aggrFirstResult->setConstituencyCandidacy($constituencyCandidacy);
+		$aggrFirstResult->setCount($votes);
+
+		return $aggrFirstResult;
+	}
+
+	public function createAggregatedSecondResult($party, $stateNo, $constituencyNo, $votes)
+	{
+		$partyAbbr = $party->getAbbreviation();
+		if (!array_key_exists($partyAbbr, $this->stateLists)) return null;
+
+		if (!array_key_exists($stateNo, $this->stateLists[$partyAbbr])) return null;
+
+		$statelist = $this->stateLists[$partyAbbr][$stateNo];
+
+		if (!array_key_exists($constituencyNo, $this->constituencies)) return null;
+		$constituency = $this->constituencies[$constituencyNo];
+
+		$aggrSecondResult = new AggregatedSecondResult();
+		$aggrSecondResult->setStateList($statelist);
+		$aggrSecondResult->setConstituency($constituency);
+		$aggrSecondResult->setCount($votes);
+
+		return $aggrSecondResult;
 	}
 }

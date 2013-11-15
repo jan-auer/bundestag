@@ -1,8 +1,8 @@
 <?php
 namespace Btw\Bundle\ImporterBundle\Command;
 
-use Btw\Bundle\ImporterBundle\CSV\HtmlParser;
-use Btw\Bundle\ImporterBundle\CSV\Parser;
+use Btw\Bundle\ImporterBundle\Parser\HtmlParser;
+use Btw\Bundle\ImporterBundle\Parser\CsvParser;
 use Btw\Bundle\ImporterBundle\Import\Importer;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -36,13 +36,13 @@ class ImportCommand extends ContainerAwareCommand
 		$resultsPath = $input->getArgument('results');
 		$partynamemappingPath = $input->getArgument('partynamemapping');
 
-		$election = Parser::parse($electionPath, true);
-		$demography = Parser::parse($demographyPath, true);
-		$candidates = Parser::parse($candidatesPath, true);
-		$results = Parser::parse($resultsPath, false);
-		$partynamemapping = Parser::parse($partynamemappingPath, false);
+		$election   = CsvParser::parse($electionPath,   true);
+		$demography = CsvParser::parse($demographyPath, true);
+		$candidates = CsvParser::parse($candidatesPath, true);
+		$results    = CsvParser::parse($resultsPath,    false);
+		$partynamemapping = CsvParser::parse($partynamemappingPath, false);
 
-		$importer = new Importer($this->getEntityManager());
+		$importer = new Importer($this->getEntityManager(), $output);
 		$importer->import($election, $demography, $candidates, $results, $partynamemapping, $output);
 	}
 

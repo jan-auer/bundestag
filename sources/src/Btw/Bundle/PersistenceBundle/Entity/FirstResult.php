@@ -24,52 +24,32 @@ class FirstResult
 	private $id;
 
 	/**
-	 * @var ResultType
+	 * @var ConstituencyCandidacy
 	 *
-	 * @ORM\ManyToOne(targetEntity="ResultType")
+	 * @ORM\ManyToOne(targetEntity="ConstituencyCandidacy")
 	 * @ORM\JoinColumns({
-	 *   @ORM\JoinColumn(name="result_type_id", referencedColumnName="id")
+	 *   @ORM\JoinColumn(name="candidate_id", referencedColumnName="candidate_id")
 	 * })
 	 */
-	private $resultType;
+	private $constituencyCandidacy;
 
 	/**
-	 * @var Site
-	 *
-	 * @ORM\ManyToOne(targetEntity="Site")
-	 * @ORM\JoinColumns({
-	 *   @ORM\JoinColumn(name="site_id", referencedColumnName="id")
-	 * })
-	 */
-	private $site;
-
-	/**
-	 * @var Candidate
-	 *
-	 * @ORM\ManyToOne(targetEntity="Candidate")
-	 * @ORM\JoinColumns({
-	 *   @ORM\JoinColumn(name="candidate_id", referencedColumnName="id")
-	 * })
-	 */
-	private $candidate;
-
-	/**
-	 * @param Candidate $candidate
+	 * @param ConstituencyCandidacy $constituencyCandidacy
 	 *
 	 * @return FirstResult
 	 */
-	public function setCandidate(Candidate $candidate)
+	public function setConstituencyCandidacy(ConstituencyCandidacy $constituencyCandidacy)
 	{
-		$this->candidate = $candidate;
+		$this->constituencyCandidacy = $constituencyCandidacy;
 		return $this;
 	}
 
 	/**
-	 * @return Candidate
+	 * @return ConstituencyCandidacy
 	 */
-	public function getCandidate()
+	public function getConstituencyCandidacy()
 	{
-		return $this->candidate;
+		return $this->constituencyCandidacy;
 	}
 
 	/**
@@ -89,44 +69,6 @@ class FirstResult
 	public function getId()
 	{
 		return $this->id;
-	}
-
-	/**
-	 * @param ResultType $resultType
-	 *
-	 * @return FirstResult
-	 */
-	public function setResultType(ResultType $resultType)
-	{
-		$this->resultType = $resultType;
-		return $this;
-	}
-
-	/**
-	 * @return ResultType
-	 */
-	public function getResultType()
-	{
-		return $this->resultType;
-	}
-
-	/**
-	 * @param Site $site
-	 *
-	 * @return FirstResult
-	 */
-	public function setSite(Site $site)
-	{
-		$this->site = $site;
-		return $this;
-	}
-
-	/**
-	 * @return Site
-	 */
-	public function getSite()
-	{
-		return $this->site;
 	}
 
 }
