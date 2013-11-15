@@ -108,7 +108,7 @@ class EntityFactory
 		$stateList->setParty($party);
 		$stateList->setState($state);
 
-		$this->stateLists[$party->getAbbreviation()][$state->getName()] = $stateList;
+		$this->stateLists[$partyAbbr][$state->getNumber()] = $stateList;
 		return $stateList;
 	}
 
@@ -172,11 +172,23 @@ class EntityFactory
 		return $aggrFirstResult;
 	}
 
-	public function createAggregatedSecondResult($statelist, $votes)
+	public function createAggregatedSecondResult($party, $stateNo, $constituencyNo, $votes)
 	{
+		$partyAbbr = $party->getAbbreviation();
+		if (!array_key_exists($partyAbbr, $this->stateLists)) return null;
+
+		if (!array_key_exists($stateNo, $this->stateLists[$partyAbbr])) return null;
+
+		$statelist = $this->stateLists[$partyAbbr][$stateNo];
+
+		if (!array_key_exists($constituencyNo, $this->constituencies)) return null;
+		$constituency = $this->constituencies[$constituencyNo];
+
 		$aggrSecondResult = new AggregatedSecondResult();
 		$aggrSecondResult->setStateList($statelist);
+		$aggrSecondResult->setConstituency($constituency);
 		$aggrSecondResult->setCount($votes);
+
 		return $aggrSecondResult;
 	}
 }

@@ -135,13 +135,12 @@ class Importer
 
 				for ($i = 19; $i < count($row) - 2; $i += 4) {
 					$partyAbbr = $data[0][$i];
+					if($partyAbbr=='Übrige') continue;
 					$firstresult = $row[$i];
 					$secondresult = $row[$i + 2];
 
-					if (!empty($firstresult) && !empty($secondresult)) {
-						$stateList = $this->factory->createStateList($stateName, $partyAbbr);
-						$this->em->persist($stateList);
-					}
+					$stateList = $this->factory->createStateList($stateName, $partyAbbr);
+					$this->em->persist($stateList);
 				}
 			}
 		}
@@ -200,28 +199,36 @@ class Importer
 
 	private function importResults(array &$data)
 	{
-		//first results
 		$rowI = 0;
 		$rowCount = count($data);
 		foreach ($data as $row) {
 			if ($rowI++ < 3 || $rowI == $rowCount || (count($row) == 1 && is_null($row[0]))) continue; // skip first three rows, the last row and skip empty rows
 
-			$assignedTo = $row[2];
-			if ($assignedTo > 16) continue;
+			$stateNo = $row[2];
+			if ($stateNo == 99) continue;
 
 			$constituencyNo = $row[0];
 
 			foreach ($this->columnParties as $column => $party) {
+				//firstresults for candidates with party
+
 				$firstResultCount = $row[$column];
 
 				if ($firstResultCount > 0) {
 					$aggrFirstResult = $this->factory->createAggregatedFirstResultRow($constituencyNo, $party, $firstResultCount);
 					$this->em->persist($aggrFirstResult);
 				}
+
+				//secondresults for party
 				$secondResultCount = $row[$column + 2];
+				if ($secondResultCount > 0) {
+					$aggrSecondResult = $this->factory->createAggregatedSecondResult($party, $stateNo, $constituencyNo, $secondResultCount);
+					$this->em->persist($aggrSecondResult);
+				}
+
 			}
 		}
-		//candidates
+
 		//free candidates
 		$k = 0;
 		foreach ($this->freeConstituencyCandidateResults as $freeConstituencyCandidateResults) {
@@ -231,7 +238,6 @@ class Importer
 			$aggrFreeFirstResult = $this->factory->createAggregatedFirstResult($freeConstituencyCandidate, $votes);
 			$this->em->persist($aggrFreeFirstResult);
 		}
-		//second results
 	}
 
 }
