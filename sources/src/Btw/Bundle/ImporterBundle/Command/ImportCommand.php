@@ -36,10 +36,10 @@ class ImportCommand extends ContainerAwareCommand
 		$resultsPath = $input->getArgument('results');
 		$partynamemappingPath = $input->getArgument('partynamemapping');
 
-		$election   = CsvParser::parse($electionPath,   true);
+		$election = CsvParser::parse($electionPath, true);
 		$demography = CsvParser::parse($demographyPath, true);
 		$candidates = CsvParser::parse($candidatesPath, true);
-		$results    = CsvParser::parse($resultsPath,    false);
+		$results = CsvParser::parse($resultsPath, false);
 		$partynamemapping = CsvParser::parse($partynamemappingPath, false);
 
 		$importer = new Importer($this->getEntityManager(), $output);

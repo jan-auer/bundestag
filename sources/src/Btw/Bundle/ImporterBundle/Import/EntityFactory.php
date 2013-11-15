@@ -133,9 +133,9 @@ class EntityFactory
 		if ($partyAbbr != null) {
 			if (!array_key_exists($partyAbbr, $this->parties)) return null;
 
-		$party = $this->parties[$partyAbbr];
+			$party = $this->parties[$partyAbbr];
 
-		$candidate->setParty($party);
+			$candidate->setParty($party);
 		}
 
 		$this->candidates[] = $candidate;
@@ -165,7 +165,7 @@ class EntityFactory
 		$aggrFirstResult->setConstituencyCandidacy($constituencyCandidacy);
 		$aggrFirstResult->setCount($votes);
 		return $aggrFirstResult;
-}
+	}
 
 	public function createAggregatedFirstResultRow($constituencyId, Party $party, $votes)
 	{

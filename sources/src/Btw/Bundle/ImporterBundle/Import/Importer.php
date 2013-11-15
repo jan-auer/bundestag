@@ -140,16 +140,16 @@ class Importer
 
 				for ($i = 19; $i < count($row) - 2; $i += 4) {
 					$partyAbbr = $data[0][$i];
-					if($partyAbbr=='Übrige') continue;
+					if ($partyAbbr == 'Übrige') continue;
 					$firstresult = $row[$i];
 					$secondresult = $row[$i + 2];
 
-						$stateList = $this->factory->createStateList($stateName, $partyAbbr);
-						$this->em->persist($stateList);
-					}
+					$stateList = $this->factory->createStateList($stateName, $partyAbbr);
+					$this->em->persist($stateList);
 				}
 			}
 		}
+	}
 
 	private function importCandidates(array &$data)
 	{
@@ -172,7 +172,7 @@ class Importer
 	private function importFreeCandidates(Election $election, array $parties, array $constituencies)
 	{
 		foreach ($constituencies as $constituency) {
-			$electionNo =date("y", $election->getDate()->getTimestamp());
+			$electionNo = date("y", $election->getDate()->getTimestamp());
 			$stateNo = str_pad($constituency->getState()->getNumber(), 2, '0', STR_PAD_LEFT);
 			$constituencyNo = str_pad($constituency->getNumber(), 3, '0', STR_PAD_LEFT);
 
@@ -223,14 +223,14 @@ class Importer
 				if ($firstResultCount > 0) {
 					$aggrFirstResult = $this->factory->createAggregatedFirstResultRow($constituencyNo, $party, $firstResultCount);
 					$this->em->persist($aggrFirstResult);
-	}
+				}
 
 				//secondresults for party
 				$secondResultCount = $row[$column + 2];
 				if ($secondResultCount > 0) {
 					$aggrSecondResult = $this->factory->createAggregatedSecondResult($party, $stateNo, $constituencyNo, $secondResultCount);
 					$this->em->persist($aggrSecondResult);
-}
+				}
 
 			}
 		}
