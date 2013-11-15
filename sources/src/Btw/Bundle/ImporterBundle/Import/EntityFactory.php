@@ -10,6 +10,7 @@ use Btw\Bundle\PersistenceBundle\Entity\Election;
 use Btw\Bundle\PersistenceBundle\Entity\Party;
 use Btw\Bundle\PersistenceBundle\Entity\State;
 use Btw\Bundle\PersistenceBundle\Entity\FirstResult;
+use Btw\Bundle\PersistenceBundle\Entity\StateCandidacy;
 use Btw\Bundle\PersistenceBundle\Entity\StateList;
 use Symfony\Component\Intl\NumberFormatter\NumberFormatter;
 
@@ -157,6 +158,14 @@ class EntityFactory
 			$this->constituencyCandidacies[$constituencyId]['free'][] = $constituencyCandidacy;
 		}
 		return $constituencyCandidacy;
+	}
+
+	public function createStateCandidacy($candidate, $stateName, $partyAbbr, $position)
+	{
+		$state = $this->states[$stateName];
+		$stateList = $this->stateLists[$partyAbbr][$state->getNumber()];
+
+		return new StateCandidacy($candidate, $stateList, $position);
 	}
 
 	public function createAggregatedFirstResult($constituencyCandidacy, $votes)

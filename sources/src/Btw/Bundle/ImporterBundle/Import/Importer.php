@@ -157,15 +157,23 @@ class Importer
 			$name = $row[0];
 			$partyAbbr = $row[2];
 			$constituencyNo = $row[3];
+			$stateAbbr = $row[4];
+			$stateListPosition = $row[5];
 
 			$candidate = $this->factory->createCandidate($name, $partyAbbr);
 			if (is_null($candidate)) continue;
 
 			$this->em->persist($candidate);
-			if (empty($constituencyNo)) continue;
+			if (!empty($constituencyNo)) {
+				$constituencyCandidacy = $this->factory->createConstituencyCandidacy($candidate, $constituencyNo);
+				$this->em->persist($constituencyCandidacy);
+			}
 
-			$constituencyCandidacy = $this->factory->createConstituencyCandidacy($candidate, $constituencyNo);
-			$this->em->persist($constituencyCandidacy);
+			if (!empty($stateAbbr)) {
+				$stateName = Helpers::stateNameForStateAbbr($stateAbbr);
+				$stateCandidacy = $this->factory->createStateCandidacy($candidate, $stateName, $partyAbbr, $stateListPosition);
+				$this->em->persist($stateCandidacy);
+			}
 		}
 	}
 
