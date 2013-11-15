@@ -27,7 +27,7 @@ class ImportCommand extends ContainerAwareCommand
 			->addArgument('candidates', InputArgument::REQUIRED, 'Path to the candidates CSV file.')
 			->addArgument('results', InputArgument::REQUIRED, 'Path to the results CSV file.')
 			->addArgument('partynamemapping', InputArgument::REQUIRED, 'Path to the party-name-mapping CSV file.')
-			->addArgument('generatedCSVpath', InputArgument::OPTIONAL,'Specified the target directory to save generated CSVs in - if set, votes will be generated based on aggregations');
+			->addArgument('generatedCSVpath', InputArgument::OPTIONAL,'Specifies the target directory to save generated CSVs in - if set, votes will be generated based on aggregations');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
