@@ -13,25 +13,35 @@ use Doctrine\ORM\Mapping as ORM;
 class AggregatedSecondResult
 {
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="second_result_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="id", type="integer", nullable=false)
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="SEQUENCE")
+	 * @ORM\SequenceGenerator(sequenceName="second_result_id_seq", allocationSize=1, initialValue=1)
+	 */
+	private $id;
 
-    /**
-     * @var StateList
-     *
-     * @ORM\ManyToOne(targetEntity="StateList")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="state_list_id", referencedColumnName="id")
-     * })
-     */
-    private $stateList;
+	/**
+	 * @var StateList
+	 *
+	 * @ORM\ManyToOne(targetEntity="StateList")
+	 * @ORM\JoinColumns({
+	 *   @ORM\JoinColumn(name="state_list_id", referencedColumnName="id")
+	 * })
+	 */
+	private $stateList;
+
+	/**
+	 * @var \Btw\Bundle\PersistenceBundle\Entity\Constituency
+	 *
+	 * @ORM\ManyToOne(targetEntity="Btw\Bundle\PersistenceBundle\Entity\Constituency")
+	 * @ORM\JoinColumns({
+	 *   @ORM\JoinColumn(name="constituency_id", referencedColumnName="id")
+	 * })
+	 */
+	private $constituency;
 
 	/**
 	 * @var integer
@@ -95,6 +105,23 @@ class AggregatedSecondResult
 	public function getCount()
 	{
 		return $this->count;
+	}
+
+	/**
+	 * @param mixed $constituency
+	 */
+	public function setConstituency(Constituency $constituency)
+	{
+		$this->constituency = $constituency;
+		return $this;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getConstituency()
+	{
+		return $this->constituency;
 	}
 
 }

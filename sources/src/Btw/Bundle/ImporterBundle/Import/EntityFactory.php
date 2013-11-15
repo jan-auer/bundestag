@@ -92,7 +92,8 @@ class EntityFactory
 		return $party;
 	}
 
-	public function createFirstResult($freeConstituencyCandidate) {
+	public function createFirstResult($freeConstituencyCandidate)
+	{
 		$firstResult = new FirstResult();
 		$firstResult->setConstituencyCandidacy($freeConstituencyCandidate);
 		return $firstResult;
@@ -111,27 +112,21 @@ class EntityFactory
 		return $stateList;
 	}
 
-	public function createCandidate($name, $partyAbbr)
+	public function createCandidate($name, $partyAbbr = null)
 	{
-		if(!array_key_exists($partyAbbr, $this->parties)) return null;
-
-		$party = $this->parties[$partyAbbr];
-
 		$candidate = new Candidate();
 		$candidate->setName($name);
-		$candidate->setParty($party);
+
+		if ($partyAbbr != null) {
+			if (!array_key_exists($partyAbbr, $this->parties)) return null;
+
+			$party = $this->parties[$partyAbbr];
+
+			$candidate->setParty($party);
+		}
 
 		$this->candidates[] = $candidate;
 		return $candidate;
-	}
-
-	public function createCandidateConstituency($candidate, $constituency)
-	{
-		$constituencyCandidacy = new ConstituencyCandidacy();
-		$constituencyCandidacy->setConstituency($constituency);
-		$constituencyCandidacy->setCandidate($candidate);
-
-		return $constituencyCandidacy;
 	}
 
 	public function createConstituencyCandidacy($candidate, $constituencyId)
@@ -142,18 +137,43 @@ class EntityFactory
 		$constituencyCandidacy->setCandidate($candidate);
 		$constituencyCandidacy->setConstituency($constituency);
 
-		$this->constituencyCandidacies[$constituencyId][] = $candidate;
+		if ($candidate->getParty() != null) {
+			$abbr = $candidate->getParty()->getAbbreviation();
+			$this->constituencyCandidacies[$constituencyId][$abbr] = $constituencyCandidacy;
+		} else {
+			$this->constituencyCandidacies[$constituencyId]['free'][] = $constituencyCandidacy;
+		}
 		return $constituencyCandidacy;
 	}
 
-	public function createAggregatedFirstResult($constituencyCandidacy, $votes) {
+	public function createAggregatedFirstResult($constituencyCandidacy, $votes)
+	{
 		$aggrFirstResult = new AggregatedFirstResult();
 		$aggrFirstResult->setConstituencyCandidacy($constituencyCandidacy);
 		$aggrFirstResult->setCount($votes);
 		return $aggrFirstResult;
 	}
 
-	public function createAggregatedSecondResult($statelist, $votes) {
+	public function createAggregatedFirstResultRow($constituencyId, Party $party, $votes)
+	{
+		$constituencyCandidacies = $this->constituencyCandidacies[$constituencyId];
+
+		if (!array_key_exists($party->getAbbreviation(), $constituencyCandidacies)) {
+			return null;
+		}
+
+		$constituencyCandidacy = $constituencyCandidacies[$party->getAbbreviation()];
+		if ($constituencyCandidacy == null) return null;
+
+		$aggrFirstResult = new AggregatedFirstResult();
+		$aggrFirstResult->setConstituencyCandidacy($constituencyCandidacy);
+		$aggrFirstResult->setCount($votes);
+
+		return $aggrFirstResult;
+	}
+
+	public function createAggregatedSecondResult($statelist, $votes)
+	{
 		$aggrSecondResult = new AggregatedSecondResult();
 		$aggrSecondResult->setStateList($statelist);
 		$aggrSecondResult->setCount($votes);

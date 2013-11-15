@@ -6,6 +6,7 @@ use Btw\Bundle\PersistenceBundle\Entity\Candidate;
 use Btw\Bundle\PersistenceBundle\Entity\ConstituencyCandidacy;
 use Btw\Bundle\PersistenceBundle\Entity\FirstResult;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -25,6 +26,10 @@ class Importer
 	private $electionsAdministrationIgnoreKeys;
 	/** @var  Array of first results for free candidates. */
 	private $freeConstituencyCandidateResults;
+	/** @var  Array of parties where the key is the column in results.csv */
+	private $columnParties;
+	/** @var  Array of constituencies where the key is the row in results.csv */
+	private $rowConstituencies;
 
 	private $output;
 
@@ -34,6 +39,7 @@ class Importer
 		$this->em = $entityManager;
 		$this->electionsAdministrationIgnoreKeys = array('Wahlberechtigte', 'Wähler', 'Ungültige', 'Gültige');
 		$this->freeConstituencyCandidateResults = array();
+		$this->columnParties = array();
 	}
 
 	/**
@@ -103,13 +109,19 @@ class Importer
 	{
 		$parties = array();
 		$i = 0;
+		$k = 0;
 		foreach ($data[0] as $column) {
-			if (empty($column)) continue;
+			$k++;
+			if (empty($column)) {
+				continue;
+			}
 			if ($i++ < 7) continue;
 			if ($column == 'Übrige') continue;
+
 			$party = $this->factory->createParty($column);
 			$parties[] = $party;
 			$this->em->persist($party);
+			$this->columnParties[$k - 1] = $party;
 		}
 		return $parties;
 	}
@@ -137,16 +149,16 @@ class Importer
 
 	private function importCandidates(array &$data)
 	{
-		foreach($data as $row){
+		foreach ($data as $row) {
 			$name = $row[0];
 			$partyAbbr = $row[2];
 			$constituencyNo = $row[3];
 
 			$candidate = $this->factory->createCandidate($name, $partyAbbr);
-			if(is_null($candidate)) continue;
+			if (is_null($candidate)) continue;
 
 			$this->em->persist($candidate);
-			if(empty($constituencyNo))continue;
+			if (empty($constituencyNo)) continue;
 
 			$constituencyCandidacy = $this->factory->createConstituencyCandidacy($candidate, $constituencyNo);
 			$this->em->persist($constituencyCandidacy);
@@ -172,12 +184,13 @@ class Importer
 			}
 
 			foreach ($results as $name => $votes) {
-				if($name=='ÖDP / Familie ..') continue;
-				$freeCandidate = new Candidate();
-				$freeCandidate->setName($name);
+				if ($name == 'ÖDP / Familie ..') continue;
+
+				$freeCandidate = $this->factory->createCandidate($name);
+				if (is_null($freeCandidate)) continue;
 				$this->em->persist($freeCandidate);
 
-				$constituencyCandidacy = $this->factory->createCandidateConstituency($freeCandidate, $constituency);
+				$constituencyCandidacy = $this->factory->createConstituencyCandidacy($freeCandidate, $constituency->getNumber());
 				$this->em->persist($constituencyCandidacy);
 
 				$this->freeConstituencyCandidateResults[] = array($constituencyCandidacy, $votes);
@@ -188,10 +201,30 @@ class Importer
 	private function importResults(array &$data)
 	{
 		//first results
+		$rowI = 0;
+		$rowCount = count($data);
+		foreach ($data as $row) {
+			if ($rowI++ < 3 || $rowI == $rowCount || (count($row) == 1 && is_null($row[0]))) continue; // skip first three rows, the last row and skip empty rows
+
+			$assignedTo = $row[2];
+			if ($assignedTo > 16) continue;
+
+			$constituencyNo = $row[0];
+
+			foreach ($this->columnParties as $column => $party) {
+				$firstResultCount = $row[$column];
+
+				if ($firstResultCount > 0) {
+					$aggrFirstResult = $this->factory->createAggregatedFirstResultRow($constituencyNo, $party, $firstResultCount);
+					$this->em->persist($aggrFirstResult);
+				}
+				$secondResultCount = $row[$column + 2];
+			}
+		}
 		//candidates
 		//free candidates
-		$k=0;
-		foreach($this->freeConstituencyCandidateResults as $freeConstituencyCandidateResults) {
+		$k = 0;
+		foreach ($this->freeConstituencyCandidateResults as $freeConstituencyCandidateResults) {
 			$freeConstituencyCandidate = $freeConstituencyCandidateResults[0];
 			$votes = $freeConstituencyCandidateResults[1];
 

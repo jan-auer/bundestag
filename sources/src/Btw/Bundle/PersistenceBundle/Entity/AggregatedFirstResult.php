@@ -96,5 +96,4 @@ class AggregatedFirstResult
 	{
 		return $this->count;
 	}
-
 }

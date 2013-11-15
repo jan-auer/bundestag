@@ -34,6 +34,16 @@ class SecondResult
     private $stateList;
 
 	/**
+	 * @var \Btw\Bundle\PersistenceBundle\Entity\Constituency
+	 *
+	 * @ORM\ManyToOne(targetEntity="Btw\Bundle\PersistenceBundle\Entity\Constituency")
+	 * @ORM\JoinColumns({
+	 *   @ORM\JoinColumn(name="constituency_id", referencedColumnName="id")
+	 * })
+	 */
+	private $constituency;
+
+	/**
 	 * @param int $id
 	 *
 	 * @return SecondResult
