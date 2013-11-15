@@ -2,12 +2,9 @@
 namespace Btw\Bundle\ImporterBundle\Import;
 
 use Btw\Bundle\ImporterBundle\Parser\HtmlParser;
-use Btw\Bundle\PersistenceBundle\Entity\Candidate;
-use Btw\Bundle\PersistenceBundle\Entity\ConstituencyCandidacy;
+use Btw\Bundle\ImporterBundle\VoteExport\FirstVotesExporter;
 use Btw\Bundle\PersistenceBundle\Entity\Election;
-use Btw\Bundle\PersistenceBundle\Entity\FirstResult;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -31,6 +28,10 @@ class Importer
 	private $columnParties;
 	/** @var  Array of constituencies where the key is the row in results.csv */
 	private $rowConstituencies;
+	/** @var  FirstVotesExporter */
+	private $firstVotesExporter;
+	/** @var  Election Current election */
+	private $election;
 
 	private $output;
 
@@ -38,6 +39,7 @@ class Importer
 	{
 		$this->output = $output;
 		$this->em = $entityManager;
+		$this->firstVotesExporter = new FirstVotesExporter();
 		$this->electionsAdministrationIgnoreKeys = array('Wahlberechtigte', 'Wähler', 'Ungültige', 'Gültige');
 		$this->freeConstituencyCandidateResults = array();
 		$this->columnParties = array();
@@ -53,7 +55,7 @@ class Importer
 	 * @param array $results An array containing aggregated results of the election.
 	 * @param array $partynamemapping An array containing party abbreviations and their corresponding full names
 	 */
-	public function import(array &$election, array &$demography, array &$candidates, array &$results, array &$partynamemapping)
+	public function import(array &$election, array &$demography, array &$candidates, array &$results, array &$partynamemapping, $generationPath)
 	{
 		$this->factory = new EntityFactory();
 
@@ -74,7 +76,7 @@ class Importer
 		$this->output->writeln("Importing results...");
 
 		$this->output->writeln("Results...");
-		$this->importResults($results);
+		$this->importResults($results, $generationPath);
 
 		$this->em->flush();
 	}
@@ -83,6 +85,7 @@ class Importer
 	{
 		$election = $this->factory->createElection($data[0]);
 		$this->em->persist($election);
+		$this->election = $election;
 		return $election;
 	}
 
@@ -211,10 +214,19 @@ class Importer
 		}
 	}
 
-	private function importResults(array &$data)
+	private function importResults(array &$data, $generationPath)
 	{
 		$rowI = 0;
 		$rowCount = count($data);
+
+		$shouldGenerateVotes = !empty($generationPath);
+
+		if($shouldGenerateVotes && (substr($generationPath, -1) != '\\'))
+		{
+			$generationPath .= '\\';
+			$this->firstVotesExporter->open($this->election->getDate(), $generationPath, true);
+		}
+
 		foreach ($data as $row) {
 			if ($rowI++ < 3 || $rowI == $rowCount || (count($row) == 1 && is_null($row[0]))) continue; // skip first three rows, the last row and skip empty rows
 
@@ -231,6 +243,10 @@ class Importer
 				if ($firstResultCount > 0) {
 					$aggrFirstResult = $this->factory->createAggregatedFirstResultRow($constituencyNo, $party, $firstResultCount);
 					$this->em->persist($aggrFirstResult);
+
+					if ($shouldGenerateVotes) {
+						$this->firstVotesExporter->append($aggrFirstResult->getConstituencyCandidacy()->getCandidate()->getId(), $firstResultCount);
+					}
 				}
 
 				//secondresults for party
@@ -239,8 +255,12 @@ class Importer
 					$aggrSecondResult = $this->factory->createAggregatedSecondResult($party, $stateNo, $constituencyNo, $secondResultCount);
 					$this->em->persist($aggrSecondResult);
 				}
-
 			}
+		}
+
+		if ($shouldGenerateVotes) {
+			$this->firstVotesExporter->close();
+			$this->firstVotesExporter->open($this->election->getDate(), $generationPath, true);
 		}
 
 		//free candidates
@@ -251,6 +271,14 @@ class Importer
 
 			$aggrFreeFirstResult = $this->factory->createAggregatedFirstResult($freeConstituencyCandidate, $votes);
 			$this->em->persist($aggrFreeFirstResult);
+
+			if ($shouldGenerateVotes) {
+				$this->firstVotesExporter->append($freeConstituencyCandidate->getCandidate()->getId(), $votes);
+			}
+		}
+
+		if($shouldGenerateVotes){
+			$this->firstVotesExporter->close();
 		}
 	}
 

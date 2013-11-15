@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ImportCommand extends ContainerAwareCommand
@@ -25,7 +26,8 @@ class ImportCommand extends ContainerAwareCommand
 			->addArgument('demography', InputArgument::REQUIRED, 'Path to the demography CSV file.')
 			->addArgument('candidates', InputArgument::REQUIRED, 'Path to the candidates CSV file.')
 			->addArgument('results', InputArgument::REQUIRED, 'Path to the results CSV file.')
-			->addArgument('partynamemapping', InputArgument::REQUIRED, 'Path to the party-name-mapping CSV file.');
+			->addArgument('partynamemapping', InputArgument::REQUIRED, 'Path to the party-name-mapping CSV file.')
+			->addArgument('generatedCSVpath', InputArgument::OPTIONAL,'Specified the target directory to save generated CSVs in - if set, votes will be generated based on aggregations');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
@@ -35,6 +37,7 @@ class ImportCommand extends ContainerAwareCommand
 		$candidatesPath = $input->getArgument('candidates');
 		$resultsPath = $input->getArgument('results');
 		$partynamemappingPath = $input->getArgument('partynamemapping');
+		$generationPath = $input->getArgument('generatedCSVpath');
 
 		$election = CsvParser::parse($electionPath, true);
 		$demography = CsvParser::parse($demographyPath, true);
@@ -43,7 +46,7 @@ class ImportCommand extends ContainerAwareCommand
 		$partynamemapping = CsvParser::parse($partynamemappingPath, false);
 
 		$importer = new Importer($this->getEntityManager(), $output);
-		$importer->import($election, $demography, $candidates, $results, $partynamemapping, $output);
+		$importer->import($election, $demography, $candidates, $results, $partynamemapping, $generationPath);
 	}
 
 	/**
