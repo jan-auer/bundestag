@@ -5,6 +5,7 @@ use Btw\Bundle\ImporterBundle\CSV\HtmlParser;
 use Btw\Bundle\PersistenceBundle\Entity\Candidate;
 use Btw\Bundle\PersistenceBundle\Entity\ConstituencyCandidacy;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * The importer class loads election data into the database.
@@ -37,17 +38,32 @@ class Importer
 	 * @param array $candidates An array containing all candidates and their parties.
 	 * @param array $results An array containing aggregated results of the election.
 	 */
-	public function import(array &$election, array &$demography, array &$candidates, array &$results)
+	public function import(array &$election, array &$demography, array &$candidates, array &$results, array &$partynamemapping, OutputInterface $output)
 	{
 		$this->factory = new EntityFactory();
 
+		$output->writeln("Election...");
 		$this->importElection($election);
+
+		$output->writeln("States...");
 		$this->importStates($demography);
+
+		$output->writeln("Constituencies...");
 		$constituencies = $this->importConstituencies($demography);
-		$parties = $this->importParties($results);
+
+		$output->writeln("Parties...");
+		$parties = $this->importParties($results, $partynamemapping);
+
+		$output->writeln("State lists...");
 		$this->importStateLists($results);
+
+		$output->writeln("Candidates...");
 		$this->importCandidates($candidates);
+
+		$output->writeln("Free candidates...");
 		$this->importFreeCandidates($parties, $constituencies);
+
+		$output->writeln("Results...");
 		$this->importResults($results);
 
 		$this->em->flush();
@@ -83,7 +99,7 @@ class Importer
 		return $constituencies;
 	}
 
-	private function importParties(array &$data)
+	private function importParties(array &$data, array &$partynamemapping)
 	{
 		$parties = array();
 		$i = 0;
@@ -91,7 +107,7 @@ class Importer
 			if (empty($column)) continue;
 			if ($i++ < 7) continue;
 			if ($column == 'Übrige') continue;
-			$party = $this->factory->createParty($column);
+			$party = $this->factory->createParty($column, $partynamemapping);
 			$parties[] = $party;
 			$this->em->persist($party);
 		}

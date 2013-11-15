@@ -21,33 +21,37 @@ class ImportCommand extends ContainerAwareCommand
 		$this
 			->setName('btw:import')
 			->setDescription('Imports data and results of an election..')
-			->addArgument('election',   InputArgument::REQUIRED, 'Path to the election CSV file.')
+			->addArgument('election', InputArgument::REQUIRED, 'Path to the election CSV file.')
 			->addArgument('demography', InputArgument::REQUIRED, 'Path to the demography CSV file.')
 			->addArgument('candidates', InputArgument::REQUIRED, 'Path to the candidates CSV file.')
-			->addArgument('results',    InputArgument::REQUIRED, 'Path to the results CSV file.');
+			->addArgument('results', InputArgument::REQUIRED, 'Path to the results CSV file.')
+			->addArgument('partynamemapping', InputArgument::REQUIRED, 'Path to the party-name-mapping CSV file.');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$electionPath   = $input->getArgument('election');
+		$electionPath = $input->getArgument('election');
 		$demographyPath = $input->getArgument('demography');
 		$candidatesPath = $input->getArgument('candidates');
-		$resultsPath    = $input->getArgument('results');
+		$resultsPath = $input->getArgument('results');
+		$partynamemappingPath = $input->getArgument('partynamemapping');
 
-		$election   = Parser::parse($electionPath,   true);
+		$election = Parser::parse($electionPath, true);
 		$demography = Parser::parse($demographyPath, true);
 		$candidates = Parser::parse($candidatesPath, true);
-		$results    = Parser::parse($resultsPath,    false);
+		$results = Parser::parse($resultsPath, false);
+		$partynamemapping = Parser::parse($partynamemappingPath, false);
 
 		$importer = new Importer($this->getEntityManager());
-		$importer->import($election, $demography, $candidates, $results);
+		$importer->import($election, $demography, $candidates, $results, $partynamemapping, $output);
 	}
 
 	/**
 	 * Retrieves a Doctrine EntityManager instance which is configured for the BTW database.
 	 * @return EntityManager
 	 */
-	protected function getEntityManager() {
+	protected function getEntityManager()
+	{
 		if ($this->entityManager == null) {
 			$doctrine = $this->getContainer()->get('doctrine');
 			$this->entityManager = $doctrine->getManager();

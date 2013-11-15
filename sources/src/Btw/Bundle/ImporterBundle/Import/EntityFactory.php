@@ -78,15 +78,28 @@ class EntityFactory
 		return $constituency;
 	}
 
-	public function createParty($partyAbbr)
+	public function createParty($partyAbbr, &$partynamemapping)
 	{
+		$partyName = $this->fullPartyNameForAbbreviation($partyAbbr, $partynamemapping);
+
 		$party = new Party();
-		$party->setName($partyAbbr);
+		$party->setName($partyName);
 		$party->setAbbreviation($partyAbbr);
 		$party->setMinorityRepresentation(false);
 
 		$this->parties[$partyAbbr] = $party;
 		return $party;
+	}
+
+	private function fullPartyNameForAbbreviation($partyAbbr, &$partynamemapping)
+	{
+		foreach ($partynamemapping as $partyname) {
+			if ($partyname[0] == $partyAbbr) {
+				return $partyname[1];
+			}
+		}
+
+		return $partyAbbr;
 	}
 
 	public function createStateList($stateName, $partyAbbr)
