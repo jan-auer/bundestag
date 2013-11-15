@@ -51,6 +51,7 @@ class Importer
 	 * @param array $demography An array containing all states and constituencies.
 	 * @param array $candidates An array containing all candidates and their parties.
 	 * @param array $results An array containing aggregated results of the election.
+	 * @param array $partynamemapping An array containing party abbreviations and their corresponding full names
 	 */
 	public function import(array &$election, array &$demography, array &$candidates, array &$results, array &$partynamemapping)
 	{
