@@ -4,6 +4,7 @@ namespace Btw\Bundle\ImporterBundle\Import;
 use Btw\Bundle\ImporterBundle\Parser\HtmlParser;
 use Btw\Bundle\PersistenceBundle\Entity\Candidate;
 use Btw\Bundle\PersistenceBundle\Entity\ConstituencyCandidacy;
+use Btw\Bundle\PersistenceBundle\Entity\Election;
 use Btw\Bundle\PersistenceBundle\Entity\FirstResult;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -16,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Importer
 {
-	const ELECTIONS_ADMINISTRATION_CONSTITUENCY_URL = 'http://www.bundeswahlleiter.de/de/bundestagswahlen/BTW_BUND_13/ergebnisse/wahlkreisergebnisse/l%s/wk%s/';
+	const ELECTIONS_ADMINISTRATION_CONSTITUENCY_URL = 'http://www.bundeswahlleiter.de/de/bundestagswahlen/BTW_BUND_%s/ergebnisse/wahlkreisergebnisse/l%s/wk%s/';
 
 	/** @var  EntityManager */
 	private $em;
@@ -56,7 +57,7 @@ class Importer
 		$this->factory = new EntityFactory();
 
 		$this->output->writeln("Importing election...");
-		$this->importElection($election);
+		$electionObj = $this->importElection($election);
 		$this->output->writeln("Importing states...");
 		$this->importStates($demography);
 		$this->output->writeln("Importing constituencies...");
@@ -68,7 +69,7 @@ class Importer
 		$this->output->writeln("Importing candidates...");
 		$this->importCandidates($candidates);
 		$this->output->writeln("Importing free candidates...");
-		$this->importFreeCandidates($parties, $constituencies);
+		$this->importFreeCandidates($electionObj, $parties, $constituencies);
 		$this->output->writeln("Importing results...");
 		$this->importResults($results);
 
@@ -79,6 +80,7 @@ class Importer
 	{
 		$election = $this->factory->createElection($data[0]);
 		$this->em->persist($election);
+		return $election;
 	}
 
 	private function importStates(array &$data)
@@ -164,13 +166,14 @@ class Importer
 		}
 	}
 
-	private function importFreeCandidates(array $parties, array $constituencies)
+	private function importFreeCandidates(Election $election, array $parties, array $constituencies)
 	{
 		foreach ($constituencies as $constituency) {
+			$electionNo =date("y", $election->getDate()->getTimestamp());
 			$stateNo = str_pad($constituency->getState()->getNumber(), 2, '0', STR_PAD_LEFT);
 			$constituencyNo = str_pad($constituency->getNumber(), 3, '0', STR_PAD_LEFT);
 
-			$url = sprintf(Importer::ELECTIONS_ADMINISTRATION_CONSTITUENCY_URL, $stateNo, $constituencyNo);
+			$url = sprintf(Importer::ELECTIONS_ADMINISTRATION_CONSTITUENCY_URL, $electionNo, $stateNo, $constituencyNo);
 
 			$results = HtmlParser::parseResultTableBody($url);
 
