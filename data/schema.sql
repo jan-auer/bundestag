@@ -71,12 +71,25 @@ CREATE TABLE constituency_candidacy
 
 CREATE TABLE first_result
 (
-  id             SERIAL PRIMARY KEY,
-  candidate_id   INTEGER NOT NULL REFERENCES constituency_candidacy (candidate_id)
+  id           SERIAL PRIMARY KEY,
+  candidate_id INTEGER NOT NULL REFERENCES constituency_candidacy (candidate_id)
 );
 
 CREATE TABLE second_result
 (
-  id             SERIAL PRIMARY KEY,
-  state_list_id  INTEGER NOT NULL REFERENCES state_list (id)
+  id            SERIAL PRIMARY KEY,
+  state_list_id INTEGER NOT NULL REFERENCES state_list (id)
+);
+CREATE TABLE aggregated_first_result
+(
+  id           SERIAL PRIMARY KEY,
+  candidate_id INTEGER NOT NULL REFERENCES constituency_candidacy (candidate_id),
+  count        INTEGER
+);
+
+CREATE TABLE aggregated_second_result
+(
+  id            SERIAL PRIMARY KEY,
+  state_list_id INTEGER NOT NULL REFERENCES state_list (id),
+  count         INTEGER
 );

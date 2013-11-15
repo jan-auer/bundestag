@@ -1,6 +1,8 @@
 <?php
 namespace Btw\Bundle\ImporterBundle\Import;
 
+use Btw\Bundle\PersistenceBundle\Entity\AggregatedFirstResult;
+use Btw\Bundle\PersistenceBundle\Entity\AggregatedSecondResult;
 use Btw\Bundle\PersistenceBundle\Entity\Candidate;
 use Btw\Bundle\PersistenceBundle\Entity\Constituency;
 use Btw\Bundle\PersistenceBundle\Entity\ConstituencyCandidacy;
@@ -142,5 +144,19 @@ class EntityFactory
 
 		$this->constituencyCandidacies[$constituencyId][] = $candidate;
 		return $constituencyCandidacy;
+	}
+
+	public function createAggregatedFirstResult($constituencyCandidacy, $votes) {
+		$aggrFirstResult = new AggregatedFirstResult();
+		$aggrFirstResult->setConstituencyCandidacy($constituencyCandidacy);
+		$aggrFirstResult->setCount($votes);
+		return $aggrFirstResult;
+	}
+
+	public function createAggregatedSecondResult($statelist, $votes) {
+		$aggrSecondResult = new AggregatedSecondResult();
+		$aggrSecondResult->setStateList($statelist);
+		$aggrSecondResult->setCount($votes);
+		return $aggrSecondResult;
 	}
 }

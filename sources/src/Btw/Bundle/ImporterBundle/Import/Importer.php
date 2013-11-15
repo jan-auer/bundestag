@@ -195,19 +195,8 @@ class Importer
 			$freeConstituencyCandidate = $freeConstituencyCandidateResults[0];
 			$votes = $freeConstituencyCandidateResults[1];
 
-			for($i=0;$i<$votes;$i++) {
-				$firstResult = $this->factory->createFirstResult($freeConstituencyCandidate);
-				$this->em->persist($firstResult);
-
-
-				if($k%1000 == 1) {
-					$this->em->flush();
-					$this->output->writeln("Flushing...");
-					$i=0;
-				}
-				$k++;
-			}
-
+			$aggrFreeFirstResult = $this->factory->createAggregatedFirstResult($freeConstituencyCandidate, $votes);
+			$this->em->persist($aggrFreeFirstResult);
 		}
 		//second results
 	}
