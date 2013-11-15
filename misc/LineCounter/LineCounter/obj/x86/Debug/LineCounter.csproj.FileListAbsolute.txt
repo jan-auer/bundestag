@@ -1,0 +1,8 @@
+C:\Users\schaefep\Documents\HFU\08. Semester - SS13\Semesterprojekt\LineCounter\LineCounter\bin\Debug\LineCounter.exe
+C:\Users\schaefep\Documents\HFU\08. Semester - SS13\Semesterprojekt\LineCounter\LineCounter\bin\Debug\LineCounter.pdb
+C:\Users\schaefep\Documents\HFU\08. Semester - SS13\Semesterprojekt\LineCounter\LineCounter\obj\x86\Debug\LineCounter.exe
+C:\Users\schaefep\Documents\HFU\08. Semester - SS13\Semesterprojekt\LineCounter\LineCounter\obj\x86\Debug\LineCounter.pdb
+C:\Repos\Bundestag\misc\LineCounter\LineCounter\obj\x86\Debug\LineCounter.exe
+C:\Repos\Bundestag\misc\LineCounter\LineCounter\obj\x86\Debug\LineCounter.pdb
+C:\Repos\Bundestag\misc\LineCounter\LineCounter\bin\Debug\LineCounter.exe
+C:\Repos\Bundestag\misc\LineCounter\LineCounter\bin\Debug\LineCounter.pdb
