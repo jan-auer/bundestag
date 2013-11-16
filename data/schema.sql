@@ -77,8 +77,8 @@ CREATE TABLE first_result
 
 CREATE TABLE second_result
 (
-  id            SERIAL PRIMARY KEY,
-  state_list_id INTEGER NOT NULL REFERENCES state_list (id),
+  id              SERIAL PRIMARY KEY,
+  state_list_id   INTEGER NOT NULL REFERENCES state_list (id),
   constituency_id INTEGER NOT NULL REFERENCES constituency (id)
 );
 CREATE TABLE aggregated_first_result
@@ -90,8 +90,8 @@ CREATE TABLE aggregated_first_result
 
 CREATE TABLE aggregated_second_result
 (
-  id            SERIAL PRIMARY KEY,
-  state_list_id INTEGER NOT NULL REFERENCES state_list (id),
+  id              SERIAL PRIMARY KEY,
+  state_list_id   INTEGER NOT NULL REFERENCES state_list (id),
   constituency_id INTEGER NOT NULL REFERENCES constituency (id),
-  count         INTEGER
+  count           INTEGER
 );
