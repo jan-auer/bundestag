@@ -2,12 +2,10 @@
 namespace Btw\Bundle\ImporterBundle\Import;
 
 use Btw\Bundle\ImporterBundle\Parser\HtmlParser;
-use Btw\Bundle\PersistenceBundle\Entity\Candidate;
-use Btw\Bundle\PersistenceBundle\Entity\ConstituencyCandidacy;
+use Btw\Bundle\ImporterBundle\VoteExport\FirstVotesExporter;
+use Btw\Bundle\ImporterBundle\VoteExport\SecondVotesExporter;
 use Btw\Bundle\PersistenceBundle\Entity\Election;
-use Btw\Bundle\PersistenceBundle\Entity\FirstResult;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -31,6 +29,12 @@ class Importer
 	private $columnParties;
 	/** @var  Array of constituencies where the key is the row in results.csv */
 	private $rowConstituencies;
+	/** @var  FirstVotesExporter */
+	private $firstVotesExporter;
+	/** @var  SecondVotesExporter */
+	private $secondVotesExporter;
+	/** @var  Election Current election */
+	private $election;
 
 	private $output;
 
@@ -38,6 +42,8 @@ class Importer
 	{
 		$this->output = $output;
 		$this->em = $entityManager;
+		$this->firstVotesExporter = new FirstVotesExporter();
+		$this->secondVotesExporter = new SecondVotesExporter();
 		$this->electionsAdministrationIgnoreKeys = array('Wahlberechtigte', 'Wähler', 'Ungültige', 'Gültige');
 		$this->freeConstituencyCandidateResults = array();
 		$this->columnParties = array();
@@ -51,8 +57,9 @@ class Importer
 	 * @param array $demography An array containing all states and constituencies.
 	 * @param array $candidates An array containing all candidates and their parties.
 	 * @param array $results An array containing aggregated results of the election.
+	 * @param array $partynamemapping An array containing party abbreviations and their corresponding full names
 	 */
-	public function import(array &$election, array &$demography, array &$candidates, array &$results, array &$partynamemapping)
+	public function import(array &$election, array &$demography, array &$candidates, array &$results, array &$partynamemapping, $generationPath)
 	{
 		$this->factory = new EntityFactory();
 
@@ -73,7 +80,7 @@ class Importer
 		$this->output->writeln("Importing results...");
 
 		$this->output->writeln("Results...");
-		$this->importResults($results);
+		$this->importResults($results, $generationPath);
 
 		$this->em->flush();
 	}
@@ -82,6 +89,7 @@ class Importer
 	{
 		$election = $this->factory->createElection($data[0]);
 		$this->em->persist($election);
+		$this->election = $election;
 		return $election;
 	}
 
@@ -156,15 +164,23 @@ class Importer
 			$name = $row[0];
 			$partyAbbr = $row[2];
 			$constituencyNo = $row[3];
+			$stateAbbr = $row[4];
+			$stateListPosition = $row[5];
 
 			$candidate = $this->factory->createCandidate($name, $partyAbbr);
 			if (is_null($candidate)) continue;
 
 			$this->em->persist($candidate);
-			if (empty($constituencyNo)) continue;
+			if (!empty($constituencyNo)) {
+				$constituencyCandidacy = $this->factory->createConstituencyCandidacy($candidate, $constituencyNo);
+				$this->em->persist($constituencyCandidacy);
+			}
 
-			$constituencyCandidacy = $this->factory->createConstituencyCandidacy($candidate, $constituencyNo);
-			$this->em->persist($constituencyCandidacy);
+			if (!empty($stateAbbr)) {
+				$stateName = Helpers::StateNameForStateAbbr($stateAbbr);
+				$stateCandidacy = $this->factory->createStateCandidacy($candidate, $stateName, $partyAbbr, $stateListPosition);
+				$this->em->persist($stateCandidacy);
+			}
 		}
 	}
 
@@ -203,10 +219,19 @@ class Importer
 		}
 	}
 
-	private function importResults(array &$data)
+	private function importResults(array &$data, $generationPath)
 	{
 		$rowI = 0;
 		$rowCount = count($data);
+
+		$shouldGenerateVotes = !empty($generationPath);
+
+		if ($shouldGenerateVotes && (substr($generationPath, -1) != '\\')) {
+			$generationPath .= '\\';
+			$this->firstVotesExporter->open($this->election->getDate(), $generationPath, true);
+		}
+
+		//firstresults for candidates with party
 		foreach ($data as $row) {
 			if ($rowI++ < 3 || $rowI == $rowCount || (count($row) == 1 && is_null($row[0]))) continue; // skip first three rows, the last row and skip empty rows
 
@@ -216,23 +241,50 @@ class Importer
 			$constituencyNo = $row[0];
 
 			foreach ($this->columnParties as $column => $party) {
-				//firstresults for candidates with party
-
 				$firstResultCount = $row[$column];
 
 				if ($firstResultCount > 0) {
 					$aggrFirstResult = $this->factory->createAggregatedFirstResultRow($constituencyNo, $party, $firstResultCount);
 					$this->em->persist($aggrFirstResult);
-				}
 
-				//secondresults for party
+					if ($shouldGenerateVotes) {
+						$this->firstVotesExporter->append($aggrFirstResult->getConstituencyCandidacy()->getCandidate()->getId(), $firstResultCount);
+					}
+				}
+			}
+		}
+
+		if ($shouldGenerateVotes) {
+			$this->firstVotesExporter->close();
+			$this->secondVotesExporter->open($this->election->getDate(), $generationPath, false);
+		}
+
+		$rowI = 0;
+		//secondresults for party
+		foreach ($data as $row) {
+			if ($rowI++ < 3 || $rowI == $rowCount || (count($row) == 1 && is_null($row[0]))) continue; // skip first three rows, the last row and skip empty rows
+
+			$stateNo = $row[2];
+			if ($stateNo == 99) continue;
+
+			$constituencyNo = $row[0];
+
+			foreach ($this->columnParties as $column => $party) {
 				$secondResultCount = $row[$column + 2];
 				if ($secondResultCount > 0) {
 					$aggrSecondResult = $this->factory->createAggregatedSecondResult($party, $stateNo, $constituencyNo, $secondResultCount);
 					$this->em->persist($aggrSecondResult);
-				}
 
+					if ($shouldGenerateVotes) {
+						$this->secondVotesExporter->append($aggrSecondResult->getStateList()->getId(), $aggrSecondResult->getConstituency()->getId(), $secondResultCount);
+					}
+				}
 			}
+		}
+
+		if ($shouldGenerateVotes) {
+			$this->secondVotesExporter->close();
+			$this->firstVotesExporter->open($this->election->getDate(), $generationPath, true);
 		}
 
 		//free candidates
@@ -242,6 +294,14 @@ class Importer
 
 			$aggrFreeFirstResult = $this->factory->createAggregatedFirstResult($freeConstituencyCandidate, $votes);
 			$this->em->persist($aggrFreeFirstResult);
+
+			if ($shouldGenerateVotes) {
+				$this->firstVotesExporter->append($freeConstituencyCandidate->getCandidate()->getId(), $votes);
+			}
+		}
+
+		if ($shouldGenerateVotes) {
+			$this->firstVotesExporter->close();
 		}
 	}
 

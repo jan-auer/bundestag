@@ -9,3 +9,6 @@ vendor/
 *.vpp~*
 *.DS_STORE
 
+/misc/LineCounter/LineCounter/bin
+/misc/LineCounter/LineCounter/obj
+/misc/LineCounter/LineCounter/LineCounter.csproj.user

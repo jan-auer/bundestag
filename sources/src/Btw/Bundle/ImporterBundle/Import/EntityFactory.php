@@ -10,6 +10,7 @@ use Btw\Bundle\PersistenceBundle\Entity\Election;
 use Btw\Bundle\PersistenceBundle\Entity\Party;
 use Btw\Bundle\PersistenceBundle\Entity\State;
 use Btw\Bundle\PersistenceBundle\Entity\FirstResult;
+use Btw\Bundle\PersistenceBundle\Entity\StateCandidacy;
 use Btw\Bundle\PersistenceBundle\Entity\StateList;
 use Symfony\Component\Intl\NumberFormatter\NumberFormatter;
 
@@ -83,7 +84,7 @@ class EntityFactory
 
 	public function createParty($partyAbbr, &$partynamemapping)
 	{
-		$partyName = $this->fullPartyNameForAbbreviation($partyAbbr, $partynamemapping);
+		$partyName = Helpers::FullPartyNameForAbbreviation($partyAbbr, $partynamemapping);
 
 		$party = new Party();
 		$party->setName($partyName);
@@ -99,17 +100,6 @@ class EntityFactory
 		$firstResult = new FirstResult();
 		$firstResult->setConstituencyCandidacy($freeConstituencyCandidate);
 		return $firstResult;
-	}
-
-	private function fullPartyNameForAbbreviation($partyAbbr, &$partynamemapping)
-	{
-		foreach ($partynamemapping as $partyname) {
-			if ($partyname[0] == $partyAbbr) {
-				return $partyname[1];
-			}
-		}
-
-		return $partyAbbr;
 	}
 
 	public function createStateList($stateName, $partyAbbr)
@@ -133,9 +123,9 @@ class EntityFactory
 		if ($partyAbbr != null) {
 			if (!array_key_exists($partyAbbr, $this->parties)) return null;
 
-		$party = $this->parties[$partyAbbr];
+			$party = $this->parties[$partyAbbr];
 
-		$candidate->setParty($party);
+			$candidate->setParty($party);
 		}
 
 		$this->candidates[] = $candidate;
@@ -159,13 +149,21 @@ class EntityFactory
 		return $constituencyCandidacy;
 	}
 
+	public function createStateCandidacy($candidate, $stateName, $partyAbbr, $position)
+	{
+		$state = $this->states[$stateName];
+		$stateList = $this->stateLists[$partyAbbr][$state->getNumber()];
+
+		return new StateCandidacy($candidate, $stateList, $position);
+	}
+
 	public function createAggregatedFirstResult($constituencyCandidacy, $votes)
 	{
 		$aggrFirstResult = new AggregatedFirstResult();
 		$aggrFirstResult->setConstituencyCandidacy($constituencyCandidacy);
 		$aggrFirstResult->setCount($votes);
 		return $aggrFirstResult;
-}
+	}
 
 	public function createAggregatedFirstResultRow($constituencyId, Party $party, $votes)
 	{
