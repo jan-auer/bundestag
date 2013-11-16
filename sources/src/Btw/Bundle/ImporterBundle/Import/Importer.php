@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Importer
 {
-	const ELECTIONS_ADMINISTRATION_CONSTITUENCY_URL = 'http://www.bundeswahlleiter.de/de/bundestagswahlen/BTW_BUND_%s/ergebnisse/wahlkreisergebnisse/l%s/wk%s/';
+	const ELECTIONS_ADMINISTRATION_CONSTITUENCY_FILE = 'wk%s.html';
 
 	/** @var  EntityManager */
 	private $em;
@@ -59,7 +59,7 @@ class Importer
 	 * @param array $results An array containing aggregated results of the election.
 	 * @param array $partynamemapping An array containing party abbreviations and their corresponding full names
 	 */
-	public function import(array &$election, array &$demography, array &$candidates, array &$results, array &$partynamemapping, $generationPath)
+	public function import(array &$election, array &$demography, array &$candidates, array &$results, array &$partynamemapping, $constituencyPath, $generationPath)
 	{
 		$this->factory = new EntityFactory();
 
@@ -76,13 +76,11 @@ class Importer
 		$this->output->writeln("Importing candidates...");
 		$this->importCandidates($candidates);
 		$this->output->writeln("Importing free candidates...");
-		$this->importFreeCandidates($electionObj, $parties, $constituencies);
+		$this->importFreeCandidates($constituencyPath, $constituencies, $parties);
 		$this->output->writeln("Importing results...");
-
-		$this->output->writeln("Results...");
 		$this->importResults($results, $generationPath);
-
 		$this->em->flush();
+		$this->output->writeln("Import successfully flushed");
 	}
 
 	private function importElection(array &$data)
@@ -184,16 +182,15 @@ class Importer
 		}
 	}
 
-	private function importFreeCandidates(Election $election, array $parties, array $constituencies)
+	private function importFreeCandidates($constituencyPath, array $constituencies, array $parties)
 	{
 		foreach ($constituencies as $constituency) {
-			$electionNo = date("y", $election->getDate()->getTimestamp());
-			$stateNo = str_pad($constituency->getState()->getNumber(), 2, '0', STR_PAD_LEFT);
 			$constituencyNo = str_pad($constituency->getNumber(), 3, '0', STR_PAD_LEFT);
+			$constituencyFile = sprintf(Importer::ELECTIONS_ADMINISTRATION_CONSTITUENCY_FILE, $constituencyNo);
 
-			$url = sprintf(Importer::ELECTIONS_ADMINISTRATION_CONSTITUENCY_URL, $electionNo, $stateNo, $constituencyNo);
+			$path = $constituencyPath . '/' . $constituencyFile;
 
-			$results = HtmlParser::parseResultTableBody($url);
+			$results = HtmlParser::parseResultTableBody($path);
 
 			foreach ($this->electionsAdministrationIgnoreKeys as $ignoreKey) {
 				unset($results[$ignoreKey]);

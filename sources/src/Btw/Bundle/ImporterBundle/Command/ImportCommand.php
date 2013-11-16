@@ -27,6 +27,7 @@ class ImportCommand extends ContainerAwareCommand
 			->addArgument('candidates', InputArgument::REQUIRED, 'Path to the candidates CSV file.')
 			->addArgument('results', InputArgument::REQUIRED, 'Path to the results CSV file.')
 			->addArgument('partynamemapping', InputArgument::REQUIRED, 'Path to the party-name-mapping CSV file.')
+			->addArgument('constituencyResults', InputArgument::REQUIRED, 'Path to the HTML-files for each constituency, including free candidates and their votes.')
 			->addArgument('generatedCSVpath', InputArgument::OPTIONAL,'Specifies the target directory to save generated CSVs in - if set, votes will be generated based on aggregations');
 	}
 
@@ -37,6 +38,7 @@ class ImportCommand extends ContainerAwareCommand
 		$candidatesPath = $input->getArgument('candidates');
 		$resultsPath = $input->getArgument('results');
 		$partynamemappingPath = $input->getArgument('partynamemapping');
+		$constituencyPath = $input->getArgument('constituencyResults');
 		$generationPath = $input->getArgument('generatedCSVpath');
 
 		$election = CsvParser::parse($electionPath, true);
@@ -46,7 +48,7 @@ class ImportCommand extends ContainerAwareCommand
 		$partynamemapping = CsvParser::parse($partynamemappingPath, false);
 
 		$importer = new Importer($this->getEntityManager(), $output);
-		$importer->import($election, $demography, $candidates, $results, $partynamemapping, $generationPath);
+		$importer->import($election, $demography, $candidates, $results, $partynamemapping, $constituencyPath, $generationPath);
 	}
 
 	/**
