@@ -80,7 +80,7 @@ class Importer
 		$this->output->writeln("Importing results...");
 		$this->importResults($results, $generationPath);
 		$this->em->flush();
-		$this->output->writeln("Import successfully flushed");
+		$this->output->writeln("Import successfully");
 	}
 
 	private function importElection(array &$data)

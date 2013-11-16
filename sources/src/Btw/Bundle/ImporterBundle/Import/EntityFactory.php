@@ -171,9 +171,7 @@ class EntityFactory
 
 		$constituencyCandidacies = $this->constituencyCandidacies[$constituencyId];
 
-		if (!array_key_exists($party->getAbbreviation(), $constituencyCandidacies)) {
-			return null;
-		}
+		if (!array_key_exists($party->getAbbreviation(), $constituencyCandidacies))	return null;
 
 		$constituencyCandidacy = $constituencyCandidacies[$party->getAbbreviation()];
 		if ($constituencyCandidacy == null) return null;
