@@ -129,3 +129,8 @@ CREATE OR REPLACE VIEW party_state_seats (party_id, state_id, seats) AS (
 
 -- ===================================================================
 
+select name, seats from party_state_seats
+  join state on id = state_id
+where party_id = 35;
+
+select sum(seats) from party_state_seats;
