@@ -1,11 +1,11 @@
-DROP VIEW state_seats CASCADE;
-DROP VIEW state_party_candidates CASCADE;
+DROP VIEW IF EXISTS state_seats CASCADE;
+DROP VIEW IF EXISTS state_party_candidates CASCADE;
 
 -- STEP 1: How many seats does each state get in the Bundestag?
 
 CREATE OR REPLACE VIEW state_seats (state_id, seats) AS (
     WITH dhondt (state_id, rank) AS (
-        SELECT id, row_number() OVER (ORDER BY population / (i - .5) DESC)
+        SELECT id, row_number() OVER (PARTITION BY election_id ORDER BY population / (i - .5) DESC)
         FROM state, generate_series(1, 598) i
     )
     SELECT state_id, count(1)
