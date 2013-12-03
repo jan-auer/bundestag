@@ -65,8 +65,7 @@ CREATE OR REPLACE VIEW state_party_votes (state_id, party_id, votes) AS (
 
 CREATE OR REPLACE VIEW state_party_seats (state_id, party_id, seats) AS (
     WITH dhondt (state_id, seats, party_id, rank) AS (
-        SELECT state_id, seats, party_id, row_number() OVER (PARTITION BY state_id
-          ORDER BY votes / (i - .5) DESC)
+        SELECT state_id, seats, party_id, row_number() OVER (PARTITION BY state_id ORDER BY votes / (i - .5) DESC)
         FROM state_seats
           NATURAL JOIN state_party_votes
           CROSS JOIN generate_series(1, seats) i
@@ -84,7 +83,7 @@ CREATE OR REPLACE VIEW state_party_seats (state_id, party_id, seats) AS (
 -- STEP 3: What is the full size of the Bundestag to retain both vote
 --         proportions and minimum seats for each party?
 
-CREATE OR REPLACE VIEW party_seats (party_id, seats) AS (
+CREATE OR REPLACE VIEW party_seats (party_id, seats, candidates) AS (
     WITH total_votes (v) AS (
         SELECT sum(votes) :: REAL
         FROM state_party_votes
@@ -101,36 +100,40 @@ CREATE OR REPLACE VIEW party_seats (party_id, seats) AS (
         FROM party_seats_votes, total_seats, total_votes
         ORDER BY seats / s - votes / v DESC
         LIMIT 1
+    ), party_candidates (party_id, candidates) AS (
+        SELECT party_id, sum(candidates) :: INT
+        FROM state_party_candidates
+        GROUP BY party_id
     )
-    SELECT party_id, round(votes / divisor) :: INT
-    FROM party_seats_votes, divisor
+    SELECT party_id, round(votes / divisor) :: INT, coalesce(candidates, 0)
+    FROM divisor, party_seats_votes
+      LEFT JOIN party_candidates using (party_id)
 );
 
 -- STEP 4: How many seats does each party get for its state lists?
 
 CREATE OR REPLACE VIEW party_state_seats (party_id, state_id, seats) AS (
-    WITH dhondt (party_id, seats, state_id, rank) AS (
-        SELECT party_id, seats, state_id, row_number() OVER (PARTITION BY party_id
-          ORDER BY votes / (i - .5) DESC)
+    WITH dhondt (party_id, state_id, num, rank) AS (
+        SELECT party_id, state_id, votes / (i - .5),
+          row_number() OVER (PARTITION BY party_id, state_id ORDER BY votes / (i - .5) DESC)
         FROM party_seats
           NATURAL JOIN state_party_votes
           CROSS JOIN generate_series(1, seats) i
-    ), proportional_seats (party_id, state_id, seats) AS (
-        SELECT party_id, state_id, count(1)
+    ), selected (party_id, state_id, rank) AS (
+        SELECT party_id, state_id, row_number() OVER (PARTITION BY party_id ORDER BY num DESC)
         FROM dhondt
-        WHERE rank <= seats
+          LEFT JOIN state_party_candidates USING (party_id, state_id)
+        WHERE rank > coalesce(candidates, 0)
+    ), additional_seats (party_id, state_id, seats) AS (
+        SELECT party_id, state_id, count(1)
+        FROM selected
+          NATURAL JOIN party_seats
+        WHERE rank <= seats - candidates
         GROUP BY party_id, state_id
     )
-    SELECT *
-    FROM proportional_seats
-    -- todo: calculate GREATEST(seats, candidates), see page 6
-    -- this time, D'Hondt might not be the appropriate method ..
+    SELECT party_id, state_id, coalesce(seats, 0) + coalesce(candidates, 0)
+    FROM additional_seats
+      FULL JOIN state_party_candidates USING (party_id, state_id)
 );
 
 -- ===================================================================
-
-select name, seats from party_state_seats
-  join state on id = state_id
-where party_id = 35;
-
-select sum(seats) from party_state_seats;
