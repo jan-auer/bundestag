@@ -18,24 +18,23 @@ CREATE OR REPLACE VIEW state_seats (state_id, seats) AS (
 --         number of seats the parties get in each state?
 
 CREATE OR REPLACE VIEW state_party_candidates (state_id, party_id, candidates) AS (
-    WITH constituency_winners (constituency_id, candidate_id) AS (
+    WITH candidate_results (constituency_id, candidate_id, count) AS (
+        SELECT constituency_id, candidate_id, count
+        FROM aggregated_first_result
+          NATURAL JOIN constituency_candidacy
+    ), constituency_winners (constituency_id, candidate_id) AS (
         SELECT constituency_id, candidate_id
-        FROM aggregated_first_result r1
-          JOIN constituency_candidacy c1 USING (candidate_id)
+        FROM candidate_results r1
         WHERE NOT EXISTS (
             SELECT *
-            FROM aggregated_first_result r2
-              JOIN constituency_candidacy c2 USING (candidate_id)
-            WHERE c1.constituency_id = c2.constituency_id AND r1.count < r2.count
+            FROM candidate_results r2
+            WHERE r1.constituency_id = r2.constituency_id AND r1.count < r2.count
         )
-    ), state_winners (state_id, party_id, candidate_id) AS (
-        SELECT state_id, party_id, candidate_id
-        FROM constituency_winners
-          JOIN constituency ON constituency_id = constituency.id
-          JOIN candidate ON candidate_id = candidate.id
     )
-    SELECT state_id, party_id, count(candidate_id)
-    FROM state_winners
+    SELECT state_id, party_id, count(1)
+    FROM constituency_winners
+      JOIN constituency ON constituency_id = constituency.id
+      JOIN candidate ON candidate_id = candidate.id
     GROUP BY state_id, party_id
 );
 
