@@ -15,10 +15,10 @@ class Voter
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="voter_id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="voter_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="voter_voter_id_seq", allocationSize=1, initialValue=1)
      */
     private $id;
 
@@ -41,7 +41,7 @@ class Voter
      *
      * @ORM\ManyToOne(targetEntity="Election")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="election_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="election_id", referencedColumnName="election_id")
      * })
      */
     private $election;

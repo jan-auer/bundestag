@@ -18,10 +18,10 @@ class Constituency
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="constituency_id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="constituency_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="constituency_constituency_id_seq", allocationSize=1, initialValue=1)
      */
     private $id;
 
@@ -44,7 +44,7 @@ class Constituency
      *
      * @ORM\ManyToOne(targetEntity="State")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="state_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="state_id", referencedColumnName="state_id")
      * })
      */
     private $state;
