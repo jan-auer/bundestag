@@ -17,20 +17,22 @@ CREATE OR REPLACE VIEW state_seats (state_id, seats) AS (
 -- STEP 2: Which parties have made it over the 5% threshold and what is the minimum
 --         number of seats the parties get in each state?
 
-CREATE OR REPLACE VIEW state_party_candidates (state_id, party_id, candidates) AS (
+CREATE OR REPLACE VIEW constituency_winners (constituency_id, candidate_id) AS (
     WITH candidate_results (constituency_id, candidate_id, count) AS (
         SELECT constituency_id, candidate_id, count
         FROM aggregated_first_result
           NATURAL JOIN constituency_candidacy
-    ), constituency_winners (constituency_id, candidate_id) AS (
-        SELECT constituency_id, candidate_id
-        FROM candidate_results r1
-        WHERE NOT EXISTS (
-            SELECT *
-            FROM candidate_results r2
-            WHERE r1.constituency_id = r2.constituency_id AND r1.count < r2.count
-        )
     )
+    SELECT constituency_id, candidate_id
+    FROM candidate_results r1
+    WHERE NOT EXISTS(
+        SELECT *
+        FROM candidate_results r2
+        WHERE r1.constituency_id = r2.constituency_id AND r1.count < r2.count
+    )
+);
+
+CREATE OR REPLACE VIEW state_party_candidates (state_id, party_id, candidates) AS (
     SELECT state_id, party_id, count(1)
     FROM constituency_winners
       JOIN constituency ON constituency_id = constituency.id
@@ -133,6 +135,27 @@ CREATE OR REPLACE VIEW party_state_seats (party_id, state_id, seats) AS (
     SELECT party_id, state_id, coalesce(seats, 0) + coalesce(candidates, 0)
     FROM additional_seats
       FULL JOIN state_party_candidates USING (party_id, state_id)
+);
+
+CREATE OR REPLACE VIEW elected_candidates (candidate_id) AS (
+    WITH state_list_losers (candidate_id) AS (
+      SELECT candidate_id FROM state_candidacy
+      EXCEPT
+      SELECT candidate_id FROM constituency_winners
+    ), filtered_state_list (candidate_id, state_list_id, position) AS (
+        SELECT candidate_id, state_list_id, row_number() OVER (PARTITION BY state_list_id ORDER BY position DESC)
+        FROM state_list_losers
+          NATURAL JOIN state_candidacy
+    )
+    SELECT candidate_id
+    FROM constituency_winners
+    UNION ALL
+    SELECT candidate_id
+    FROM filtered_state_list
+      JOIN state_list ON id = state_list_id
+      NATURAL JOIN party_state_seats
+      LEFT JOIN state_party_candidates USING (party_id, state_id)
+    WHERE position <= seats - coalesce(candidates, 0)
 );
 
 -- ===================================================================
