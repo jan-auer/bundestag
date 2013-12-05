@@ -5,7 +5,7 @@ DROP VIEW IF EXISTS state_party_candidates CASCADE;
 
 CREATE OR REPLACE VIEW state_seats (state_id, seats) AS (
     WITH dhondt (state_id, rank) AS (
-        SELECT id, row_number() OVER (PARTITION BY election_id ORDER BY population / (i - .5) DESC)
+        SELECT state_id, row_number() OVER (PARTITION BY election_id ORDER BY population / (i - .5) DESC)
         FROM state, generate_series(1, 598) i
     )
     SELECT state_id, count(1)
@@ -35,8 +35,8 @@ CREATE OR REPLACE VIEW constituency_winners (constituency_id, candidate_id) AS (
 CREATE OR REPLACE VIEW state_party_candidates (state_id, party_id, candidates) AS (
     SELECT state_id, party_id, count(1)
     FROM constituency_winners
-      JOIN constituency ON constituency_id = constituency.id
-      JOIN candidate ON candidate_id = candidate.id
+      NATURAL JOIN constituency
+      NATURAL JOIN candidate
     GROUP BY state_id, party_id
 );
 
@@ -51,7 +51,7 @@ CREATE OR REPLACE VIEW state_party_votes (state_id, party_id, votes) AS (
     ), valid_votes (party_id, votes) AS (
         SELECT party_id, sum(count) :: INT
         FROM aggregated_second_result
-          JOIN state_list l ON state_list_id = l.id
+          NATURAL JOIN state_list
           LEFT JOIN party_candidates USING (party_id)
           CROSS JOIN threshold
         GROUP BY threshold, party_id, candidate_count
@@ -59,8 +59,8 @@ CREATE OR REPLACE VIEW state_party_votes (state_id, party_id, votes) AS (
     )
     SELECT state_id, party_id, sum(count) :: INT AS votes
     FROM valid_votes
-      JOIN state_list l USING (party_id)
-      JOIN aggregated_second_result ON l.id = state_list_id
+      NATURAL JOIN state_list
+      NATURAL JOIN aggregated_second_result
     GROUP BY state_id, party_id
 );
 
@@ -152,7 +152,7 @@ CREATE OR REPLACE VIEW elected_candidates (candidate_id) AS (
     UNION ALL
     SELECT candidate_id
     FROM filtered_state_list
-      JOIN state_list ON id = state_list_id
+      NATURAL JOIN state_list
       NATURAL JOIN party_state_seats
       LEFT JOIN state_party_candidates USING (party_id, state_id)
     WHERE position <= seats - coalesce(candidates, 0)
