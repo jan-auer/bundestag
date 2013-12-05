@@ -45,15 +45,19 @@ CREATE OR REPLACE VIEW state_party_votes (state_id, party_id, votes) AS (
         SELECT party_id, sum(candidates)
         FROM state_party_candidates
         GROUP BY party_id
-    ), threshold (threshold) AS (
-        SELECT 0.05 * sum(count)
+    ), threshold (election_id, threshold) AS (
+        SELECT election_id, 0.05 * sum(count)
         FROM aggregated_second_result
+          JOIN constituency USING (constituency_id)
+          JOIN state USING (state_id)
+        GROUP BY election_id
     ), valid_votes (party_id, votes) AS (
         SELECT party_id, sum(count) :: INT
         FROM aggregated_second_result
-          NATURAL JOIN state_list
+          JOIN state_list USING (state_list_id)
+          JOIN state USING (state_id)
+          JOIN threshold USING (election_id)
           LEFT JOIN party_candidates USING (party_id)
-          CROSS JOIN threshold
         GROUP BY threshold, party_id, candidate_count
         HAVING sum(count) >= threshold OR candidate_count >= 3
     )
