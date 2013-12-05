@@ -21,7 +21,7 @@ CREATE OR REPLACE VIEW constituency_winners (constituency_id, candidate_id) AS (
     WITH candidate_results (constituency_id, candidate_id, count) AS (
         SELECT constituency_id, candidate_id, count
         FROM aggregated_first_result
-          NATURAL JOIN constituency_candidacy
+          JOIN constituency_candidacy USING (candidate_id)
     )
     SELECT constituency_id, candidate_id
     FROM candidate_results r1
@@ -35,8 +35,8 @@ CREATE OR REPLACE VIEW constituency_winners (constituency_id, candidate_id) AS (
 CREATE OR REPLACE VIEW state_party_candidates (state_id, party_id, candidates) AS (
     SELECT state_id, party_id, count(1)
     FROM constituency_winners
-      NATURAL JOIN constituency
-      NATURAL JOIN candidate
+      JOIN constituency USING (constituency_id)
+      JOIN candidate USING (candidate_id)
     GROUP BY state_id, party_id
 );
 
@@ -63,8 +63,8 @@ CREATE OR REPLACE VIEW state_party_votes (state_id, party_id, votes) AS (
     )
     SELECT state_id, party_id, sum(count) :: INT AS votes
     FROM valid_votes
-      NATURAL JOIN state_list
-      NATURAL JOIN aggregated_second_result
+      JOIN state_list USING (party_id)
+      JOIN aggregated_second_result USING (state_list_id)
     GROUP BY state_id, party_id
 );
 
@@ -72,7 +72,7 @@ CREATE OR REPLACE VIEW state_party_seats (state_id, party_id, seats) AS (
     WITH dhondt (state_id, seats, party_id, rank) AS (
         SELECT state_id, seats, party_id, row_number() OVER (PARTITION BY state_id ORDER BY votes / (i - .5) DESC)
         FROM state_seats
-          NATURAL JOIN state_party_votes
+          JOIN state_party_votes USING (state_id)
           CROSS JOIN generate_series(1, seats) i
     ), proportional_seats (state_id, party_id, seats) AS (
         SELECT state_id, party_id, count(1)
@@ -98,7 +98,7 @@ CREATE OR REPLACE VIEW party_seats (party_id, seats, candidates) AS (
     ), party_seats_votes (party_id, seats, votes) AS (
         SELECT party_id, sum(seats), sum(votes)
         FROM state_party_seats
-          NATURAL JOIN state_party_votes
+          JOIN state_party_votes USING (state_id, party_id)
         GROUP BY party_id
     ), divisor (divisor) AS (
         SELECT votes / (seats - .49)
@@ -122,7 +122,7 @@ CREATE OR REPLACE VIEW party_state_seats (party_id, state_id, seats) AS (
         SELECT party_id, state_id, votes / (i - .5),
           row_number() OVER (PARTITION BY party_id, state_id ORDER BY votes / (i - .5) DESC)
         FROM party_seats
-          NATURAL JOIN state_party_votes
+          JOIN state_party_votes USING (party_id)
           CROSS JOIN generate_series(1, seats) i
     ), selected (party_id, state_id, rank) AS (
         SELECT party_id, state_id, row_number() OVER (PARTITION BY party_id ORDER BY num DESC)
@@ -132,7 +132,7 @@ CREATE OR REPLACE VIEW party_state_seats (party_id, state_id, seats) AS (
     ), additional_seats (party_id, state_id, seats) AS (
         SELECT party_id, state_id, count(1)
         FROM selected
-          NATURAL JOIN party_seats
+          JOIN party_seats USING (party_id)
         WHERE rank <= seats - candidates
         GROUP BY party_id, state_id
     )
@@ -143,23 +143,24 @@ CREATE OR REPLACE VIEW party_state_seats (party_id, state_id, seats) AS (
 
 CREATE OR REPLACE VIEW elected_candidates (candidate_id) AS (
     WITH state_list_losers (candidate_id) AS (
-      SELECT candidate_id FROM state_candidacy
-      EXCEPT
-      SELECT candidate_id FROM constituency_winners
+        SELECT candidate_id FROM state_candidacy
+        EXCEPT
+        SELECT candidate_id FROM constituency_winners
     ), filtered_state_list (candidate_id, state_list_id, position) AS (
         SELECT candidate_id, state_list_id, row_number() OVER (PARTITION BY state_list_id ORDER BY position DESC)
         FROM state_list_losers
-          NATURAL JOIN state_candidacy
+          JOIN state_candidacy USING (candidate_id)
     )
     SELECT candidate_id
     FROM constituency_winners
     UNION ALL
     SELECT candidate_id
     FROM filtered_state_list
-      NATURAL JOIN state_list
-      NATURAL JOIN party_state_seats
+      JOIN state_list USING (state_list_id)
+      JOIN party_state_seats USING (party_id, state_id)
       LEFT JOIN state_party_candidates USING (party_id, state_id)
     WHERE position <= seats - coalesce(candidates, 0)
 );
 
 -- ===================================================================
+
