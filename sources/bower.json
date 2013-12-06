@@ -1,0 +1,8 @@
+{
+	"name" : "btw",
+
+	"dependencies" : {
+		"bootstrap" : "3.0",
+		"highcharts" : "3.0"
+	}
+}

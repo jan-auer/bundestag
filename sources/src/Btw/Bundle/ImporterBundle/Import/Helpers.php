@@ -11,7 +11,7 @@ namespace Btw\Bundle\ImporterBundle\Import;
 
 class Helpers
 {
-	private static $stateNameAbbrMap = array(
+	private static $stateAbbrIdMap = array(
 		"BE" => "11",
 		"RP" => "7",
 		"NI" => "3",
@@ -32,17 +32,28 @@ class Helpers
 
 	public static function StateIdForStateAbbr($stateAbbr)
 	{
-		return Helpers::$stateNameAbbrMap[$stateAbbr];
+		return Helpers::$stateAbbrIdMap[$stateAbbr];
 	}
 
-	public static function FullPartyNameForAbbreviation($partyAbbr, $partynamemapping)
+	public static function FullPartyNameForAbbreviation($partyAbbr, $partyMetadatas)
 	{
-		foreach ($partynamemapping as $partyname) {
-			if ($partyname[0] == $partyAbbr) {
-				return $partyname[1];
+		foreach ($partyMetadatas as $partyMetadata) {
+			if ($partyMetadata[0] == $partyAbbr) {
+				return $partyMetadata[1];
 			}
 		}
 
 		return $partyAbbr;
 	}
-} 
+
+	public static function colorForPartyAbbr($partyAbbr, $partyMetadatas)
+	{
+		foreach ($partyMetadatas as $partyMetadata) {
+			if ($partyMetadata[0] == $partyAbbr) {
+				return $partyMetadata[2];
+			}
+		}
+
+		return null;
+	}
+}

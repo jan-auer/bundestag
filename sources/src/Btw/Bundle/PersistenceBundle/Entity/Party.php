@@ -37,32 +37,21 @@ class Party
     private $abbreviation;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="formation_date", type="date", nullable=true)
-     */
-    private $formationDate;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="members", type="integer", nullable=true)
-     */
-    private $members;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="color", type="text", nullable=true)
      */
     private $color;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="minority_representation", type="boolean", nullable=false)
-     */
-    private $minorityRepresentation;
+	/**
+	 * @var Election
+	 *
+	 * @ORM\ManyToOne(targetEntity="Election")
+	 * @ORM\JoinColumns({
+	 *   @ORM\JoinColumn(name="election_id", referencedColumnName="election_id")
+	 * })
+	 */
+	private $election;
 
 	/**
 	 * @param string $abbreviation
@@ -100,25 +89,6 @@ class Party
 	public function getColor()
 	{
 		return $this->color;
-	}
-
-	/**
-	 * @param \DateTime $formationDate
-	 *
-	 * @return Party
-	 */
-	public function setFormationDate(\DateTime $formationDate)
-	{
-		$this->formationDate = $formationDate;
-		return $this;
-	}
-
-	/**
-	 * @return \DateTime
-	 */
-	public function getFormationDate()
-	{
-		return $this->formationDate;
 	}
 
 	/**
@@ -160,25 +130,6 @@ class Party
 	}
 
 	/**
-	 * @param boolean $minorityRepresentation
-	 *
-	 * @return Party
-	 */
-	public function setMinorityRepresentation($minorityRepresentation)
-	{
-		$this->minorityRepresentation = $minorityRepresentation;
-		return $this;
-	}
-
-	/**
-	 * @return boolean
-	 */
-	public function isMinorityRepresentation()
-	{
-		return $this->minorityRepresentation;
-	}
-
-	/**
 	 * @param string $name
 	 *
 	 * @return Party
@@ -195,6 +146,25 @@ class Party
 	public function getName()
 	{
 		return $this->name;
+	}
+
+	/**
+	 * @param Election $election
+	 *
+	 * @return Party
+	 */
+	public function setElection(Election $election)
+	{
+		$this->election = $election;
+		return $this;
+	}
+
+	/**
+	 * @return Election
+	 */
+	public function getElection()
+	{
+		return $this->election;
 	}
 
 
