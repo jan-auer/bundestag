@@ -87,9 +87,7 @@ CREATE OR REPLACE VIEW close_constituency_winners (party_id, constituency_id, ca
     )
 
     SELECT party_id, constituency_id, candidate_id, ranking
-    FROM (SELECT party_id, constituency_id, candidate_id, row_number()
-                                                          OVER (PARTITION BY party_id
-                                                            ORDER BY votes_diff DESC) AS ranking
+    FROM (SELECT party_id, constituency_id, candidate_id, row_number() OVER (PARTITION BY party_id ORDER BY votes_diff DESC) AS ranking
           FROM party
             JOIN constituency_winners_votes_diff USING (party_id)) t
 );
