@@ -226,6 +226,4 @@ CREATE OR REPLACE VIEW constituency_votes AS (
   GROUP BY party_id, constituency_id, total.totalvotes
 );
 
-SELECT SUM(percentualVotes) from constituency_votes;
-
 -- ===================================================================
