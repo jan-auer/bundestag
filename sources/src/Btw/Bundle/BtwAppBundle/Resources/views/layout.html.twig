@@ -8,6 +8,7 @@
 
 	<link rel="stylesheet" type="text/css" href="{{ asset('vendor/bootstrap/dist/css/bootstrap.min.css') }}" />
 	<link rel="stylesheet" type="text/css" href="{{ asset('vendor/bootstrap/dist/css/bootstrap-theme.min.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/btwapp/css/style.css') }}" />
 
 	<script type="text/javascript" src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
@@ -16,7 +17,8 @@
     </head>
 
     <body>
-	<header class="navbar navbar-default">
+
+	<header class="navbar navbar-default btw-navbar">
 	    <div class="container">
 		<div class="navbar-header">
 		    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#btw-nav">
@@ -30,8 +32,8 @@
 
 		<div class="collapse navbar-collapse" id="btw-nav">
 		    <ul class="nav navbar-nav navbar-right">
-			<li><a href="#">BTW 2013</a></li>
 			<li><a href="#">BTW 2009</a></li>
+			<li><a href="#">BTW 2013</a></li>
 		    </ul>
 		</div>
 	    </div>
@@ -41,8 +43,9 @@
 	    {% block content %}{% endblock %}
 	</div>
 
-	<footer class="container small text-muted text-center">
+	<footer class="container small text-muted text-center btw-footer">
 	    <p>2013 &copy; Jan Michael Auer, Manuel Gerding, Philip Schäfer</p>
 	</footer>
+
     </body>
 </html>

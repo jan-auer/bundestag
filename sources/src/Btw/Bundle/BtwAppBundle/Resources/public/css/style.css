@@ -1,0 +1,51 @@
+/*****************************************************************************/
+/************************   GENERAL PAGE LAYOUT   ****************************/
+/*****************************************************************************/
+
+body {
+	background: #f5f5f5;
+}
+
+a {
+	color: #f68a28;
+}
+
+a:hover {
+	color: #f36c00;
+}
+
+/*****************************************************************************/
+/**************************   BTW PAGE ELEMENTS   ****************************/
+/*****************************************************************************/
+
+.btw-navbar {
+	background: linear-gradient(#f68a28, #f36c00);
+}
+
+.btw-navbar .navbar-brand,
+.btw-navbar .navbar-toggle,
+.btw-navbar .navbar-nav > li > a {
+	color: white !important;
+}
+
+.btw-navbar .navbar-toggle .icon-bar {
+	background-color: white;
+}
+
+.btw-navbar .navbar-nav > li > a:hover {
+	background: rgba(255, 255, 255, 0.15);
+}
+
+.btw-footer {
+	border-top:  1px solid #ddd;
+	margin-top:  2em;
+	padding-top: 2em;
+}
+
+/*****************************************************************************/
+/*****************************   HIGHCHARTS   ********************************/
+/*****************************************************************************/
+
+.highcharts-container > svg > text {
+	display: none;
+}
