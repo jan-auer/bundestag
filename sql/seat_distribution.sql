@@ -89,30 +89,38 @@ CREATE OR REPLACE VIEW state_party_seats (state_id, party_id, seats) AS (
 --         proportions and minimum seats for each party?
 
 CREATE OR REPLACE VIEW party_seats (party_id, seats, candidates) AS (
-    WITH total_votes (v) AS (
-        SELECT sum(votes) :: REAL
+    WITH total_votes (election_id, v) AS (
+	SELECT election_id, sum(votes) :: REAL
         FROM state_party_votes
-    ), total_seats (s) AS (
-        SELECT sum(seats) :: REAL
+	  JOIN state USING (state_id)
+	GROUP BY election_id
+    ), total_seats (election_id, s) AS (
+	SELECT election_id, sum(seats) :: REAL
         FROM state_party_seats
-    ), party_seats_votes (party_id, seats, votes) AS (
-        SELECT party_id, sum(seats), sum(votes)
+	  JOIN state USING (state_id)
+	GROUP BY election_id
+    ), party_seats_votes (election_id, party_id, seats, votes) AS (
+	SELECT election_id, party_id, sum(seats), sum(votes)
         FROM state_party_seats
+	  JOIN state USING (state_id)
           JOIN state_party_votes USING (state_id, party_id)
-        GROUP BY party_id
-    ), divisor (divisor) AS (
-        SELECT votes / (seats - .49)
-        FROM party_seats_votes, total_seats, total_votes
-        ORDER BY seats / s - votes / v DESC
-        LIMIT 1
+	GROUP BY election_id, party_id
+    ), divisor (election_id, divisor, rank) AS (
+	SELECT election_id, votes / (seats - .49) divisor,
+	  row_number() OVER (PARTITION BY election_id ORDER BY seats / s - votes / v DESC)
+	FROM party_seats_votes
+	  JOIN total_seats USING (election_id)
+	  JOIN total_votes USING (election_id)
     ), party_candidates (party_id, candidates) AS (
         SELECT party_id, sum(candidates) :: INT
         FROM state_party_candidates
         GROUP BY party_id
     )
     SELECT party_id, round(votes / divisor) :: INT, coalesce(candidates, 0)
-    FROM divisor, party_seats_votes
-      LEFT JOIN party_candidates using (party_id)
+    FROM party_seats_votes
+      JOIN divisor USING (election_id)
+      LEFT JOIN party_candidates USING (party_id)
+    WHERE rank = 1
 );
 
 -- STEP 4: How many seats does each party get for its state lists?
