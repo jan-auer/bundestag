@@ -131,7 +131,7 @@ CREATE OR REPLACE VIEW party_seats (party_id, seats, candidates) AS (
 
 -- STEP 4: How many seats does each party get for its state lists?
 
-CREATE OR REPLACE VIEW party_state_seats (party_id, state_id, seats) AS (
+CREATE OR REPLACE VIEW party_state_seats (election_id, party_id, state_id, seats) AS (
     WITH dhondt (party_id, state_id, num, rank) AS (
         SELECT party_id, state_id, votes / (i - .5),
           row_number() OVER (PARTITION BY party_id, state_id ORDER BY votes / (i - .5) DESC)
@@ -150,9 +150,10 @@ CREATE OR REPLACE VIEW party_state_seats (party_id, state_id, seats) AS (
         WHERE rank <= seats - candidates
         GROUP BY party_id, state_id
     )
-    SELECT party_id, state_id, coalesce(seats, 0) + coalesce(candidates, 0)
+    SELECT election_id, party_id, state_id, coalesce(seats, 0) + coalesce(candidates, 0)
     FROM additional_seats
       FULL JOIN state_party_candidates USING (party_id, state_id)
+      JOIN party USING (party_id)
 );
 
 CREATE OR REPLACE VIEW elected_candidates (candidate_id) AS (
