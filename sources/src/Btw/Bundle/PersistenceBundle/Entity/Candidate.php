@@ -18,10 +18,10 @@ class Candidate
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="candidate_id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="candidate_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="candidate_candidate_id_seq", allocationSize=1, initialValue=1)
      */
     private $id;
 
@@ -44,7 +44,7 @@ class Candidate
 	 *
 	 * @ORM\ManyToOne(targetEntity="Party")
 	 * @ORM\JoinColumns({
-	 *   @ORM\JoinColumn(name="party_id", referencedColumnName="id")
+	 *   @ORM\JoinColumn(name="party_id", referencedColumnName="party_id")
 	 * })
 	 */
     private $party;

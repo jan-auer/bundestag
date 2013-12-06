@@ -16,10 +16,10 @@ class SecondResult
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="second_result_id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="second_result_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="second_result_second_result_id_seq", allocationSize=1, initialValue=1)
      */
     private $id;
 
@@ -28,7 +28,7 @@ class SecondResult
      *
      * @ORM\ManyToOne(targetEntity="StateList")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="state_list_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="state_list_id", referencedColumnName="state_list_id")
      * })
      */
     private $stateList;
@@ -38,7 +38,7 @@ class SecondResult
 	 *
 	 * @ORM\ManyToOne(targetEntity="Btw\Bundle\PersistenceBundle\Entity\Constituency")
 	 * @ORM\JoinColumns({
-	 *   @ORM\JoinColumn(name="constituency_id", referencedColumnName="id")
+	 *   @ORM\JoinColumn(name="constituency_id", referencedColumnName="constituency_id")
 	 * })
 	 */
 	private $constituency;

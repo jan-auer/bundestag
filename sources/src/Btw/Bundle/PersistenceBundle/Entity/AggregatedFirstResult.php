@@ -16,10 +16,10 @@ class AggregatedFirstResult
 	/**
 	 * @var integer
 	 *
-	 * @ORM\Column(name="id", type="integer", nullable=false)
+	 * @ORM\Column(name="aggregated_first_result_id", type="integer", nullable=false)
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="SEQUENCE")
-	 * @ORM\SequenceGenerator(sequenceName="first_result_id_seq", allocationSize=1, initialValue=1)
+	 * @ORM\SequenceGenerator(sequenceName="aggregated_first_result_aggregated_first_result_id_seq", allocationSize=1, initialValue=1)
 	 */
 	private $id;
 

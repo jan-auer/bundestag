@@ -26,7 +26,7 @@ class StateCandidacy
 	 * @ORM\GeneratedValue(strategy="NONE")
 	 * @ORM\OneToOne(targetEntity="Candidate")
 	 * @ORM\JoinColumns({
-	 *   @ORM\JoinColumn(name="candidate_id", referencedColumnName="id")
+	 *   @ORM\JoinColumn(name="candidate_id", referencedColumnName="candidate_id")
 	 * })
 	 */
 	private $candidate;
@@ -36,7 +36,7 @@ class StateCandidacy
 	 *
 	 * @ORM\ManyToOne(targetEntity="StateList")
 	 * @ORM\JoinColumns({
-	 *   @ORM\JoinColumn(name="state_list_id", referencedColumnName="id")
+	 *   @ORM\JoinColumn(name="state_list_id", referencedColumnName="state_list_id")
 	 * })
 	 */
 	private $stateList;
