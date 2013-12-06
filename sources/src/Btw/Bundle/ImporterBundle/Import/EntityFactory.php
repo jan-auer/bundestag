@@ -79,19 +79,22 @@ class EntityFactory
 		$constituency->setNumber($row[0]);
 		$constituency->setState($this->states[$row[2]]);
 		$constituency->setElectives($row[3]);
+		$constituency->setElection($this->election);
 
 		$this->constituencies[$constituency->getNumber()] = $constituency;
 		return $constituency;
 	}
 
-	public function createParty($partyAbbr, &$partynamemapping)
+	public function createParty($partyAbbr, &$partyMetadata)
 	{
-		$partyName = Helpers::FullPartyNameForAbbreviation($partyAbbr, $partynamemapping);
+		$partyName = Helpers::FullPartyNameForAbbreviation($partyAbbr, $partyMetadata);
+		$partyColor = Helpers::colorForPartyAbbr($partyAbbr, $partyMetadata);
 
 		$party = new Party();
 		$party->setName($partyName);
 		$party->setAbbreviation($partyAbbr);
-		$party->setMinorityRepresentation(false);
+		$party->setElection($this->election);
+		$party->setColor($partyColor);
 
 		$this->parties[$partyAbbr] = $party;
 		return $party;
@@ -121,6 +124,7 @@ class EntityFactory
 	{
 		$candidate = new Candidate();
 		$candidate->setName($name);
+		$candidate->setElection($this->election);
 
 		if ($partyAbbr != null) {
 			if (!array_key_exists($partyAbbr, $this->parties)) return null;

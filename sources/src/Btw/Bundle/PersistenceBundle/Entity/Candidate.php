@@ -49,6 +49,16 @@ class Candidate
 	 */
     private $party;
 
+	/**
+	 * @var Election
+	 *
+	 * @ORM\ManyToOne(targetEntity="Election")
+	 * @ORM\JoinColumns({
+	 *   @ORM\JoinColumn(name="election_id", referencedColumnName="election_id")
+	 * })
+	 */
+	private $election;
+
     /**
      * Constructor
      */
@@ -132,5 +142,25 @@ class Candidate
 	{
 		return $this->party;
 	}
+
+	/**
+	 * @param Election $election
+	 *
+	 * @return Party
+	 */
+	public function setElection(Election $election)
+	{
+		$this->election = $election;
+		return $this;
+	}
+
+	/**
+	 * @return Election
+	 */
+	public function getElection()
+	{
+		return $this->election;
+	}
+
 
 }
