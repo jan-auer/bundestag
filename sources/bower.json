@@ -1,0 +1,7 @@
+{
+	"name" : "btw",
+
+	"dependencies" : {
+		"bootstrap" : "3.0"
+	}
+}
