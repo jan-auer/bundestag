@@ -74,8 +74,7 @@ CREATE OR REPLACE VIEW state_party_votes (state_id, party_id, votes) AS (
   GROUP BY state_id, party_id
 );
 
-
-CREATE OR REPLACE VIEW state_party_seats (state_id, party_id, seats) AS (
+CREATE OR REPLACE VIEW state_party_seats (state_id, party_id, seats, overhead) AS (
     WITH dhondt (state_id, seats, party_id, rank) AS (
         SELECT state_id, seats, party_id, row_number() OVER (PARTITION BY state_id ORDER BY votes / (i - .5) DESC)
         FROM state_seats
@@ -87,7 +86,7 @@ CREATE OR REPLACE VIEW state_party_seats (state_id, party_id, seats) AS (
         WHERE rank <= seats
         GROUP BY state_id, party_id
     )
-    SELECT state_id, party_id, greatest(seats, candidates)
+    SELECT state_id, party_id, greatest(seats, candidates), greatest(0, candidates - seats)
     FROM proportional_seats
       LEFT JOIN state_party_candidates USING (state_id, party_id)
 );
