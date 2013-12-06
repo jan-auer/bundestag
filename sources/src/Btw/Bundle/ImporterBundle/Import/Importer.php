@@ -68,7 +68,7 @@ class Importer
 		$this->output->writeln("Importing states...");
 		$this->importStates($demography);
 		$this->output->writeln("Importing constituencies...");
-		$constituencies = $this->importConstituencies($demography);
+		$constituencies = $this->importConstituencies($results);
 		$this->output->writeln("Importing parties...");
 		$parties = $this->importParties($results, $partynamemapping);
 		$this->output->writeln("Importing state lists...");
@@ -106,8 +106,12 @@ class Importer
 	private function importConstituencies(array $data)
 	{
 		$constituencies = array();
+		$i=0;
 		foreach ($data as $row) {
-			if ($row[1] > 900) continue;
+			if($i++ <3) continue;
+			if(empty($row) || count($row)==1) continue;
+			if ($row[2] == 99 || empty($row[2])) continue;
+
 			$constituency = $this->factory->createConstituency($row);
 			$constituencies[] = $constituency;
 			$this->em->persist($constituency);
@@ -141,7 +145,7 @@ class Importer
 		foreach ($data as $row) {
 			if (count($row) < 2) continue;
 			if ($row[2] == 99) {
-				$stateName = $row[1];
+				$stateId = $row[0];
 
 				for ($i = 19; $i < count($row) - 2; $i += 4) {
 					$partyAbbr = $data[0][$i];
@@ -149,7 +153,7 @@ class Importer
 					$firstresult = $row[$i];
 					$secondresult = $row[$i + 2];
 
-					$stateList = $this->factory->createStateList($stateName, $partyAbbr);
+					$stateList = $this->factory->createStateList($stateId, $partyAbbr);
 					$this->em->persist($stateList);
 				}
 			}
@@ -175,8 +179,8 @@ class Importer
 			}
 
 			if (!empty($stateAbbr)) {
-				$stateName = Helpers::StateNameForStateAbbr($stateAbbr);
-				$stateCandidacy = $this->factory->createStateCandidacy($candidate, $stateName, $partyAbbr, $stateListPosition);
+				$stateId = Helpers::StateIdForStateAbbr($stateAbbr);
+				$stateCandidacy = $this->factory->createStateCandidacy($candidate, $stateId, $partyAbbr, $stateListPosition);
 				$this->em->persist($stateCandidacy);
 			}
 		}

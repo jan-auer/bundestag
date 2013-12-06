@@ -68,16 +68,17 @@ class EntityFactory
 			]) * 1000);
 		$state->setElection($this->election);
 
-		$this->states[$state->getName()] = $state;
+		$this->states[$state->getNumber()] = $state;
 		return $state;
 	}
 
 	public function createConstituency(array &$row)
 	{
 		$constituency = new Constituency();
-		$constituency->setName($row[2]);
-		$constituency->setNumber($row[1]);
-		$constituency->setState($this->states[$row[0]]);
+		$constituency->setName($row[1]);
+		$constituency->setNumber($row[0]);
+		$constituency->setState($this->states[$row[2]]);
+		$constituency->setElectives($row[3]);
 
 		$this->constituencies[$constituency->getNumber()] = $constituency;
 		return $constituency;
@@ -103,9 +104,9 @@ class EntityFactory
 		return $firstResult;
 	}
 
-	public function createStateList($stateName, $partyAbbr)
+	public function createStateList($stateId, $partyAbbr)
 	{
-		$state = $this->states[$stateName];
+		$state = $this->states[$stateId];
 		$party = $this->parties[$partyAbbr];
 
 		$stateList = new StateList();
@@ -150,9 +151,9 @@ class EntityFactory
 		return $constituencyCandidacy;
 	}
 
-	public function createStateCandidacy($candidate, $stateName, $partyAbbr, $position)
+	public function createStateCandidacy($candidate, $stateId, $partyAbbr, $position)
 	{
-		$state = $this->states[$stateName];
+		$state = $this->states[$stateId];
 		$stateList = $this->stateLists[$partyAbbr][$state->getNumber()];
 
 		return new StateCandidacy($candidate, $stateList, $position);
