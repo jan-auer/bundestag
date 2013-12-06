@@ -15,19 +15,13 @@ class AnalysisController extends Controller
 		$latestResults = $electionProvider->getResultsFor($latest);
 		usort($latestResults, function($result1, $result2)
 		{
-			if($result1[1] == $result2[1]) return 0;
-			if($result1[1] < $result2[1]) return 1;
+			if($result1['y'] == $result2['y']) return 0;
+			if($result1['y'] < $result2['y']) return 1;
 			return -1;
 		});
 
-		$population = array();
-		foreach($latestResults as $result)
-		{
-			$population[] = array('name' => $result[0], 'y' => $result[1], 'color' => $result[3]);
-		}
-
 		return $this->render('BtwAppBundle:Analysis:index.html.twig', array('year' => $latest,
 			'all_years' => $years,
-			'population' => $population));
+			'population' => $latestResults));
 	}
 }
