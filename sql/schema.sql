@@ -60,7 +60,7 @@ CREATE TABLE constituency
   constituency_id SERIAL PRIMARY KEY,
   number          INTEGER NOT NULL,
   name            TEXT,
-  population  INTEGER NOT NULL,
+  electives       INTEGER NOT NULL,
   state_id        INTEGER NOT NULL REFERENCES state (state_id) ON DELETE CASCADE
 );
 

@@ -42,9 +42,9 @@ class Constituency
 	/**
 	 * @var integer
 	 *
-	 * @ORM\Column(name="population", type="integer", nullable=false)
+	 * @ORM\Column(name="electives", type="integer", nullable=false)
 	 */
-	private $population;
+	private $electives;
 
 	/**
      * @var State
@@ -167,22 +167,22 @@ class Constituency
 	}
 
 	/**
-	 * @param int $population
+	 * @param int $electives
 	 *
-	 * @return State
+	 * @return Constituency
 	 */
-	public function setPopulation($population)
+	public function setElectives($electives)
 	{
-		$this->population = $population;
+		$this->electives = $electives;
 		return $this;
 	}
 
 	/**
 	 * @return int
 	 */
-	public function getPopulation()
+	public function getElectives()
 	{
-		return $this->population;
+		return $this->electives;
 	}
 
 
