@@ -49,7 +49,7 @@ CREATE OR REPLACE VIEW state_party_votes (state_id, party_id, votes) AS (
         SELECT election_id, 0.05 * sum(count)
         FROM aggregated_second_result
           JOIN constituency USING (constituency_id)
-          JOIN state USING (state_id)
+          JOIN state USING (election_id, state_id)
         GROUP BY election_id
     ), valid_votes (party_id, votes) AS (
         SELECT party_id, sum(count) :: INT
