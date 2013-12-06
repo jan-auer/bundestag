@@ -46,11 +46,11 @@ CREATE OR REPLACE VIEW state_party_votes (state_id, party_id, votes) AS (
         FROM state_party_candidates
         GROUP BY party_id
     ), threshold (election_id, threshold) AS (
-        SELECT election_id, 0.05 * sum(count)
+        SELECT s.election_id, 0.05 * sum(count)
         FROM aggregated_second_result
           JOIN constituency USING (constituency_id)
-          JOIN state USING (state_id)
-        GROUP BY election_id
+          JOIN state s USING (state_id)
+        GROUP BY s.election_id
     ), valid_votes (party_id, votes) AS (
         SELECT party_id, sum(count) :: INT
         FROM aggregated_second_result
