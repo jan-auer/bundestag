@@ -14,6 +14,7 @@
         <script type="text/javascript" src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('vendor/highcharts/highcharts.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/btwapp/js/chart.js') }}"></script>
 
         {% block head %}{% endblock %}
     </head>
@@ -50,6 +51,8 @@
         <footer class="container small text-muted text-center btw-footer">
             <p>2013 &copy; Jan Michael Auer, Manuel Gerding, Philip Schäfer</p>
         </footer>
+
+        {% block scripts %}{% endblock %}
     </body>
 
 </html>
