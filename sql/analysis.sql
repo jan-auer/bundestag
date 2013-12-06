@@ -28,11 +28,28 @@ CREATE OR REPLACE VIEW constituency_turnout (constituency_id, turnout, voters, e
 -- See view constituency_winners in seat_distribution.sql
 
 -- Q3.3
-CREATE OR REPLACE VIEW constituency_votes AS (
-  SELECT party_id, constituency_id, SUM(votes) AS absoluteVotes, SUM(votes) / total.totalvotes :: REAL AS percentualVotes
+CREATE OR REPLACE VIEW constituency_votes (party_id, constituency_id, absoluteVotes, percentualVotes, totalVotes) AS (
+  SELECT party_id, constituency_id, SUM(votes), SUM(votes) / total.totalvotes :: REAL, total.totalvotes
   FROM constituency_party_votes
     NATURAL JOIN state_list,
     (SELECT sum(count) AS totalvotes
      FROM aggregated_second_result) total
   GROUP BY party_id, constituency_id, total.totalvotes
 );
+
+-- Q3.4
+CREATE OR REPLACE VIEW constituency_votes_history (oldDate, newDate, constituency_name, party_abbreviation, oldAbsoluteVotes, oldTotalVotes, newAbsoluteVotes, newTotalVotes) AS (
+    WITH constituency_election (date, constituency_name, party_abbreviation, absoluteVotes, totalVotes) AS (
+        SELECT date, c.name, p.abbreviation, absoluteVotes, totalVotes
+        FROM constituency c JOIN constituency_votes USING (constituency_id)
+          JOIN election USING (election_id)
+          JOIN party p
+          USING (party_id)
+    )
+    SELECT old.date, new.date, old.constituency_name, old.party_abbreviation, old.absoluteVotes, old.totalVotes, new.absoluteVotes, new.totalVotes
+    FROM constituency_election old, constituency_election new
+    WHERE old.constituency_name = new.constituency_name AND old.date < new.date AND
+          old.party_abbreviation = new.party_abbreviation
+);
+
+SELECT * FROM constituency_votes_history;
