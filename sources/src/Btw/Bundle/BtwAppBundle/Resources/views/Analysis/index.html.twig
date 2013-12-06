@@ -10,11 +10,9 @@
 	</div>
 	<div class="col-md-4">
 	    <table class="table table-striped">
-		<tr><th><span class="label" style="background: #333333">&nbsp;&nbsp;</span>&nbsp; CDU</th><td>255 Sitze</td></tr>
-		<tr><th><span class="label" style="background: #e20019">&nbsp;&nbsp;</span>&nbsp; SPD</th><td>193 Sitze</td></tr>
-		<tr><th><span class="label" style="background: #fc0204">&nbsp;&nbsp;</span>&nbsp; LINKE</th><td>64 Sitze</td></tr>
-		<tr><th><span class="label" style="background: #1faf12">&nbsp;&nbsp;</span>&nbsp; GRÜNE</th><td>63 Sitze</td></tr>
-		<tr><th><span class="label" style="background: #333333">&nbsp;&nbsp;</span>&nbsp; CSU</th><td>56 Sitze</td></tr>
+            {% for party in population %}
+            <tr><th><span class="label" style="background: {{ party.color }}">&nbsp;&nbsp;</span>&nbsp; {{ party.name }}</th><td>{{ party.y }} Sitze</td></tr>
+            {% endfor %}
 	    </table>
 	    <a href="#" class="small">&rarr; Mehr Details zur Wahl</a>
 	</div>
@@ -22,13 +20,7 @@
 
     <script type="text/javascript">
 	!function () {
-	    var DATA = [
-		{name : "CDU",       y : 255, color : "#333333"},
-		{name : "SPD",       y : 193, color : "#e20019"},
-		{name : "DIE LINKE", y : 64,  color : "#fc0204"},
-		{name : "GRÜNE",     y : 63,  color : "#1faf12"},
-		{name : "CSU",       y : 56,  color : "#333333"}
-	    ];
+	    var DATA = {{ population | json_encode() | raw }};
 
 	    // Build the chart
 	    $('#chart').highcharts({
