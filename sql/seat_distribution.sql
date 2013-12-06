@@ -40,7 +40,7 @@ CREATE OR REPLACE VIEW state_party_candidates (state_id, party_id, candidates) A
     GROUP BY state_id, party_id
 );
 
-CREATE OR REPLACE VIEW state_party_votes (state_id, party_id, votes) AS (
+CREATE OR REPLACE VIEW constituency_party_votes (state_id, constituency_id, party_id, votes) AS (
     WITH party_candidates (party_id, candidate_count) AS (
         SELECT party_id, sum(candidates)
         FROM state_party_candidates
@@ -61,12 +61,19 @@ CREATE OR REPLACE VIEW state_party_votes (state_id, party_id, votes) AS (
         GROUP BY threshold, party_id, candidate_count
         HAVING sum(count) >= threshold OR candidate_count >= 3
     )
-    SELECT state_id, party_id, sum(count) :: INT AS votes
+    SELECT state_id, constituency_id, party_id, sum(count) :: INT AS votes
     FROM valid_votes
       JOIN state_list USING (party_id)
       JOIN aggregated_second_result USING (state_list_id)
-    GROUP BY state_id, party_id
+    GROUP BY state_id, constituency_id, party_id
 );
+
+CREATE OR REPLACE VIEW state_party_votes (state_id, party_id, votes) AS (
+  SELECT state_id, party_id, sum(votes) :: INT AS votes
+  FROM constituency_party_votes
+  GROUP BY state_id, party_id
+);
+
 
 CREATE OR REPLACE VIEW state_party_seats (state_id, party_id, seats) AS (
     WITH dhondt (state_id, seats, party_id, rank) AS (
@@ -188,5 +195,37 @@ CREATE OR REPLACE VIEW constituency_turnout (constituency_id, turnout, voters, e
       USING (constituency_id)
       JOIN constituency USING (constituency_id)
 );
+
+-- Q3.1
+CREATE OR REPLACE VIEW constituency_turnout (constituency_id, turnout, voters, electives) AS (
+    WITH first_result_votes (constituency_id, votes) AS (
+        SELECT constituency_id, SUM(count)
+        FROM aggregated_first_result
+          JOIN constituency_candidacy USING (candidate_id)
+        GROUP BY constituency_id
+    ), second_result_votes (constituency_id, votes) AS (
+        SELECT constituency_id, SUM(count)
+        FROM aggregated_second_result
+        GROUP BY constituency_id
+    )
+
+    SELECT constituency_id, greatest(frv.votes, srv.votes) / electives :: REAL, greatest(frv.votes, srv.votes), electives
+    FROM first_result_votes frv
+      JOIN second_result_votes srv
+      USING (constituency_id)
+      JOIN constituency USING (constituency_id)
+);
+
+-- Q3.3
+CREATE OR REPLACE VIEW constituency_votes AS (
+  SELECT party_id, constituency_id, SUM(votes) AS absoluteVotes, SUM(votes) / total.totalvotes :: REAL AS percentualVotes
+  FROM constituency_party_votes
+    NATURAL JOIN state_list,
+    (SELECT sum(count) AS totalvotes
+     FROM aggregated_second_result) total
+  GROUP BY party_id, constituency_id, total.totalvotes
+);
+
+SELECT SUM(percentualVotes) from constituency_votes;
 
 -- ===================================================================
