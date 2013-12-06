@@ -51,5 +51,3 @@ CREATE OR REPLACE VIEW constituency_votes_history (oldDate, newDate, constituenc
     WHERE old.constituency_name = new.constituency_name AND old.date < new.date AND
           old.party_abbreviation = new.party_abbreviation
 );
-
-SELECT * FROM constituency_votes_history;
