@@ -39,7 +39,14 @@ class Constituency
      */
     private $name;
 
-    /**
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="population", type="integer", nullable=false)
+	 */
+	private $population;
+
+	/**
      * @var State
      *
      * @ORM\ManyToOne(targetEntity="State")
@@ -158,5 +165,25 @@ class Constituency
 	{
 		return $this->candidates;
 	}
+
+	/**
+	 * @param int $population
+	 *
+	 * @return State
+	 */
+	public function setPopulation($population)
+	{
+		$this->population = $population;
+		return $this;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getPopulation()
+	{
+		return $this->population;
+	}
+
 
 }
