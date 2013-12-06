@@ -25,7 +25,7 @@ CREATE OR REPLACE VIEW constituency_winners (constituency_id, candidate_id) AS (
     )
     SELECT constituency_id, candidate_id
     FROM candidate_results r1
-    WHERE r1.count = (SELECT MAX(r2.count) FROM candidate_results r2)
+    WHERE r1.count = (SELECT MAX(r2.count) FROM candidate_results r2 WHERE r1.constituency_id = r2.constituency_id)
 );
 
 CREATE OR REPLACE VIEW state_party_candidates (state_id, party_id, candidates) AS (
