@@ -3,5 +3,66 @@
 {% block title 'Bundestagswahlen - Startseite' %}
 
 {% block content %}
-    Startseite
+    <h1>Sitzverteilung im Bundestag, 2013</h1>
+    <div class="lead row">
+	<div class="col-md-8">
+	    <div id="chart" style="width:100%; height:300px;"></div>
+	</div>
+	<div class="col-md-4">
+	    <table class="table table-striped">
+		<tr><th>CDU</th><td>255 Sitze</td></tr>
+		<tr><th>SPD</th><td>193 Sitze</td></tr>
+		<tr><th>LINKE</th><td>64 Sitze</td></tr>
+		<tr><th>GRÜNE</th><td>63 Sitze</td></tr>
+		<tr><th>CSU</th><td>56 Sitze</td></tr>
+	    </table>
+	    <a href="#" class="small">&rarr; Mehr Details zur Wahl</a>
+	</div>
+    </div>
+
+    <script type="text/javascript">
+	!function () {
+	    var DATA = [
+		{name : "CDU",       y : 255, color : "#333333"},
+		{name : "SPD",       y : 193, color : "#e20019"},
+		{name : "DIE LINKE", y : 64,  color : "#fc0204"},
+		{name : "GRÜNE",     y : 63,  color : "#1faf12"},
+		{name : "CSU",       y : 56,  color : "#333333"}
+	    ];
+
+	    // Build the chart
+	    $('#chart').highcharts({
+		chart : {
+		    backgroundColor     : 'transparent',
+		    plotBackgroundColor : null,
+		    plotBorderWidth     : null,
+		    plotShadow          : false
+		},
+
+		title : false,
+
+		plotOptions : {
+		    pie: {
+			dataLabels: {
+			    enabled: false
+			},
+			showInLegend: true,
+			startAngle: -90,
+			endAngle: 90,
+			center: ['50%', '90%']
+		    }
+		},
+
+		series : [
+		    {
+			type : 'pie',
+			name : 'Sitze',
+			innerSize: '75%',
+			size : '180%',
+			data : DATA
+		    }
+		]
+	    });
+	}();
+    </script>
 {% endblock %}
