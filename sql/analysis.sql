@@ -74,11 +74,10 @@ FROM constituency_winners_first_votes fv JOIN constituency_winners_second_votes 
 -- Q5 USE RANKING FOR TOP X
 CREATE OR REPLACE VIEW close_constituency_winners (party_id, constituency_id, candidate_id, ranking) AS (
     WITH constituency_second_winners (constituency_id, candidate_id, count) AS (
-        SELECT r1.constituency_id, r1.candidate_id, r1.count
-        FROM candidate_results r1
-        WHERE (SELECT COUNT(*)
-               FROM candidate_results r2
-               WHERE r1.constituency_id = r2.constituency_id AND r1.count < r2.count) = 1
+        SELECT constituency_id, candidate_id, count FROM (
+           SELECT constituency_id, candidate_id, count, row_number() OVER (PARTITION BY constituency_id ORDER BY count DESC) AS ranking
+           FROM candidate_results) t
+        WHERE t.ranking=2
     ), constituency_winners_votes_diff (constituency_id, candidate_id, party_id, votes_diff) AS (
         SELECT w.constituency_id, w.candidate_id, party_id, w.count - sw.count
         FROM constituency_winners w JOIN candidate USING (candidate_id)
