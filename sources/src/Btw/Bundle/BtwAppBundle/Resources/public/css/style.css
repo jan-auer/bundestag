@@ -18,6 +18,12 @@ a:hover {
 /**************************   BTW PAGE ELEMENTS   ****************************/
 /*****************************************************************************/
 
+.btw-logo {
+	vertical-align: middle;
+	height:         30px;
+	margin:         -10px 0;
+}
+
 .btw-navbar {
 	background: linear-gradient(#f68a28, #f36c00);
 }
