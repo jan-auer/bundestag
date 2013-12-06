@@ -69,5 +69,6 @@ WITH constituency_winners_second_votes (election_id, constituency_id, party_id) 
 
 SELECT election_id, constituency_id, fv.party_id AS firstVotePartyId, sv.party_id AS secondVotePartyId
 FROM constituency_winners_first_votes fv JOIN constituency_winners_second_votes sv
-  USING (election_id, constituency_id)
-WHERE fv.party_id <> sv.party_id;
+  USING (election_id, constituency_id);
+-- ===================================================================
+-- Q5
