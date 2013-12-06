@@ -24,13 +24,11 @@ CREATE TABLE state
 
 CREATE TABLE party
 (
-  party_id                SERIAL PRIMARY KEY,
-  name                    TEXT    NOT NULL,
-  abbreviation            TEXT,
-  formation_date          DATE,
-  members                 INTEGER,
-  color                   TEXT,
-  minority_representation BOOLEAN NOT NULL
+  party_id     SERIAL PRIMARY KEY,
+  name         TEXT    NOT NULL,
+  abbreviation TEXT,
+  color        TEXT,
+  election_id  INTEGER NOT NULL REFERENCES election (election_id) ON DELETE CASCADE
 );
 
 CREATE TABLE state_list
@@ -43,9 +41,10 @@ CREATE TABLE state_list
 CREATE TABLE candidate
 (
   candidate_id SERIAL PRIMARY KEY,
-  name         TEXT NOT NULL,
+  name         TEXT    NOT NULL,
   birthday     DATE,
-  party_id     INTEGER REFERENCES party (party_id)
+  party_id     INTEGER REFERENCES party (party_id),
+  election_id  INTEGER NOT NULL REFERENCES election (election_id) ON DELETE CASCADE
 );
 
 CREATE TABLE state_candidacy
@@ -61,7 +60,8 @@ CREATE TABLE constituency
   number          INTEGER NOT NULL,
   name            TEXT,
   electives       INTEGER NOT NULL,
-  state_id        INTEGER NOT NULL REFERENCES state (state_id) ON DELETE CASCADE
+  state_id        INTEGER NOT NULL REFERENCES state (state_id) ON DELETE CASCADE,
+  election_id     INTEGER NOT NULL REFERENCES election (election_id) ON DELETE CASCADE
 );
 
 CREATE TABLE constituency_candidacy
