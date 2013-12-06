@@ -1,7 +1,10 @@
 parameters:
 #    btw_app.example.class: Btw\Bundle\BtwAppBundle\Example
+     btw_analysis_data_provider.class: Btw\Bundle\BtwAppBundle\Services\AnalysisOverviewDummyDataProvider
 
 services:
 #    btw_app.example:
 #        class: %btw_app.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+     btw_analysis.overview:
+      class: "%btw_analysis_data_provider.class%"
