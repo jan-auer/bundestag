@@ -71,14 +71,13 @@ SELECT election_id, constituency_id, fv.party_id AS firstVotePartyId, sv.party_i
 FROM constituency_winners_first_votes fv JOIN constituency_winners_second_votes sv
   USING (election_id, constituency_id);
 -- ===================================================================
--- Q5 USE RANKING FOR TOP X
-CREATE OR REPLACE VIEW close_constituency_winners (party_id, constituency_id, candidate_id, ranking) AS (
+-- Q5 USE RANKING FOR TOP X:  SELECT * FROM top_close_constituency_candidates WHERE ranking <=10;
+CREATE OR REPLACE VIEW close_constituency_winners (election_id, party_id, constituency_id, candidate_id, ranking) AS (
     WITH constituency_second_winners (constituency_id, candidate_id, count) AS (
-        SELECT r1.constituency_id, r1.candidate_id, r1.count
-        FROM candidate_results r1
-        WHERE (SELECT COUNT(*)
-               FROM candidate_results r2
-               WHERE r1.constituency_id = r2.constituency_id AND r1.count < r2.count) = 1
+        SELECT constituency_id, candidate_id, count FROM (
+                                                           SELECT constituency_id, candidate_id, count, row_number() OVER (PARTITION BY constituency_id ORDER BY count DESC) AS ranking
+                                                           FROM candidate_results) t
+        WHERE t.ranking=2
     ), constituency_winners_votes_diff (constituency_id, candidate_id, party_id, votes_diff) AS (
         SELECT w.constituency_id, w.candidate_id, party_id, w.count - sw.count
         FROM constituency_winners w JOIN candidate USING (candidate_id)
@@ -86,10 +85,49 @@ CREATE OR REPLACE VIEW close_constituency_winners (party_id, constituency_id, ca
           USING (constituency_id)
     )
 
-    SELECT party_id, constituency_id, candidate_id, ranking
-    FROM (SELECT party_id, constituency_id, candidate_id, row_number()
-                                                          OVER (PARTITION BY party_id
-                                                            ORDER BY votes_diff DESC) AS ranking
+    SELECT election_id, party_id, constituency_id, candidate_id, ranking
+    FROM (SELECT election_id, party_id, constituency_id, candidate_id, row_number() OVER (PARTITION BY party_id ORDER BY votes_diff DESC) AS ranking
           FROM party
             JOIN constituency_winners_votes_diff USING (party_id)) t
+);
+
+
+CREATE OR REPLACE VIEW close_constituency_loosers (election_id, party_id, constituency_id, candidate_id, ranking) AS (
+    WITH constituency_loosers (constituency_id, candidate_id, count) AS (
+        SELECT constituency_id, candidate_id, count
+        FROM candidate_results r1
+        WHERE NOT EXISTS(
+            SELECT *
+            FROM candidate_results r2
+            WHERE r1.constituency_id = r2.constituency_id AND r1.count > r2.count
+        )
+    ), constituency_second_loosers (constituency_id, candidate_id, count) AS (
+        SELECT constituency_id, candidate_id, count
+        FROM (
+               SELECT constituency_id, candidate_id, count, row_number() OVER (PARTITION BY constituency_id ORDER BY count ASC) AS ranking
+               FROM candidate_results) t
+        WHERE t.ranking = 2
+    ), constituency_loosers_votes_diff (constituency_id, candidate_id, party_id, votes_diff) AS (
+        SELECT w.constituency_id, w.candidate_id, party_id, w.count - sw.count
+        FROM constituency_loosers w JOIN candidate USING (candidate_id)
+          JOIN constituency_second_loosers sw
+          USING (constituency_id)
+    )
+
+    SELECT election_id, party_id, constituency_id, candidate_id, ranking
+    FROM (SELECT election_id, party_id, constituency_id, candidate_id, row_number() OVER (PARTITION BY party_id ORDER BY votes_diff DESC) AS ranking
+          FROM party
+            JOIN constituency_loosers_votes_diff USING (party_id)) t
+    WHERE RANKING <= 10
+    ORDER BY constituency_id
+);
+
+CREATE OR REPLACE VIEW top_close_constituency_candidates (election_id, party_id, constituency_id, candidate_id, ranking, type) AS (
+    SELECT *, 'W'
+    FROM close_constituency_winners
+  UNION ALL
+    SELECT *, 'L'
+    FROM close_constituency_loosers
+    WHERE (party_id) NOT IN (SELECT party_id
+                                            FROM close_constituency_winners)
 );
