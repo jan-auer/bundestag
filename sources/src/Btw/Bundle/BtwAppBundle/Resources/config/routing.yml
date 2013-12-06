@@ -1,0 +1,3 @@
+btw_app_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: BtwAppBundle:Default:index }

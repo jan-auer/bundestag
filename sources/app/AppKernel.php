@@ -20,6 +20,7 @@ class AppKernel extends Kernel
 
 	        new Btw\Bundle\PersistenceBundle\BtwPersistenceBundle(),
 	        new Btw\Bundle\ImporterBundle\BtwImporterBundle(),
+            new Btw\Bundle\BtwAppBundle\BtwAppBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
