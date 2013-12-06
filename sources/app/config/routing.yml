@@ -1,0 +1,4 @@
+btw_app:
+    resource: "@BtwAppBundle/Resources/config/routing.yml"
+    prefix:   /
+

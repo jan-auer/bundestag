@@ -1,0 +1,7 @@
+parameters:
+#    btw_app.example.class: Btw\Bundle\BtwAppBundle\Example
+
+services:
+#    btw_app.example:
+#        class: %btw_app.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
