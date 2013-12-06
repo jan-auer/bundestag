@@ -1,0 +1,13 @@
+DROP TABLE first_result;
+DROP TABLE second_result;
+DROP TABLE aggregated_first_result;
+DROP TABLE aggregated_second_result;
+DROP TABLE constituency_candidacy;
+DROP TABLE state_candidacy;
+DROP TABLE state_list;
+DROP TABLE candidate;
+DROP TABLE party;
+DROP TABLE constituency;
+DROP TABLE state;
+DROP TABLE voter;
+DROP TABLE election;
