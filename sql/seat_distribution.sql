@@ -16,14 +16,14 @@ CREATE OR REPLACE VIEW state_seats (state_id, seats) AS (
 
 -- STEP 2: Which parties have made it over the 5% threshold and what is the minimum
 --         number of seats the parties get in each state?
+CREATE OR REPLACE VIEW candidate_results (constituency_id, candidate_id, count) AS (
+    SELECT constituency_id, candidate_id, count
+    FROM aggregated_first_result
+      JOIN constituency_candidacy USING (candidate_id)
+);
 
-CREATE OR REPLACE VIEW constituency_winners (constituency_id, candidate_id) AS (
-    WITH candidate_results (constituency_id, candidate_id, count) AS (
-        SELECT constituency_id, candidate_id, count
-        FROM aggregated_first_result
-          JOIN constituency_candidacy USING (candidate_id)
-    )
-    SELECT constituency_id, candidate_id
+CREATE OR REPLACE VIEW constituency_winners (constituency_id, candidate_id, count) AS (
+    SELECT constituency_id, candidate_id, count
     FROM candidate_results r1
     WHERE NOT EXISTS(
         SELECT *
