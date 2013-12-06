@@ -51,3 +51,23 @@ CREATE OR REPLACE VIEW constituency_votes_history (oldDate, newDate, constituenc
     WHERE old.constituency_name = new.constituency_name AND old.date < new.date AND
           old.party_abbreviation = new.party_abbreviation
 );
+-- ===================================================================
+-- Q4
+WITH constituency_winners_second_votes (election_id, constituency_id, party_id) AS (
+    SELECT election_id, constituency_id, party_id
+    FROM aggregated_second_result r1
+      JOIN state_list USING (state_list_id)
+      JOIN party USING (party_id)
+    WHERE NOT EXISTS(SELECT *
+                     FROM aggregated_second_result r2
+                     WHERE r1.constituency_id = r2.constituency_id AND r1.count < r2.count)
+), constituency_winners_first_votes (election_id, constituency_id, party_id) AS (
+    SELECT election_id, constituency_id, party_id
+    FROM constituency_winners
+      NATURAL JOIN candidate
+)
+
+SELECT election_id, constituency_id, fv.party_id AS firstVotePartyId, sv.party_id AS secondVotePartyId
+FROM constituency_winners_first_votes fv JOIN constituency_winners_second_votes sv
+  USING (election_id, constituency_id)
+WHERE fv.party_id <> sv.party_id;
