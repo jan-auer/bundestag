@@ -1,8 +1,14 @@
 parameters:
      btw_election_provider.class: Btw\Bundle\BtwAppBundle\Services\ElectionProvider
+     btw_state_provider.class: Btw\Bundle\BtwAppBundle\Services\StateProvider
 
 services:
      btw_election_provider:
       class: "%btw_election_provider.class%"
+      arguments:
+              entityManager: "@doctrine.orm.entity_manager"
+
+     btw_state_provider:
+      class: "%btw_state_provider.class%"
       arguments:
               entityManager: "@doctrine.orm.entity_manager"
