@@ -15,6 +15,7 @@ class DetailController extends Controller {
 
 	public function indexAction($year)
 	{
-		return $this->render('BtwAppBundle:Analysis:details.html.twig', array('year' => $year));
+		$states = $this->get('btw_state_provider')->getStatesFor($year);
+		return $this->render('BtwAppBundle:Analysis:details.html.twig', array('year' => $year, 'states' => $states));
 	}
 } 
