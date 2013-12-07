@@ -11,7 +11,7 @@ namespace Btw\Bundle\BtwAppBundle\Services;
 use Doctrine\ORM\EntityManager;
 
 
-class SqlElectionProvider implements ElectionProviderInterface
+class ElectionProvider
 {
 
 	/** @var  EntityManager */
@@ -22,7 +22,7 @@ class SqlElectionProvider implements ElectionProviderInterface
 		$this->em = $entityManager;
 	}
 
-	public function getElections()
+	public function getElectionYears()
 	{
 		$electionsRepository = $this->em->getRepository('BtwPersistenceBundle:Election');
 		$elections = $electionsRepository->findAll();

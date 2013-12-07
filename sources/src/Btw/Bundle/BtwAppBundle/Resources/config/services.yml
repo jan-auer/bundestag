@@ -1,5 +1,5 @@
 parameters:
-     btw_election_provider.class: Btw\Bundle\BtwAppBundle\Services\SqlElectionProvider
+     btw_election_provider.class: Btw\Bundle\BtwAppBundle\Services\ElectionProvider
 
 services:
      btw_election_provider:

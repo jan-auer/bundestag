@@ -9,7 +9,7 @@ class AnalysisController extends Controller
 	public function indexAction()
 	{
 		$electionProvider = $this->get('btw_election_provider');
-		$years = $electionProvider->getElections();
+		$years = $electionProvider->getElectionYears();
 		$latest = max($years);
 
 		$latestResults = $electionProvider->getResultsFor($latest);
