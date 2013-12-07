@@ -2,6 +2,10 @@ btw_app_homepage:
     pattern:  /
     defaults: { _controller: BtwAppBundle:Analysis:index }
 
+btw_app_detail:
+    pattern : /detail/{year}
+    defaults: { _controller: BtwAppBundle:Detail:index }
+
 btw_app_elector:
-  pattern: /elect/{year}
-  defaults: { _controller: BtwAppBundle:Elector:index }
+    pattern: /elect/{year}
+    defaults: { _controller: BtwAppBundle:Elector:index }
