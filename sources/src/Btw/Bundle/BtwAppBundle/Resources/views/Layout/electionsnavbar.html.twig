@@ -1,0 +1,5 @@
+<ul class="nav navbar-nav navbar-right">
+    {% for year in years %}
+        <li><a href="{{ path('btw_app_detail', {'year': year}) }}">BTW {{ year }}</a></li>
+    {% endfor %}
+</ul>
