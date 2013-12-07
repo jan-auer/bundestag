@@ -35,11 +35,8 @@
 		    </a>
                 </div>
 
-                <div class="collapse navbar-collapse" id="btw-nav">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">BTW 2009</a></li>
-                        <li><a href="#">BTW 2013</a></li>
-                    </ul>
+                <div id="btw-nav">
+                   {{ render(controller('BtwAppBundle:Layout:electionsnavbar')) }}
                 </div>
             </div>
         </header>
