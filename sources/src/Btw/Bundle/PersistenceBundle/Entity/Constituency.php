@@ -15,29 +15,29 @@ use Doctrine\ORM\Mapping as ORM;
 class Constituency
 {
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="constituency_id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="constituency_constituency_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="constituency_id", type="integer", nullable=false)
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="SEQUENCE")
+	 * @ORM\SequenceGenerator(sequenceName="constituency_constituency_id_seq", allocationSize=1, initialValue=1)
+	 */
+	private $id;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="number", type="integer", nullable=false)
-     */
-    private $number;
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="number", type="integer", nullable=false)
+	 */
+	private $number;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="text", nullable=true)
-     */
-    private $name;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="name", type="text", nullable=true)
+	 */
+	private $name;
 
 	/**
 	 * @var integer
@@ -47,14 +47,14 @@ class Constituency
 	private $electives;
 
 	/**
-     * @var State
-     *
-     * @ORM\ManyToOne(targetEntity="State")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="state_id", referencedColumnName="state_id")
-     * })
-     */
-    private $state;
+	 * @var State
+	 *
+	 * @ORM\ManyToOne(targetEntity="State")
+	 * @ORM\JoinColumns({
+	 *   @ORM\JoinColumn(name="state_id", referencedColumnName="state_id")
+	 * })
+	 */
+	private $state;
 
 	/**
 	 * @var Collection
@@ -212,6 +212,11 @@ class Constituency
 	public function getElection()
 	{
 		return $this->election;
+	}
+
+	function __toString()
+	{
+		return $this->getName();
 	}
 
 

@@ -12,15 +12,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class State
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="state_id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="state_state_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="state_id", type="integer", nullable=false)
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="SEQUENCE")
+	 * @ORM\SequenceGenerator(sequenceName="state_state_id_seq", allocationSize=1, initialValue=1)
+	 */
+	private $id;
 
 	/**
 	 * @var integer
@@ -28,12 +28,12 @@ class State
 	 * @ORM\Column(name="number", type="integer", nullable=false)
 	 */
 	private $number;
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="text", nullable=false)
-     */
-    private $name;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="name", type="text", nullable=false)
+	 */
+	private $name;
 
 	/**
 	 * @var integer
@@ -42,15 +42,22 @@ class State
 	 */
 	private $population;
 
-    /**
-     * @var Election
-     *
-     * @ORM\ManyToOne(targetEntity="Election")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="election_id", referencedColumnName="election_id")
-     * })
-     */
-    private $election;
+	/**
+	 * @var Election
+	 *
+	 * @ORM\ManyToOne(targetEntity="Election")
+	 * @ORM\JoinColumns({
+	 *   @ORM\JoinColumn(name="election_id", referencedColumnName="election_id")
+	 * })
+	 */
+	private $election;
+
+	/**
+	 * @var Collection
+	 *
+	 * @ORM\OneToMany(targetEntity="Constituency", mappedBy="state")
+	 */
+	private $constituencies;
 
 	/**
 	 * @param Election $election
@@ -134,6 +141,7 @@ class State
 	public function setNumber($number)
 	{
 		$this->number = $number;
+		return $this;
 	}
 
 	/**
@@ -143,5 +151,28 @@ class State
 	{
 		return $this->number;
 	}
+
+	/**
+	 * @param \Btw\Bundle\PersistenceBundle\Entity\Constituency $constituencies
+	 */
+	public function setConstituencies($constituencies)
+	{
+		$this->constituencies = $constituencies;
+		return $this;
+	}
+
+	/**
+	 * @return \Btw\Bundle\PersistenceBundle\Entity\Constituency
+	 */
+	public function getConstituencies()
+	{
+		return $this->constituencies;
+	}
+
+	function __toString()
+	{
+		return $this->getName();
+	}
+
 
 }

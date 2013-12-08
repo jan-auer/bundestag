@@ -9,6 +9,7 @@
 namespace Btw\Bundle\BtwAppBundle\Services;
 
 
+use Btw\Bundle\PersistenceBundle\Entity\State;
 use Doctrine\ORM\EntityManager;
 
 
@@ -25,8 +26,7 @@ class StateProvider {
 	public function getStatesFor($year)
 	{
 		/** DUMMY */
-		return array(array('name' => 'Bayern', 'population' => 7219821, 'participation' => 60),
-					 array('name' => 'NRW', 'population' => 83278948392, 'participation' => 40),
-					array('name' => 'Saarland', 'population' => 3324, 'paticipation' => 20));
+		$states = $this->em->getRepository('BtwPersistenceBundle:State');
+		return $states->findAll();
 	}
 } 

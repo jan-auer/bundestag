@@ -1,7 +1,16 @@
 {% extends "BtwAppBundle::layout.html.twig" %}
 
-{% block title %}Bundestagswahl {{ year }}{% endblock%}
+{% block title %}Bundestagswahl {{ year }}{% endblock %}
 
-{% block body %}
+{% block content %}
     test
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {{ form_row(form.state) }}
+    {{ form_row(form.constituency) }}
+    {{ form_row(form.save) }}
+    {{ form_end(form) }}
+
+    asd
 {% endblock %}
