@@ -1,14 +1,23 @@
 parameters:
      btw_election_provider.class: Btw\Bundle\BtwAppBundle\Services\ElectionProvider
      btw_state_provider.class: Btw\Bundle\BtwAppBundle\Services\StateProvider
+     btw_constituency_provider.class: Btw\Bundle\BtwAppBundle\Services\ConstituencyProvider
+
+     btw_election_analysis_form_builder.class: Btw\Bundle\BtwAppBundle\FormBuilder\ElectionAnalysisFormBuilder
 
 services:
      btw_election_provider:
       class: "%btw_election_provider.class%"
       arguments:
               entityManager: "@doctrine.orm.entity_manager"
-
      btw_state_provider:
       class: "%btw_state_provider.class%"
       arguments:
               entityManager: "@doctrine.orm.entity_manager"
+     btw_constituency_provider:
+      class: "%btw_constituency_provider.class%"
+      arguments:
+              entityManager: "@doctrine.orm.entity_manager"
+
+     btw_election_analysis_form_builder:
+      class: "%btw_election_analysis_form_builder.class%"
