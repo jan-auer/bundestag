@@ -78,4 +78,12 @@ class StateProvider extends Provider {
 
 		return $details;
 	}
+
+	/**
+	 * @param $id state id
+	 * @return State
+	 */
+	public function getStateById($id) {
+		return $this->em->find('BtwPersistenceBundle:State', $id);
+	}
 } 

@@ -3,14 +3,34 @@
 {% block title %}Bundestagswahl {{ year }}{% endblock %}
 
 {% block content %}
-    test
-    {{ form_start(form) }}
-    {{ form_errors(form) }}
 
-    {{ form_row(form.state) }}
-    {{ form_row(form.constituency) }}
-    {{ form_row(form.save) }}
+    {{ form_start(form) }}
     {{ form_end(form) }}
 
-    asd
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#ElectionAnalysis_state').change(function () {
+                var stateId = $('#ElectionAnalysis_state').val();
+
+                if ($(this).val()) {
+                    $.ajax({
+                        type: "GET",
+                        url: Routing.generate('btw_app_detail_ajax_constituency', { 'stateId': stateId }),
+                        success: function (data) {
+                            var constituencies = JSON.parse(data);
+
+                            var constituencySelect = $('#ElectionAnalysis_constituency');
+                            constituencySelect.children('option:not(:first)').remove();
+
+                            $.each(constituencies, function(id, value) {
+                                constituencySelect.append(
+                                        $('<option></option>').val(id).html(value)
+                                );
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 {% endblock %}

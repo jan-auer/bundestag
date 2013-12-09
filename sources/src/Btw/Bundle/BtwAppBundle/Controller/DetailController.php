@@ -13,6 +13,7 @@ use Btw\Bundle\BtwAppBundle\Form\ElectionAnalysisForm;
 use Btw\Bundle\BtwAppBundle\Model\ElectionAnalysisModel;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class DetailController extends Controller
 {
@@ -35,5 +36,17 @@ class DetailController extends Controller
 				'year' => $year,
 				'form' => $form->createView()
 			));
+	}
+
+
+	public function listConstituenciesAction($stateId)
+	{
+		$stateProvider = $this->get("btw_state_provider");
+		$state = $stateProvider->getStateById($stateId);
+		$constituencies = array();
+		foreach($state->getConstituencies() as $constituency) {
+			$constituencies[$constituency->getId()] = $constituency->getName();
+		}
+		return new Response(json_encode($constituencies));
 	}
 } 
