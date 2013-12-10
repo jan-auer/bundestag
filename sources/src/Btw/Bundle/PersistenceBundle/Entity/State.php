@@ -56,6 +56,7 @@ class State
 	 * @var Collection
 	 *
 	 * @ORM\OneToMany(targetEntity="Constituency", mappedBy="state")
+	 * @ORM\OrderBy({"name" = "ASC"})
 	 */
 	private $constituencies;
 

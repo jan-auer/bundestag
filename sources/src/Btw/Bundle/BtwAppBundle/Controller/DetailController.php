@@ -19,33 +19,39 @@ class DetailController extends Controller
 {
 	public function indexAction($year)
 	{
-		$stateProvider = $this->get("btw_state_provider");
-		$electionAnalysis = new ElectionAnalysisModel();
-		$form = $this->createForm($this->get("btw_election_analysis_form_builder"), $electionAnalysis, array(
-			'year' => $year,
-			'states' => $stateProvider->getStatesFor($year)));
-
-		$form->handleRequest($this->getRequest());
-
-		if ($form->isValid()) {
-			// ... maybe do some form processing, like saving the Task and Tag objects
-		}
-
 		return $this->render('BtwAppBundle:Analysis:details.html.twig',
 			array(
-				'year' => $year,
-				'form' => $form->createView()
+				'year' => $year
 			));
+
 	}
 
+	public function listStatesAction($year)
+	{
+		$stateProvider = $this->get("btw_state_provider");
+
+		$states = array();
+		foreach ($stateProvider->getStatesFor($year) as $state) {
+			$states[] = array(
+				'id' => $state->getId(),
+				'name' => $state->getName()
+			);
+		}
+
+		return new Response(json_encode($states));
+
+	}
 
 	public function listConstituenciesAction($stateId)
 	{
 		$stateProvider = $this->get("btw_state_provider");
 		$state = $stateProvider->getStateById($stateId);
 		$constituencies = array();
-		foreach($state->getConstituencies() as $constituency) {
-			$constituencies[$constituency->getId()] = $constituency->getName();
+		foreach ($state->getConstituencies() as $constituency) {
+			$constituencies[] = array(
+				'id' => $constituency->getId(),
+				'name' => $constituency->getName()
+			);
 		}
 		return new Response(json_encode($constituencies));
 	}

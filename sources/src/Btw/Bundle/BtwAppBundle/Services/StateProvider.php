@@ -42,7 +42,7 @@ class StateProvider extends Provider {
 	{
 		$election = $this->getElectionFor($year);
 		$statesRepository = $this->em->getRepository('BtwPersistenceBundle:State');
-		$states = $statesRepository->findBy(array('election' => $election));
+		$states = $statesRepository->findBy(array('election' => $election), array('name' => 'ASC'));
 		return $states;
 	}
 

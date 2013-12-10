@@ -4,33 +4,53 @@
 
 {% block content %}
 
-    {{ form_start(form) }}
-    {{ form_end(form) }}
+    <form method="post" action="">
+        <label for="select_state">State</label>
+        <select id="select_state">
+            <option value="">Choose a state</option>
+        </select><br/>
+        <label for="select_constituency">Constituency</label>
+        <select id="select_constituency">
+            <option value="">Choose a constituency</option>
+        </select>
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#ElectionAnalysis_state').change(function () {
-                var stateId = $('#ElectionAnalysis_state').val();
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $.ajax({
+                    type: "GET",
+                    url: Routing.generate('btw_app_ajax_states', { 'year': 2013 }),
+                    success: function (data) {
+                        var states = JSON.parse(data);
 
-                if ($(this).val()) {
+                        var stateSelect = $('#select_state');
+
+                        $.each(states, function (index, value) {
+                            stateSelect.append(
+                                    $('<option></option>').val(value['id']).html(value['name'])
+                            );
+                        });
+                    }
+                });
+
+
+                $('#select_state').change(function () {
                     $.ajax({
                         type: "GET",
-                        url: Routing.generate('btw_app_detail_ajax_constituency', { 'stateId': stateId }),
+                        url: Routing.generate('btw_app_ajax_constituencies', { 'stateId': $(this).val() }),
                         success: function (data) {
                             var constituencies = JSON.parse(data);
 
-                            var constituencySelect = $('#ElectionAnalysis_constituency');
+                            var constituencySelect = $('#select_constituency');
                             constituencySelect.children('option:not(:first)').remove();
 
-                            $.each(constituencies, function(id, value) {
+                            $.each(constituencies, function (index, value) {
                                 constituencySelect.append(
-                                        $('<option></option>').val(id).html(value)
+                                        $('<option></option>').val(value['id']).html(value['name'])
                                 );
                             });
                         }
                     });
-                }
+                });
             });
-        });
-    </script>
+        </script>
 {% endblock %}
