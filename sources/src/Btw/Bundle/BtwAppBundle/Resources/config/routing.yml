@@ -7,13 +7,13 @@ btw_app_detail:
     defaults: { _controller: BtwAppBundle:Detail:index }
 
 btw_app_ajax_states:
-      pattern : /detail/states/{year}
+      pattern : /detail/{year}/states
       defaults: { _controller: BtwAppBundle:Detail:listStates }
       options:
           expose: true
 
 btw_app_ajax_constituencies:
-      pattern : /detail/constituency/{stateId}
+      pattern : /detail/states/{stateId}/constituencies
       defaults: { _controller: BtwAppBundle:Detail:listConstituencies }
       options:
           expose: true
