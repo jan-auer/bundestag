@@ -11,10 +11,14 @@ namespace Btw\Bundle\BtwAppBundle\Services;
 
 use Btw\Bundle\BtwAppBundle\Model\LocationDetailsModel;
 use Btw\Bundle\PersistenceBundle\Entity\State;
+use Btw\Bundle\PersistenceBundle\Entity\Election;
 use Doctrine\ORM\EntityManager;
 
 
-class StateProvider extends Provider {
+class StateProvider {
+
+	/** @var  EntityManager */
+	protected $em;
 
 	function __construct(EntityManager $entityManager)
 	{
@@ -22,11 +26,11 @@ class StateProvider extends Provider {
 	}
 
 	/**
-	 * @param $year
+	 * @param $election Election
 	 * @param $name
 	 * @return array
 	 */
-	public function getStateFor($year, $name)
+	public function getStateFor(Election $election, $name)
 	{
 		$election = $this->getElectionFor($year);
 		$statesRepository = $this->em->getRepository('BtwPersistenceBundle:State');
@@ -35,12 +39,11 @@ class StateProvider extends Provider {
 	}
 
 	/**
-	 * @param $year
+	 * @param $election Election
 	 * @return array
 	 */
-	public function getStatesFor($year)
+	public function getStatesFor(Election $election)
 	{
-		$election = $this->getElectionFor($year);
 		$statesRepository = $this->em->getRepository('BtwPersistenceBundle:State');
 		$states = $statesRepository->findBy(array('election' => $election), array('name' => 'ASC'));
 		return $states;
@@ -53,8 +56,6 @@ class StateProvider extends Provider {
 	 */
 	public function getDetailsFor(State $state)
 	{
-		$qb = $this->em->createQueryBuilder();
-
 		$connection = $this->em->getConnection();
 		$statement = $connection->prepare("SELECT SUM(ct.voters)/SUM(ct.electives) as participation FROM constituency_turnout ct, constituency c, state s WHERE ct.constituency_id=c.constituency_id AND c.state_id=s.state_id AND s.state_id=:stateId");
 		$statement->bindValue('stateId', $state->getId());

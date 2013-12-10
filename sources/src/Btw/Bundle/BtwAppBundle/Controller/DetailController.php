@@ -25,10 +25,12 @@ class DetailController extends Controller
 
 	public function listStatesAction($year)
 	{
+		$electionProvider = $this->get("btw_election_provider");
 		$stateProvider = $this->get("btw_state_provider");
 
+		$election = $electionProvider->getElectionFor($year);
 		$states = array();
-		foreach ($stateProvider->getStatesFor($year) as $state) {
+		foreach ($stateProvider->getStatesFor($election) as $state) {
 			$states[] = array(
 				'id' => $state->getId(),
 				'name' => $state->getName()

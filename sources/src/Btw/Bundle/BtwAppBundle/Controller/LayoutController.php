@@ -16,7 +16,11 @@ class LayoutController extends Controller {
 	public function electionsNavbarAction()
 	{
 		$electionProvider = $this->get('btw_election_provider');
-		$years = $electionProvider->getElectionYears();
+		$elections = $electionProvider->getElections();
+		$years = array();
+		foreach ($elections as $election) {
+			$years[] = date('Y', $election->getDate()->getTimestamp());
+		}
 
 		return $this->render('BtwAppBundle:Layout:electionsnavbar.html.twig', array('years' => $years));
 	}

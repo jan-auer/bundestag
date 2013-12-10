@@ -22,24 +22,23 @@ class ElectionProvider
 		$this->em = $entityManager;
 	}
 
-	public function getElectionYears()
+	/**
+	 * @return array
+	 */
+	public function getElections()
+	{
+		$electionsRepository = $this->em->getRepository('BtwPersistenceBundle:Election');
+		return$electionsRepository->findAll();
+	}
+
+	/**
+	 * @param $year
+	 * @return mixed
+	 */
+	public function getElectionFor($year)
 	{
 		$electionsRepository = $this->em->getRepository('BtwPersistenceBundle:Election');
 		$elections = $electionsRepository->findAll();
-		$years = array();
-		foreach ($elections as $election) {
-			$years[] = date('Y', $election->getDate()->getTimestamp());
-		}
-		return $years;
-	}
-
-	public function getResultsFor($election)
-	{
-		$connection = $this->em->getConnection();
-		$statement = $connection->prepare("SELECT abbreviation as name, color, SUM(seats) :: INT as y FROM party_state_seats JOIN party USING (party_id, election_id) JOIN election USING (election_id) WHERE date_part('Y', date) = :electionYear GROUP BY abbreviation, color");
-		$statement->bindValue('electionYear', $election);
-
-		$statement->execute();
-		return $statement->fetchAll();
+		foreach($elections as $election) if(date('Y', $election->getDate()->getTimestamp()) == $year) return $election;
 	}
 } 

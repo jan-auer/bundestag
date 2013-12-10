@@ -18,32 +18,12 @@ use Doctrine\ORM\EntityManager;
 class ConstituencyProvider extends Provider
 {
 
+	/**
+	 * @param EntityManager $entityManager
+	 */
 	function __construct(EntityManager $entityManager)
 	{
 		$this->em = $entityManager;
-	}
-
-	public function getConstituencyFor($year, $name)
-	{
-		$election = $this->getElectionFor($year);
-		$constituenciesRepository = $this->em->getRepository('BtwPersistenceBundle:Constituency');
-		$state = $constituenciesRepository->findOneBy(array('election' => $election, 'name' => $name));
-		return $state;
-	}
-
-	/**
-	 * @param $year
-	 * @return array
-	 */
-	public function getConstituenciesFor($year)
-	{
-		/** DUMMY */
-		//TODO
-		$constituencies = array();
-		$constituency = new Constituency();
-		$constituency->setId(1)->setName('Bayern WK 1')->setNumber(1);
-		$constituencies[] = $constituency;
-		return $constituencies;
 	}
 
 	/**
