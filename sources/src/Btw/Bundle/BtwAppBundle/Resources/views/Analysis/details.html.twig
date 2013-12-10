@@ -7,11 +7,11 @@
     <form method="post" action="">
         <label for="select_state">State</label>
         <select id="select_state">
-            <option value="">Choose a state</option>
+            <option value="-1">Choose a state</option>
         </select><br/>
         <label for="select_constituency">Constituency</label>
         <select id="select_constituency">
-            <option value="">Choose a constituency</option>
+            <option value="-1">Choose a constituency</option>
         </select>
 {% endblock %}
 
@@ -52,10 +52,30 @@
                                     $('<option></option>').val(value['id']).html(value['name'])
                             );
                         });
+                        getResults($('#select_state').val(), $('#select_constituency').val());
                     }
                 });
+
             });
+
+            $('#select_constituency').change(function () {
+                getResults($('#select_state').val(), $('#select_constituency').val());
+            });
+
+            getResults(0, 0);
         });
+
+
+
+        function getResults(stateId, constituencyId) {
+            $.ajax({
+                type: "GET",
+                url: Routing.generate('btw_app_ajax_results', { 'year': {{ app.request.get('year') }},'stateId': stateId, 'constituencyId': constituencyId }),
+                success: function (data) {
+                    console.log(data);
+                }
+            });
+        }
 
         </script>
 {% endblock %}

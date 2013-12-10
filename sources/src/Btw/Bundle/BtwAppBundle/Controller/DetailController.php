@@ -52,4 +52,28 @@ class DetailController extends Controller
 		}
 		return new Response(json_encode($constituencies));
 	}
-} 
+
+	public function listResultsAction($year, $stateId = null, $constituencyId = null)
+	{
+		$results = array();
+		if ($stateId > 0 && $constituencyId > 0) {
+			//RESULTS PER CONSTITUENCY
+			//TODO
+		} else if ($stateId > 0 && $constituencyId == 0) {
+			//RESULTS PER STATE
+			//TODO
+		} else {
+			//TOTAL RESULTS
+			$countyProvider = $this->get("btw_country_provider");
+			$results = $countyProvider->getResultsFor($year);
+		}
+
+		usort($results, function($result1, $result2)
+		{
+			if($result1['y'] == $result2['y']) return 0;
+			if($result1['y'] < $result2['y']) return 1;
+			return -1;
+		});
+		return new Response(json_encode($results));
+	}
+}

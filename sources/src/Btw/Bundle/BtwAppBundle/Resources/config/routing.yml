@@ -18,6 +18,12 @@ btw_app_ajax_constituencies:
       options:
           expose: true
 
+btw_app_ajax_results:
+      pattern : /detail/results/{year}/{stateId}/{constituencyId}
+      defaults: { _controller: BtwAppBundle:Detail:listResults, stateId: -1, constituencyId: -1}
+      options:
+          expose: true
+
 btw_app_elector:
     pattern: /elect/{year}
     defaults: { _controller: BtwAppBundle:Elector:index }
