@@ -1,6 +1,6 @@
 {% extends "BtwAppBundle::layout.html.twig" %}
 
-{% block title %}Bundestagswahl {{ year }}{% endblock %}
+{% block title %}Bundestagswahl {{ app.request.get('year') }}{% endblock %}
 
 {% block content %}
 
@@ -18,7 +18,7 @@
             $(document).ready(function () {
                 $.ajax({
                     type: "GET",
-                    url: Routing.generate('btw_app_ajax_states', { 'year': 2013 }),
+                    url: Routing.generate('btw_app_ajax_states', { 'year': {{ app.request.get('year') }} }),
                     success: function (data) {
                         var states = JSON.parse(data);
 
