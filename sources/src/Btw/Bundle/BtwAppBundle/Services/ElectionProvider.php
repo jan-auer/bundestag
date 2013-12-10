@@ -41,4 +41,4 @@ class ElectionProvider
 		$elections = $electionsRepository->findAll();
 		foreach($elections as $election) if(date('Y', $election->getDate()->getTimestamp()) == $year) return $election;
 	}
-} 
+}
