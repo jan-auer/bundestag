@@ -13,44 +13,49 @@
         <select id="select_constituency">
             <option value="">Choose a constituency</option>
         </select>
+{% endblock %}
 
-        <script type="text/javascript">
-            $(document).ready(function () {
+
+
+{% block scripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: Routing.generate('btw_app_ajax_states', { 'year': {{ app.request.get('year') }} }),
+                success: function (data) {
+                    var states = JSON.parse(data);
+
+                    var stateSelect = $('#select_state');
+
+                    $.each(states, function (index, value) {
+                        stateSelect.append(
+                                $('<option></option>').val(value['id']).html(value['name'])
+                        );
+                    });
+                }
+            });
+
+
+            $('#select_state').change(function () {
                 $.ajax({
                     type: "GET",
-                    url: Routing.generate('btw_app_ajax_states', { 'year': {{ app.request.get('year') }} }),
+                    url: Routing.generate('btw_app_ajax_constituencies', { 'stateId': $(this).val() }),
                     success: function (data) {
-                        var states = JSON.parse(data);
+                        var constituencies = JSON.parse(data);
 
-                        var stateSelect = $('#select_state');
+                        var constituencySelect = $('#select_constituency');
+                        constituencySelect.children('option:not(:first)').remove();
 
-                        $.each(states, function (index, value) {
-                            stateSelect.append(
+                        $.each(constituencies, function (index, value) {
+                            constituencySelect.append(
                                     $('<option></option>').val(value['id']).html(value['name'])
                             );
                         });
                     }
                 });
-
-
-                $('#select_state').change(function () {
-                    $.ajax({
-                        type: "GET",
-                        url: Routing.generate('btw_app_ajax_constituencies', { 'stateId': $(this).val() }),
-                        success: function (data) {
-                            var constituencies = JSON.parse(data);
-
-                            var constituencySelect = $('#select_constituency');
-                            constituencySelect.children('option:not(:first)').remove();
-
-                            $.each(constituencies, function (index, value) {
-                                constituencySelect.append(
-                                        $('<option></option>').val(value['id']).html(value['name'])
-                                );
-                            });
-                        }
-                    });
-                });
             });
+        });
+
         </script>
 {% endblock %}
