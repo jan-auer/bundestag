@@ -35,14 +35,14 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-		    <a class="navbar-brand" href="{{ path('btw_app_homepage') }}">
-			<img class="btw-logo" src="{{ asset('bundles/btwapp/img/logo.png') }}" alt="" />
-			Bundestagswahlen
-		    </a>
+                    <a class="navbar-brand" href="{{ path('btw_app_homepage') }}">
+                        <img class="btw-logo" src="{{ asset('bundles/btwapp/img/logo.png') }}" alt="" />
+                        Bundestagswahlen
+                    </a>
                 </div>
 
-                <div id="btw-nav">
-                   {{ render(controller('BtwAppBundle:Layout:electionsnavbar')) }}
+                <div id="btw-nav" class="navbar-collapse collapse">
+                    {{ render(controller('BtwAppBundle:Layout:electionsnavbar')) }}
                 </div>
             </div>
         </header>

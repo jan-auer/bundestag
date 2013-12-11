@@ -121,20 +121,22 @@ class DetailController extends Controller
 		// PARTIES
 		foreach($partyResults as $result)
 		{
-			$parties[] = array('abbreviation' => $result->getPartyAbbreviation(),
-								'name' => $result->getPartyFullName(),
-								'votes' => $result->getVotes(),
-								'percentage' => $result->getPercentage(),
-								'seats' => $result->getSeats(),
-								'overhead' => $result->getOverhead());
+			$parties[] = array(
+				'abbreviation' => $result->getPartyAbbreviation(),
+				'color'        => $result->getColor(),
+				'name'         => $result->getPartyFullName(),
+				'votes'        => $result->getVotes(),
+				'percentage'   => $result->getPercentage(),
+				'seats'        => $result->getSeats(),
+				'overhead'     => $result->getOverhead()
+			);
 		}
 
-		return array('scope' => $scope,
-					'chart' => $chart,
-					'chartType' => "Zweitstimmen",
-					'location' => $location,
-					'members' => $members,
-					'parties' => $parties);
+		return array('scope'     => $scope,
+		             'chart'     => array('data' => $chart, 'type' => 'Zweitstimmen'),
+		             'location'  => $location,
+		             'members'   => $members,
+		             'parties'   => $parties);
 	}
 
 	private function getResultForState($stateId)
@@ -185,20 +187,22 @@ class DetailController extends Controller
 		//PARTIES
 		foreach($partyResults as $result)
 		{
-			$parties[] = array('abbreviation' => $result->getPartyAbbreviation(),
-				'name' => $result->getPartyFullName(),
-				'votes' => $result->getVotes(),
-				'percentage' => $result->getPercentage(),
-				'seats' => $result->getSeats(),
-				'overhead' => $result->getOverhead());
+			$parties[] = array(
+				'abbreviation' => $result->getPartyAbbreviation(),
+				'color'        => $result->getColor(),
+				'name'         => $result->getPartyFullName(),
+				'votes'        => $result->getVotes(),
+				'percentage'   => $result->getPercentage(),
+				'seats'        => $result->getSeats(),
+				'overhead'     => $result->getOverhead()
+			);
 		}
 
-		return array('scope' => $scope,
-			'chart' => $chart,
-			'chartType' => "Sitze",
-			'location' => $location,
-			'members' => $members,
-			'parties' => $parties);
+		return array('scope'    => $scope,
+		             'chart'    => array('data' => $chart, 'type' => 'Sitze'),
+		             'location' => $location,
+		             'members'  => $members,
+		             'parties'  => $parties);
 	}
 
 	private function getResultForCountry($year)
@@ -218,7 +222,7 @@ class DetailController extends Controller
 		$partyResults = $partyResultsProvider->forCountry($election);
 
 		//SCOPE
-		$scope = "Bundesrepublik Deutschland";
+		$scope = "Gesamt";
 
 		//CHART
 		foreach($partyResults as $result)
@@ -249,19 +253,21 @@ class DetailController extends Controller
 		//PARTIES
 		foreach($partyResults as $result)
 		{
-			$parties[] = array('abbreviation' => $result->getPartyAbbreviation(),
-				'name' => $result->getPartyFullName(),
-				'votes' => $result->getVotes(),
-				'percentage' => $result->getPercentage(),
-				'seats' => $result->getSeats(),
-				'overhead' => $result->getOverhead());
+			$parties[] = array(
+				'abbreviation' => $result->getPartyAbbreviation(),
+				'color'        => $result->getColor(),
+				'name'         => $result->getPartyFullName(),
+				'votes'        => $result->getVotes(),
+				'percentage'   => $result->getPercentage(),
+				'seats'        => $result->getSeats(),
+				'overhead'     => $result->getOverhead()
+			);
 		}
 
-		return array('scope' => $scope,
-			'chart' => $chart,
-			'chartType' => "Sitze",
-			'location' => $location,
-			'members' => $members,
-			'parties' => $parties);
+		return array('scope'    => $scope,
+		             'chart'    => array('data' => $chart, 'type' => 'Sitze'),
+		             'location' => $location,
+		             'members'  => $members,
+		             'parties'  => $parties);
 	}
 }

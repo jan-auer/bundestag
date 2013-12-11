@@ -1,5 +1,12 @@
 !function (ng) {
 
+	/** @const */ var STATES_PATH         = 'btw_app_ajax_states';
+	/** @const */ var CONSTITUENCIES_PATH = 'btw_app_ajax_constituencies';
+	/** @const */ var DETAILS_PATH        = 'btw_app_ajax_results';
+
+	/** @const */ var ALL_STATES         = { id : 0, name : 'Alle' };
+	/** @const */ var ALL_CONSTITUENCIES = { id : 0, name : 'Alle' };
+
 	var Module = ng.module('btw', []);
 
 	Module.controller('DetailsController', ['$scope', '$http', function ($scope, $http) {
@@ -14,21 +21,24 @@
 
 		$scope.$watch('year', loadStates);
 		$scope.$watch('state', loadConstituencies);
-		$scope.$watch(watchSelection, loadChartData);
+		$scope.$watch(watchSelection, loadDetails);
 
 		// Methods
 
 		function loadStates(year) {
-			load('btw_app_ajax_states', { year : year }, function (states) {
+			load(STATES_PATH, { year : year }, function (states) {
+				states.unshift(ALL_STATES);
 				$scope.states = states;
 			});
 		}
 
 		function loadConstituencies(state) {
 			$scope.constituency = 0;
+			$scope.constituencies = [ ALL_CONSTITUENCIES ];
 			if (!state) return;
 
-			load('btw_app_ajax_constituencies', { 'stateId' : state }, function (constituencies) {
+			load(CONSTITUENCIES_PATH, { 'stateId' : state }, function (constituencies) {
+				constituencies.unshift(ALL_CONSTITUENCIES);
 				$scope.constituencies = constituencies;
 			});
 		}
@@ -37,10 +47,14 @@
 			return $scope.state + '|' + $scope.constituency;
 		}
 
-		function loadChartData() {
+		function loadDetails() {
 			var data = { year : $scope.year, stateId : $scope.state || 0, constituencyId : $scope.constituency || 0 };
-			load('btw_app_ajax_results', data, function (data) {
-				$scope.data = data;
+			load(DETAILS_PATH, data, function (data) {
+				$scope.title = data.scope;
+				$scope.chart = data.chart;
+				$scope.location = data.location;
+				$scope.parties = data.parties;
+				$scope.members = data.members;
 			});
 		}
 
@@ -58,14 +72,24 @@
 
 	Module.directive('btwChart', function () {
 		return {
-			scope : { data : '=btwChart' },
+			scope : { config : '=btwChart' },
 
 			link : function (scope, element, attrs) {
 				var chart = createChart(element, scope.data);
-
-				scope.$watch('data', function (data) {
-					chart.series[0].setData(data);
+				scope.$watch('config', function (config) {
+					config = config || {};
+					chart.series[0].setData(config.data, false);
+					chart.series[0].update({ name : config.type }, false);
+					chart.redraw(true);
 				});
+			}
+		};
+	});
+
+	Module.directive('bsTooltip', function () {
+		return {
+			link : function (scope, element, attrs) {
+				element.tooltip({ title : attrs.bsTooltip });
 			}
 		};
 	});
