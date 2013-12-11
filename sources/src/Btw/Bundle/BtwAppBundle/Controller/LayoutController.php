@@ -16,7 +16,7 @@ class LayoutController extends Controller {
 	public function electionsNavbarAction()
 	{
 		$electionProvider = $this->get('btw_election_provider');
-		$elections = $electionProvider->getElections();
+		$elections = $electionProvider->getAll();
 		$years = array();
 		foreach ($elections as $election) {
 			$years[] = date('Y', $election->getDate()->getTimestamp());

@@ -30,7 +30,7 @@ class PartyVotesResultProvider
 	 * @param Constituency $constituency
 	 * @return array
 	 */
-	public function getPartyVotesForConstituency(Constituency $constituency)
+	public function forConstituency(Constituency $constituency)
 	{
 		$partyVotesResults = array();
 		$connection = $this->em->getConnection();

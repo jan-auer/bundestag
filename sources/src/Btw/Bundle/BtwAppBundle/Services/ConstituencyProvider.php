@@ -29,7 +29,7 @@ class ConstituencyProvider
 		$this->em = $entityManager;
 	}
 
-	public function getConstituencyById($id)
+	public function byId($id)
 	{
 		return $this->em->find('BtwPersistenceBundle:Constituency', $id);
 	}

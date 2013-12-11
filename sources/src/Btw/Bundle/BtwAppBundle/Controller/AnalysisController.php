@@ -12,7 +12,7 @@ class AnalysisController extends Controller
 		$partySeatsResultProvider = $this->get('btw_party_seats_result_provider');
 
 		/** ALL ELECTION YRS */
-		$elections = $electionProvider->getElections();
+		$elections = $electionProvider->getAll();
 		$years = array();
 		foreach ($elections as $election) {
 			$years[] = date('Y', $election->getDate()->getTimestamp());
@@ -22,8 +22,8 @@ class AnalysisController extends Controller
 		$latestElectionYear = max($years);
 
 		/** LATEST ELECTION RESULTS */
-		$latestElection = $electionProvider->getElectionFor($latestElectionYear);
-		$latestPartySeatsResults = $partySeatsResultProvider->getPartySeatsForCountry($latestElection);
+		$latestElection = $electionProvider->forYear($latestElectionYear);
+		$latestPartySeatsResults = $partySeatsResultProvider->forCountry($latestElection);
 		$latestResults = array();
 		foreach($latestPartySeatsResults as $result)
 		{

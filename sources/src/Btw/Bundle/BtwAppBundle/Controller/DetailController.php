@@ -64,8 +64,8 @@ class DetailController extends Controller
 			$constituencyProvider = $this->get('btw_constituency_provider');
 			$partyVotesProvider = $this->get('btw_party_votes_result_provider');
 
-			$constituency = $constituencyProvider->getConstituencyById($constituencyId);
-			$partyVotesResults = $partyVotesProvider->getPartyVotesForConstituency($constituency);
+			$constituency = $constituencyProvider->byId($constituencyId);
+			$partyVotesResults = $partyVotesProvider->forConstituency($constituency);
 			foreach($partyVotesResults as $result)
 			{
 				$results[] = array('name' => $result->getAbbreviation(), 'color' => $result->getColor(), 'y' => $result->getVotes());
@@ -75,8 +75,8 @@ class DetailController extends Controller
 			$stateProvider = $this->get('btw_state_provider');
 			$partySeatsProvider = $this->get('btw_party_seats_result_provider');
 
-			$state = $stateProvider->getStateById($stateId);
-			$partySeatsResults = $partySeatsProvider->getPartySeatsForState($state);
+			$state = $stateProvider->byId($stateId);
+			$partySeatsResults = $partySeatsProvider->forState($state);
 			foreach($partySeatsResults as $result)
 			{
 				$results[] = array('name' => $result->getAbbreviation(), 'color' => $result->getColor(), 'y' => $result->getSeats());
@@ -86,8 +86,8 @@ class DetailController extends Controller
 			$electionProvider = $this->get('btw_election_provider');
 			$partySeatsProvider = $this->get('btw_party_seats_result_provider');
 
-			$election = $electionProvider->getElectionFor($year);
-			$partySeatsResults = $partySeatsProvider->getPartySeatsForCountry($election);
+			$election = $electionProvider->forYear($year);
+			$partySeatsResults = $partySeatsProvider->forCountry($election);
 			foreach($partySeatsResults as $result)
 			{
 				$results[] = array('name' => $result->getAbbreviation(), 'color' => $result->getColor(), 'y' => $result->getSeats());

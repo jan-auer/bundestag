@@ -25,7 +25,7 @@ class ElectionProvider
 	/**
 	 * @return array
 	 */
-	public function getElections()
+	public function getAll()
 	{
 		$electionsRepository = $this->em->getRepository('BtwPersistenceBundle:Election');
 		return$electionsRepository->findAll();
@@ -35,7 +35,7 @@ class ElectionProvider
 	 * @param $year
 	 * @return mixed
 	 */
-	public function getElectionFor($year)
+	public function forYear($year)
 	{
 		$electionsRepository = $this->em->getRepository('BtwPersistenceBundle:Election');
 		$elections = $electionsRepository->findAll();

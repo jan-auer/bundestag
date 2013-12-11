@@ -28,21 +28,9 @@ class StateProvider
 
 	/**
 	 * @param $election Election
-	 * @param $name
 	 * @return array
 	 */
-	public function getStateFor(Election $election, $name)
-	{
-		$statesRepository = $this->em->getRepository('BtwPersistenceBundle:State');
-		$state = $statesRepository->findOneBy(array('election' => $election, 'name' => $name));
-		return $state;
-	}
-
-	/**
-	 * @param $election Election
-	 * @return array
-	 */
-	public function getStatesFor(Election $election)
+	public function getAllForElection(Election $election)
 	{
 		$statesRepository = $this->em->getRepository('BtwPersistenceBundle:State');
 		$states = $statesRepository->findBy(array('election' => $election), array('name' => 'ASC'));
@@ -53,7 +41,7 @@ class StateProvider
 	 * @param $id state id
 	 * @return State
 	 */
-	public function getStateById($id)
+	public function byId($id)
 	{
 		return $this->em->find('BtwPersistenceBundle:State', $id);
 	}

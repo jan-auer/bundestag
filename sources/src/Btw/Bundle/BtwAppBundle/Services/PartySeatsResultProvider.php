@@ -29,7 +29,7 @@ class PartySeatsResultProvider
 	 * @param Election $election
 	 * @return array
 	 */
-	public function getPartySeatsForCountry(Election $election)
+	public function forCountry(Election $election)
 	{
 		$partySeatsResults = array();
 		$connection = $this->em->getConnection();
@@ -51,7 +51,7 @@ class PartySeatsResultProvider
 	 * @param State $state
 	 * @return array
 	 */
-	public function getPartySeatsForState(State $state)
+	public function forState(State $state)
 	{
 		$partySeatsResults = array();
 		$connection = $this->em->getConnection();
