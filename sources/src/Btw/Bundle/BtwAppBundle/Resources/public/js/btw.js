@@ -47,6 +47,7 @@
 				$scope.title = data.scope;
 				$scope.chart = data.chart;
 				$scope.location = data.location;
+				$scope.parties = data.parties;
 			});
 		}
 

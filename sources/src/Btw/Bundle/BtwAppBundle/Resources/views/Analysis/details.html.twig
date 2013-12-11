@@ -5,8 +5,9 @@
 {% block content %}
 
     <div ng-app="btw" ng-controller="DetailsController" ng-init="year = {{ year }}">
+    {% verbatim %}
 
-        <h1>Ergebnisse der Wahl {{ year }} <span ng-show="title" ng-bind="'– ' + title"></span></h1>
+        <h1>Ergebnisse der Wahl {{ year }} {{ title ? '– '+title : '' }}</h1>
 
         <div class="row">
             <div class="col-md-8">
@@ -27,15 +28,37 @@
                         <tr><th colspan="2">Details</th></tr>
                     </thead>
                     <tbody>
-                        <tr><th>Einwohner</th><td ng-bind="location.population | number"></td></tr>
-                        <tr><th>Wahlbeteiligung</th><td ng-bind="location.participation | number:2"></td></tr>
+                        <tr><th>Einwohner</th><td>{{ location.population | number }}</td></tr>
+                        <tr><th>Wahlbeteiligung</th><td>{{ (location.participation * 100) | number:2 }}%</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
+        <h3>Parteien</h3>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Partei</th>
+                    <th>Stimmen (Anteil)</th>
+                    <th>Mandate (Überhang)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="party in parties">
+                    <td class="text-center"><span class="label" style="background: {{ party.color }}">&nbsp;&nbsp;</span></td>
+                    <td>{{ party.name }}</td>
+                    <td>{{ party.votes }} ({{ (party.percentage * 100) | number:2 }}%)</td>
+                    <td>{{ party.seats }} ({{ party.overhead }})</td>
+                </tr>
+            </tbody>
+        </table>
+
         <div class="btw-loading" ng-show="loading"></div>
 
+        {% endverbatim %}
     </div>
 
 {% endblock %}

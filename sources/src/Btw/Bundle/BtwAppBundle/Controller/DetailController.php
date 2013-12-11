@@ -121,12 +121,15 @@ class DetailController extends Controller
 		// PARTIES
 		foreach($partyResults as $result)
 		{
-			$parties[] = array('abbreviation' => $result->getPartyAbbreviation(),
-								'name' => $result->getPartyFullName(),
-								'votes' => $result->getVotes(),
-								'percentage' => $result->getPercentage(),
-								'seats' => $result->getSeats(),
-								'overhead' => $result->getOverhead());
+			$parties[] = array(
+				'abbreviation' => $result->getPartyAbbreviation(),
+				'color'        => $result->getColor(),
+				'name'         => $result->getPartyFullName(),
+				'votes'        => $result->getVotes(),
+				'percentage'   => $result->getPercentage(),
+				'seats'        => $result->getSeats(),
+				'overhead'     => $result->getOverhead()
+			);
 		}
 
 		return array('scope'     => $scope,
@@ -184,12 +187,15 @@ class DetailController extends Controller
 		//PARTIES
 		foreach($partyResults as $result)
 		{
-			$parties[] = array('abbreviation' => $result->getPartyAbbreviation(),
-				'name' => $result->getPartyFullName(),
-				'votes' => $result->getVotes(),
-				'percentage' => $result->getPercentage(),
-				'seats' => $result->getSeats(),
-				'overhead' => $result->getOverhead());
+			$parties[] = array(
+				'abbreviation' => $result->getPartyAbbreviation(),
+				'color'        => $result->getColor(),
+				'name'         => $result->getPartyFullName(),
+				'votes'        => $result->getVotes(),
+				'percentage'   => $result->getPercentage(),
+				'seats'        => $result->getSeats(),
+				'overhead'     => $result->getOverhead()
+			);
 		}
 
 		return array('scope'    => $scope,
@@ -247,12 +253,15 @@ class DetailController extends Controller
 		//PARTIES
 		foreach($partyResults as $result)
 		{
-			$parties[] = array('abbreviation' => $result->getPartyAbbreviation(),
-				'name' => $result->getPartyFullName(),
-				'votes' => $result->getVotes(),
-				'percentage' => $result->getPercentage(),
-				'seats' => $result->getSeats(),
-				'overhead' => $result->getOverhead());
+			$parties[] = array(
+				'abbreviation' => $result->getPartyAbbreviation(),
+				'color'        => $result->getColor(),
+				'name'         => $result->getPartyFullName(),
+				'votes'        => $result->getVotes(),
+				'percentage'   => $result->getPercentage(),
+				'seats'        => $result->getSeats(),
+				'overhead'     => $result->getOverhead()
+			);
 		}
 
 		return array('scope'    => $scope,
