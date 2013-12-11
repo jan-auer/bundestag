@@ -82,21 +82,20 @@ class DetailController extends Controller
 		$parties = array();
 
 		$constituencyProvider = $this->get('btw_constituency_provider');
-		$partyVotesProvider = $this->get('btw_party_votes_result_provider');
 		$locationDetailsProvider = $this->get('btw_location_details_provider');
 		$membersOfBundestagProvider = $this->get('btw_members_of_bundestag_provider');
 		$partyResultsProvider = $this->get('btw_party_results_provider');
 
 		$constituency = $constituencyProvider->byId($constituencyId);
+		$partyResults = $partyResultsProvider->forConstituency($constituency);
 
 		//SCOPE
 		$scope = $constituency->getName();
 
 		//CHART
-		$partyVotesResults = $partyVotesProvider->forConstituency($constituency);
-		foreach($partyVotesResults as $result)
+		foreach($partyResults as $result)
 		{
-			$chart[] = array('name' => $result->getAbbreviation(), 'color' => $result->getColor(), 'y' => $result->getVotes());
+			$chart[] = array('name' => $result->getPartyAbbreviation(), 'color' => $result->getColor(), 'y' => $result->getVotes());
 		}
 		usort($chart, function($result1, $result2)
 		{
@@ -120,7 +119,6 @@ class DetailController extends Controller
 		}
 
 		// PARTIES
-		$partyResults = $partyResultsProvider->forConstituency($constituency);
 		foreach($partyResults as $result)
 		{
 			$parties[] = array('abbreviation' => $result->getPartyAbbreviation(),
@@ -148,21 +146,20 @@ class DetailController extends Controller
 		$parties = array();
 
 		$stateProvider = $this->get('btw_state_provider');
-		$partySeatsProvider = $this->get('btw_party_seats_result_provider');
 		$locationDetailsProvider = $this->get('btw_location_details_provider');
 		$membersOfBundestagProvider = $this->get('btw_members_of_bundestag_provider');
 		$partyResultsProvider = $this->get('btw_party_results_provider');
 
 		$state = $stateProvider->byId($stateId);
+		$partyResults = $partyResultsProvider->forState($state);
 
 		//SCOPE
 		$scope = $state->getName();
 
 		//CHART
-		$partySeatsResults = $partySeatsProvider->forState($state);
-		foreach($partySeatsResults as $result)
+		foreach($partyResults as $result)
 		{
-			$chart[] = array('name' => $result->getAbbreviation(), 'color' => $result->getColor(), 'y' => $result->getSeats());
+			$chart[] = array('name' => $result->getPartyAbbreviation(), 'color' => $result->getColor(), 'y' => $result->getSeats());
 		}
 		usort($chart, function($result1, $result2)
 		{
@@ -186,7 +183,6 @@ class DetailController extends Controller
 		}
 
 		//PARTIES
-		$partyResults = $partyResultsProvider->forState($state);
 		foreach($partyResults as $result)
 		{
 			$parties[] = array('abbreviation' => $result->getPartyAbbreviation(),
@@ -214,23 +210,20 @@ class DetailController extends Controller
 		$parties = array();
 
 		$electionProvider = $this->get('btw_election_provider');
-		$partySeatsProvider = $this->get('btw_party_seats_result_provider');
-		$stateProvider = $this->get('btw_state_provider');
-		$partySeatsProvider = $this->get('btw_party_seats_result_provider');
 		$locationDetailsProvider = $this->get('btw_location_details_provider');
 		$membersOfBundestagProvider = $this->get('btw_members_of_bundestag_provider');
 		$partyResultsProvider = $this->get('btw_party_results_provider');
 
 		$election = $electionProvider->forYear($year);
+		$partyResults = $partyResultsProvider->forCountry($election);
 
 		//SCOPE
 		$scope = "Bundesrepublik Deutschland";
 
 		//CHART
-		$partySeatsResults = $partySeatsProvider->forCountry($election);
-		foreach($partySeatsResults as $result)
+		foreach($partyResults as $result)
 		{
-			$chart[] = array('name' => $result->getAbbreviation(), 'color' => $result->getColor(), 'y' => $result->getSeats());
+			$chart[] = array('name' => $result->getPartyAbbreviation(), 'color' => $result->getColor(), 'y' => $result->getSeats());
 		}
 		usort($chart, function($result1, $result2)
 		{
@@ -254,7 +247,6 @@ class DetailController extends Controller
 		}
 
 		//PARTIES
-		$partyResults = $partyResultsProvider->forCountry($election);
 		foreach($partyResults as $result)
 		{
 			$parties[] = array('abbreviation' => $result->getPartyAbbreviation(),

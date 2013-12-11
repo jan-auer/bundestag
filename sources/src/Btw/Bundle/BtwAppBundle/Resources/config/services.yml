@@ -5,8 +5,6 @@ parameters:
      btw_country_provider.class: Btw\Bundle\BtwAppBundle\Services\CountryProvider
      btw_location_details_provider.class: Btw\Bundle\BtwAppBundle\Services\LocationDetailsProvider
      btw_members_of_bundestag_provider.class: Btw\Bundle\BtwAppBundle\Services\MembersOfBundestagProvider
-     btw_party_seats_result_provider.class: Btw\Bundle\BtwAppBundle\Services\PartySeatsResultProvider
-     btw_party_votes_result_provider.class: Btw\Bundle\BtwAppBundle\Services\PartyVotesResultProvider
      btw_party_results_provider.class: Btw\Bundle\BtwAppBundle\Services\PartyResultsProvider
 
      btw_election_analysis_form_builder.class: Btw\Bundle\BtwAppBundle\FormBuilder\ElectionAnalysisFormBuilder
@@ -36,14 +34,6 @@ services:
                 class: "%btw_members_of_bundestag_provider.class%"
                 arguments:
                                    entityManager: "@doctrine.orm.entity_manager"
-     btw_party_seats_result_provider:
-                     class: "%btw_party_seats_result_provider.class%"
-                     arguments:
-                                        entityManager: "@doctrine.orm.entity_manager"
-     btw_party_votes_result_provider:
-                     class: "%btw_party_votes_result_provider.class%"
-                     arguments:
-                                        entityManager: "@doctrine.orm.entity_manager"
      btw_party_results_provider:
                      class: "%btw_party_results_provider.class%"
                      arguments:

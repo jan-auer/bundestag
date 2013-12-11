@@ -9,7 +9,7 @@ class AnalysisController extends Controller
 	public function indexAction()
 	{
 		$electionProvider = $this->get('btw_election_provider');
-		$partySeatsResultProvider = $this->get('btw_party_seats_result_provider');
+		$partyResultProvider = $this->get('btw_party_result_provider');
 
 		/** ALL ELECTION YRS */
 		$elections = $electionProvider->getAll();
@@ -23,7 +23,7 @@ class AnalysisController extends Controller
 
 		/** LATEST ELECTION RESULTS */
 		$latestElection = $electionProvider->forYear($latestElectionYear);
-		$latestPartySeatsResults = $partySeatsResultProvider->forCountry($latestElection);
+		$latestPartySeatsResults = $partyResultProvider->forCountry($latestElection);
 		$latestResults = array();
 		foreach($latestPartySeatsResults as $result)
 		{
