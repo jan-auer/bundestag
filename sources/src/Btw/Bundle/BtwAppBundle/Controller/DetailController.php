@@ -63,11 +63,17 @@ class DetailController extends Controller
 			//TODO
 		} else if ($stateId > 0 && $constituencyId == 0) {
 			//RESULTS PER STATE
-			//TODO
+			$stateProvider = $this->get('btw_state_provider');
+
+			$state = $stateProvider->getStateById($stateId);
+			$results = $stateProvider->getResultsFor($state);
 		} else {
 			//TOTAL RESULTS
+			$electionProvider = $this->get('btw_election_provider');
 			$countyProvider = $this->get("btw_country_provider");
-			$results = $countyProvider->getResultsFor($year);
+
+			$election = $electionProvider->getElectionFor($year);
+			$results = $countyProvider->getResultsFor($election);
 		}
 
 		usort($results, function($result1, $result2)
