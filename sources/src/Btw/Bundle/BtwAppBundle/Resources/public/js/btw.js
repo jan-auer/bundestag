@@ -62,12 +62,14 @@
 
 	Module.directive('btwChart', function () {
 		return {
-			scope : { data : '=btwChart' },
+			scope : { config : '=btwChart' },
 
 			link : function (scope, element, attrs) {
 				var chart = createChart(element, scope.data);
-				scope.$watch('data', function (data) {
-					chart.series[0].setData(data);
+				scope.$watch('config', function (config) {
+					chart.series[0].setData(config.data, false);
+					chart.series[0].update({ name : config.type }, false);
+					chart.redraw(true);
 				});
 			}
 		};

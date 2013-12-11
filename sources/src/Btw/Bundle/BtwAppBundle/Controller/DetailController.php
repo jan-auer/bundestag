@@ -129,12 +129,11 @@ class DetailController extends Controller
 								'overhead' => $result->getOverhead());
 		}
 
-		return array('scope' => $scope,
-					'chart' => $chart,
-					'chartType' => "Zweitstimmen",
-					'location' => $location,
-					'members' => $members,
-					'parties' => $parties);
+		return array('scope'     => $scope,
+		             'chart'     => array('data' => $chart, 'type' => 'Zweitstimmen'),
+		             'location'  => $location,
+		             'members'   => $members,
+		             'parties'   => $parties);
 	}
 
 	private function getResultForState($stateId)
@@ -193,12 +192,11 @@ class DetailController extends Controller
 				'overhead' => $result->getOverhead());
 		}
 
-		return array('scope' => $scope,
-			'chart' => $chart,
-			'chartType' => "Sitze",
-			'location' => $location,
-			'members' => $members,
-			'parties' => $parties);
+		return array('scope'    => $scope,
+		             'chart'    => array('data' => $chart, 'type' => 'Sitze'),
+		             'location' => $location,
+		             'members'  => $members,
+		             'parties'  => $parties);
 	}
 
 	private function getResultForCountry($year)
@@ -257,11 +255,10 @@ class DetailController extends Controller
 				'overhead' => $result->getOverhead());
 		}
 
-		return array('scope' => $scope,
-			'chart' => $chart,
-			'chartType' => "Sitze",
-			'location' => $location,
-			'members' => $members,
-			'parties' => $parties);
+		return array('scope'    => $scope,
+		             'chart'    => array('data' => $chart, 'type' => 'Sitze'),
+		             'location' => $location,
+		             'members'  => $members,
+		             'parties'  => $parties);
 	}
 }
