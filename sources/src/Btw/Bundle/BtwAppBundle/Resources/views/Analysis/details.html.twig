@@ -35,26 +35,54 @@
             </div>
         </div>
 
-        <h3>Parteien</h3>
+        <hr />
 
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Partei</th>
-                    <th>Stimmen (Anteil)</th>
-                    <th>Mandate (Überhang)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="party in parties">
-                    <td class="text-center"><span class="label" style="background: {{ party.color }}">&nbsp;&nbsp;</span></td>
-                    <td>{{ party.name }}</td>
-                    <td>{{ party.votes }} ({{ (party.percentage * 100) | number:2 }}%)</td>
-                    <td>{{ party.seats }} ({{ party.overhead }})</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Parteien</h3>
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Partei</th>
+                            <th>Stimmen</th>
+                            <th>Mandate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="party in parties">
+                            <td class="text-center"><span class="label" style="background: {{ party.color }}">&nbsp;&nbsp;</span></td>
+                            <td>{{ party.name }}</td>
+                            <td class="text-right">{{ party.votes | number }} ({{ (party.percentage * 100) | number:2 }}%)</td>
+                            <td class="text-right"><b>{{ party.seats }}</b> (+{{ party.overhead }})</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <h3>Gewählte Abgeordnete</h3>
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Partei</th>
+                            <th>Abgeordneter</th>
+                            <th>Direktmandat</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="member in members">
+                            <td>{{ member.party }}</td>
+                            <td>{{ member.name }}</td>
+                            <td><i class="glyphicon glyphicon-ok" ng-show="member.direct"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
 
         <div class="btw-loading" ng-show="loading"></div>
 

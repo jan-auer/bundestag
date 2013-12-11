@@ -48,6 +48,7 @@
 				$scope.chart = data.chart;
 				$scope.location = data.location;
 				$scope.parties = data.parties;
+				$scope.members = data.members;
 			});
 		}
 
