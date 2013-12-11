@@ -1,5 +1,9 @@
 !function (ng) {
 
+	/** @const */ var STATES_PATH         = 'btw_app_ajax_states';
+	/** @const */ var CONSTITUENCIES_PATH = 'btw_app_ajax_constituencies';
+	/** @const */ var RESULTS_PATH        = 'btw_app_ajax_results';
+
 	var Module = ng.module('btw', []);
 
 	Module.controller('DetailsController', ['$scope', '$http', function ($scope, $http) {
@@ -19,7 +23,7 @@
 		// Methods
 
 		function loadStates(year) {
-			load('btw_app_ajax_states', { year : year }, function (states) {
+			load(STATES_PATH, { year : year }, function (states) {
 				$scope.states = states;
 			});
 		}
@@ -28,7 +32,7 @@
 			$scope.constituency = 0;
 			if (!state) return;
 
-			load('btw_app_ajax_constituencies', { 'stateId' : state }, function (constituencies) {
+			load(CONSTITUENCIES_PATH, { 'stateId' : state }, function (constituencies) {
 				$scope.constituencies = constituencies;
 			});
 		}
@@ -39,7 +43,7 @@
 
 		function loadChartData() {
 			var data = { year : $scope.year, stateId : $scope.state || 0, constituencyId : $scope.constituency || 0 };
-			load('btw_app_ajax_results', data, function (data) {
+			load(RESULTS_PATH, data, function (data) {
 				$scope.data = data;
 			});
 		}
@@ -62,7 +66,6 @@
 
 			link : function (scope, element, attrs) {
 				var chart = createChart(element, scope.data);
-
 				scope.$watch('data', function (data) {
 					chart.series[0].setData(data);
 				});
