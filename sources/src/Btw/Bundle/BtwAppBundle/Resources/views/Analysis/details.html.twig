@@ -1,81 +1,25 @@
 {% extends "BtwAppBundle::layout.html.twig" %}
 
-{% block title %}Bundestagswahl {{ app.request.get('year') }}{% endblock %}
+{% block title %}Bundestagswahl {{ year }}{% endblock %}
 
 {% block content %}
 
-    <form method="post" action="">
-        <label for="select_state">State</label>
-        <select id="select_state">
-            <option value="-1">Choose a state</option>
-        </select><br/>
-        <label for="select_constituency">Constituency</label>
-        <select id="select_constituency">
-            <option value="-1">Choose a constituency</option>
-        </select>
-{% endblock %}
+    <h1>Bundestagswahl {{ year }}</h1>
 
+    <div class="row" ng-app="btw" ng-controller="DetailsController" ng-init="year = {{ year }}">
+        <div class="col-md-8">
+            <div id="chart" class="btw-chart"></div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="details-state">Bundesland</label>
+                <select id="details-state" class="form-control" ng-model="state" ng-options="s.id as s.name for s in states"></select>
+            </div>
+            <div class="form-group">
+                <label for="details-constituency">Wahlkreis</label>
+                <select id="details-constituency" class="form-control" ng-model="constituency" ng-options="c.id as c.name for c in constituencies"></select>
+            </div>
+        </div>
+    </div>
 
-
-{% block scripts %}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $.ajax({
-                type: "GET",
-                url: Routing.generate('btw_app_ajax_states', { 'year': {{ app.request.get('year') }} }),
-                success: function (data) {
-                    var states = JSON.parse(data);
-
-                    var stateSelect = $('#select_state');
-
-                    $.each(states, function (index, value) {
-                        stateSelect.append(
-                                $('<option></option>').val(value['id']).html(value['name'])
-                        );
-                    });
-                }
-            });
-
-
-            $('#select_state').change(function () {
-                $.ajax({
-                    type: "GET",
-                    url: Routing.generate('btw_app_ajax_constituencies', { 'stateId': $(this).val() }),
-                    success: function (data) {
-                        var constituencies = JSON.parse(data);
-
-                        var constituencySelect = $('#select_constituency');
-                        constituencySelect.children('option:not(:first)').remove();
-
-                        $.each(constituencies, function (index, value) {
-                            constituencySelect.append(
-                                    $('<option></option>').val(value['id']).html(value['name'])
-                            );
-                        });
-                        getResults($('#select_state').val(), $('#select_constituency').val());
-                    }
-                });
-
-            });
-
-            $('#select_constituency').change(function () {
-                getResults($('#select_state').val(), $('#select_constituency').val());
-            });
-
-            getResults(0, 0);
-        });
-
-
-
-        function getResults(stateId, constituencyId) {
-            $.ajax({
-                type: "GET",
-                url: Routing.generate('btw_app_ajax_results', { 'year': {{ app.request.get('year') }},'stateId': stateId, 'constituencyId': constituencyId }),
-                success: function (data) {
-                    console.log(data);
-                }
-            });
-        }
-
-        </script>
 {% endblock %}
