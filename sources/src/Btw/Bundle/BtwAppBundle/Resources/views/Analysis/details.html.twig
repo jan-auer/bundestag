@@ -41,7 +41,7 @@
             <div class="col-md-6">
                 <h3>Parteien</h3>
 
-                <table class="table table-striped">
+                <table class="table table-striped table-hover">
                     <thead>
                         <tr>
                             <th></th>
@@ -52,10 +52,19 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="party in parties">
-                            <td class="text-center"><span class="label" style="background: {{ party.color }}">&nbsp;&nbsp;</span></td>
-                            <td>{{ party.name }}</td>
-                            <td class="text-right">{{ party.votes | number }} ({{ (party.percentage * 100) | number:2 }}%)</td>
-                            <td class="text-right"><b>{{ party.seats }}</b> (+{{ party.overhead }})</td>
+                            <td class="text-center">
+                                <span class="label" style="background: {{ party.color }}">&nbsp;&nbsp;</span>
+                            </td>
+                            <td>
+                                {{ party.name }}
+                            </td>
+                            <td class="text-right">
+                                {{ party.votes | number }} ({{ (party.percentage * 100) | number:2 }}%)
+                            </td>
+                            <td class="text-right">
+                                <b>{{ party.seats }}</b>
+                                <span bs-tooltip="Überhangmandate">(+ {{ party.overhead }})</span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -63,7 +72,7 @@
             <div class="col-md-6">
                 <h3>Gewählte Abgeordnete</h3>
 
-                <table class="table table-striped">
+                <table class="table table-striped table-hover">
                     <thead>
                         <tr>
                             <th>Partei</th>
@@ -81,8 +90,6 @@
                 </table>
             </div>
         </div>
-
-
 
         <div class="btw-loading" ng-show="loading"></div>
 
