@@ -60,7 +60,10 @@ class DetailController extends Controller
 		$results = array();
 		if ($stateId > 0 && $constituencyId > 0) {
 			//RESULTS PER CONSTITUENCY
-			//TODO
+			$constituencyProvider = $this->get('btw_constituency_provider');
+
+			$constituency = $constituencyProvider->getConstituencyById($constituencyId);
+			$results = $constituencyProvider->getResultsFor($constituency);
 		} else if ($stateId > 0 && $constituencyId == 0) {
 			//RESULTS PER STATE
 			$stateProvider = $this->get('btw_state_provider');
