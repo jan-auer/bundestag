@@ -19,7 +19,7 @@ class DetailController extends Controller
 {
 	public function indexAction($year)
 	{
-		return $this->render('BtwAppBundle:Analysis:details.html.twig');
+		return $this->render('BtwAppBundle:Analysis:details.html.twig', array('year' => $year));
 
 	}
 
