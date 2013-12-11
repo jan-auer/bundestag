@@ -57,4 +57,19 @@ class ConstituencyProvider extends Provider
 
 		return $details;
 	}
+
+	public function getResultsfor(Constituency $constituency)
+	{
+		$connection = $this->em->getConnection();
+		$statement = $connection->prepare("SELECT abbreviation AS name, color, absoluteVotes :: INT AS y FROM constituency_votes cv, party p WHERE cv.party_id=p.party_id AND constituency_id=:constituencyId");
+		$statement->bindValue('constituencyId', $constituency->getId());
+
+		$statement->execute();
+		return $statement->fetchAll();
+	}
+
+	public function getConstituencyById($id)
+	{
+		return $this->em->find('BtwPersistenceBundle:Constituency', $id);
+	}
 } 
