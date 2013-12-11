@@ -3,11 +3,13 @@
  *
  * @param {String} selector A jQuery selector for the target element.
  * @param {Array}  data     An array containing all data points for the chart.
+ *
+ * @return {Chart} The Highcharts configuration object.
  */
 function createChart(selector, data) {
 
 	// Build the chart
-	$(selector).highcharts({
+	return $(selector).highcharts({
 		chart : {
 			backgroundColor     : 'transparent',
 			plotBackgroundColor : null,
@@ -42,6 +44,6 @@ function createChart(selector, data) {
 				data : data
 			}
 		]
-	});
+	}).highcharts();
 
 }
