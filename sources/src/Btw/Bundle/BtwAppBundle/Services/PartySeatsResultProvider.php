@@ -17,6 +17,13 @@ use Doctrine\ORM\EntityManager;
 class PartySeatsResultProvider
 {
 
+	/**
+	 *
+	 * DEPRECATED CLASS
+	 * ONLY USED AS AN INSPIRATION WHEN INTEGRATING THIS FUNCTIONALITY INTO PARTYRESULTSPROVIDER
+	 *
+	 */
+
 	/** @var  EntityManager */
 	protected $em;
 
