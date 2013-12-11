@@ -15,8 +15,11 @@ use Btw\Bundle\PersistenceBundle\Entity\Constituency;
 use Doctrine\ORM\EntityManager;
 
 
-class ConstituencyProvider extends Provider
+class ConstituencyProvider
 {
+
+	/** @var  EntityManager */
+	protected $em;
 
 	/**
 	 * @param EntityManager $entityManager
