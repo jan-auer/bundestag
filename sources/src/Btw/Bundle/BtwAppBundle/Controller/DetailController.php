@@ -216,7 +216,7 @@ class DetailController extends Controller
 		$partyResults = $partyResultsProvider->forCountry($election);
 
 		//SCOPE
-		$scope = "Bundesrepublik Deutschland";
+		$scope = "Gesamt";
 
 		//CHART
 		foreach($partyResults as $result)

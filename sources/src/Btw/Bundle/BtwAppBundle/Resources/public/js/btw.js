@@ -44,7 +44,9 @@
 		function loadDetails() {
 			var data = { year : $scope.year, stateId : $scope.state || 0, constituencyId : $scope.constituency || 0 };
 			load(DETAILS_PATH, data, function (data) {
+				$scope.title = data.scope;
 				$scope.chart = data.chart;
+				$scope.location = data.location;
 			});
 		}
 

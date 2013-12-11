@@ -4,25 +4,38 @@
 
 {% block content %}
 
-    <h1>Bundestagswahl {{ year }} &ndash; Details</h1>
+    <div ng-app="btw" ng-controller="DetailsController" ng-init="year = {{ year }}">
 
-    <div class="row" ng-app="btw" ng-controller="DetailsController" ng-init="year = {{ year }}">
-        <div class="col-md-8">
-            <div id="chart" class="btw-chart" btw-chart="chart"></div>
-        </div>
+        <h1>Ergebnisse der Wahl {{ year }} <span ng-show="title" ng-bind="'– ' + title"></span></h1>
 
-        <div class="col-md-4">
-            <div class="form-group">
-                <label for="details-state">Bundesland</label>
-                <select id="details-state" class="form-control" ng-model="state" ng-options="s.id as s.name for s in states"></select>
+        <div class="row">
+            <div class="col-md-8">
+                <div id="chart" class="btw-chart" btw-chart="chart"></div>
             </div>
-            <div class="form-group">
-                <label for="details-constituency">Wahlkreis</label>
-                <select id="details-constituency" class="form-control" ng-model="constituency" ng-options="c.id as c.name for c in constituencies"></select>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="details-state">Bundesland</label>
+                    <select id="details-state" class="form-control" ng-model="state" ng-options="s.id as s.name for s in states"></select>
+                </div>
+                <div class="form-group">
+                    <label for="details-constituency">Wahlkreis</label>
+                    <select id="details-constituency" class="form-control" ng-model="constituency" ng-options="c.id as c.name for c in constituencies"></select>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr><th colspan="2">Details</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><th>Einwohner</th><td ng-bind="location.population | number"></td></tr>
+                        <tr><th>Wahlbeteiligung</th><td ng-bind="location.participation | number:2"></td></tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
         <div class="btw-loading" ng-show="loading"></div>
+
     </div>
 
 {% endblock %}
