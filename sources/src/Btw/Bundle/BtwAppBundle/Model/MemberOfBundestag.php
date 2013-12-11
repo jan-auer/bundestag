@@ -13,10 +13,11 @@ use Btw\Bundle\PersistenceBundle\Entity\Candidate;
 
 class MemberOfBundestag {
 
-	/**
-	 * @var Candidate
-	 */
 	private $name;
+
+	private $partyAbbreviation;
+
+	private $isDirect;
 
 	/**
 	 * @param mixed $isDirect
@@ -35,7 +36,7 @@ class MemberOfBundestag {
 	}
 
 	/**
-	 * @param \Btw\Bundle\PersistenceBundle\Entity\Candidate $name
+	 * @param mixed $name
 	 */
 	public function setName($name)
 	{
@@ -43,7 +44,7 @@ class MemberOfBundestag {
 	}
 
 	/**
-	 * @return \Btw\Bundle\PersistenceBundle\Entity\Candidate
+	 * @return mixed
 	 */
 	public function getName()
 	{
@@ -51,7 +52,18 @@ class MemberOfBundestag {
 	}
 
 	/**
-	 * @var
+	 * @param mixed $partyAbbreviation
 	 */
-	private $isDirect;
+	public function setPartyAbbreviation($partyAbbreviation)
+	{
+		$this->partyAbbreviation = $partyAbbreviation;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPartyAbbreviation()
+	{
+		return $this->partyAbbreviation;
+	}
 } 
