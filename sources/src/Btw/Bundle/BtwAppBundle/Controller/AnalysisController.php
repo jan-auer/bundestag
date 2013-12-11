@@ -9,7 +9,7 @@ class AnalysisController extends Controller
 	public function indexAction()
 	{
 		$electionProvider = $this->get('btw_election_provider');
-		$partyResultProvider = $this->get('btw_party_result_provider');
+		$partyResultProvider = $this->get('btw_party_results_provider');
 
 		/** ALL ELECTION YRS */
 		$elections = $electionProvider->getAll();
@@ -27,7 +27,7 @@ class AnalysisController extends Controller
 		$latestResults = array();
 		foreach($latestPartySeatsResults as $result)
 		{
-			$latestResults[] = array('name' => $result->getAbbreviation(), 'color' => $result->getColor(), 'y' => $result->getSeats());
+			$latestResults[] = array('name' => $result->getPartyAbbreviation(), 'color' => $result->getColor(), 'y' => $result->getSeats());
 		}
 		usort($latestResults, function($result1, $result2)
 		{
