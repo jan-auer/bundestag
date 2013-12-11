@@ -13,6 +13,7 @@
 
 		$scope.$watch('year', loadStates);
 		$scope.$watch('state', loadConstituencies);
+		$scope.$watch(watchSelection, loadChartData);
 
 		// Methods
 
@@ -27,12 +28,37 @@
 			$scope.constituency = 0;
 			if (!state) return;
 
-			var url = Routing.generate('btw_app_ajax_constituencies', { 'stateId': state });
+			var url = Routing.generate('btw_app_ajax_constituencies', { 'stateId' : state });
 			$http.get(url).success(function (constituencies) {
 				$scope.constituencies = constituencies;
 			});
 		}
 
+		function watchSelection() {
+			return $scope.state + '|' + $scope.constituency;
+		}
+
+		function loadChartData() {
+			var url = Routing.generate('btw_app_ajax_results', { year : $scope.year, stateId : $scope.state || 0, constituencyId : $scope.constituency || 0 });
+			$http.get(url).success(function (data) {
+				$scope.data = data;
+			});
+		}
+
 	}]);
+
+	Module.directive('btwChart', function () {
+		return {
+			scope : { data : '=btwChart' },
+
+			link : function (scope, element, attrs) {
+				var chart = createChart(element, scope.data);
+
+				scope.$watch('data', function (data) {
+					chart.series[0].setData(data);
+				});
+			}
+		};
+	});
 
 }(angular);
