@@ -4,6 +4,9 @@
 	/** @const */ var CONSTITUENCIES_PATH = 'btw_app_ajax_constituencies';
 	/** @const */ var DETAILS_PATH        = 'btw_app_ajax_results';
 
+	/** @const */ var ALL_STATES         = { id : 0, name : 'Alle' };
+	/** @const */ var ALL_CONSTITUENCIES = { id : 0, name : 'Alle' };
+
 	var Module = ng.module('btw', []);
 
 	Module.controller('DetailsController', ['$scope', '$http', function ($scope, $http) {
@@ -24,15 +27,18 @@
 
 		function loadStates(year) {
 			load(STATES_PATH, { year : year }, function (states) {
+				states.unshift(ALL_STATES);
 				$scope.states = states;
 			});
 		}
 
 		function loadConstituencies(state) {
 			$scope.constituency = 0;
+			$scope.constituencies = [ ALL_CONSTITUENCIES ];
 			if (!state) return;
 
 			load(CONSTITUENCIES_PATH, { 'stateId' : state }, function (constituencies) {
+				constituencies.unshift(ALL_CONSTITUENCIES);
 				$scope.constituencies = constituencies;
 			});
 		}
