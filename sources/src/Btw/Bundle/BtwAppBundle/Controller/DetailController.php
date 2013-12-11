@@ -12,6 +12,7 @@ namespace Btw\Bundle\BtwAppBundle\Controller;
 use Btw\Bundle\BtwAppBundle\Form\ElectionAnalysisForm;
 use Btw\Bundle\BtwAppBundle\Model\ElectionAnalysisModel;
 use DateTime;
+use Doctrine\Tests\ORM\Id\AssignedGeneratorTest;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -61,22 +62,36 @@ class DetailController extends Controller
 		if ($stateId > 0 && $constituencyId > 0) {
 			//RESULTS PER CONSTITUENCY
 			$constituencyProvider = $this->get('btw_constituency_provider');
+			$partyVotesProvider = $this->get('btw_party_votes_result_provider');
 
 			$constituency = $constituencyProvider->getConstituencyById($constituencyId);
-			$results = $constituencyProvider->getResultsFor($constituency);
+			$partyVotesResults = $partyVotesProvider->getPartyVotesForConstituency($constituency);
+			foreach($partyVotesResults as $result)
+			{
+				$results[] = array('name' => $result->getAbbreviation(), 'color' => $result->getColor(), 'y' => $result->getVotes());
+			}
 		} else if ($stateId > 0 && $constituencyId == 0) {
 			//RESULTS PER STATE
 			$stateProvider = $this->get('btw_state_provider');
+			$partySeatsProvider = $this->get('btw_party_seats_result_provider');
 
 			$state = $stateProvider->getStateById($stateId);
-			$results = $stateProvider->getResultsFor($state);
+			$partySeatsResults = $partySeatsProvider->getPartySeatsForState($state);
+			foreach($partySeatsResults as $result)
+			{
+				$results[] = array('name' => $result->getAbbreviation(), 'color' => $result->getColor(), 'y' => $result->getSeats());
+			}
 		} else {
 			//TOTAL RESULTS
 			$electionProvider = $this->get('btw_election_provider');
-			$countyProvider = $this->get("btw_country_provider");
+			$partySeatsProvider = $this->get('btw_party_seats_result_provider');
 
 			$election = $electionProvider->getElectionFor($year);
-			$results = $countyProvider->getResultsFor($election);
+			$partySeatsResults = $partySeatsProvider->getPartySeatsForCountry($election);
+			foreach($partySeatsResults as $result)
+			{
+				$results[] = array('name' => $result->getAbbreviation(), 'color' => $result->getColor(), 'y' => $result->getSeats());
+			}
 		}
 
 		usort($results, function($result1, $result2)

@@ -9,7 +9,7 @@ class AnalysisController extends Controller
 	public function indexAction()
 	{
 		$electionProvider = $this->get('btw_election_provider');
-		$countryProvider = $this->get('btw_country_provider');
+		$partySeatsResultProvider = $this->get('btw_party_seats_result_provider');
 
 		/** ALL ELECTION YRS */
 		$elections = $electionProvider->getElections();
@@ -23,7 +23,12 @@ class AnalysisController extends Controller
 
 		/** LATEST ELECTION RESULTS */
 		$latestElection = $electionProvider->getElectionFor($latestElectionYear);
-		$latestResults = $countryProvider->getResultsFor($latestElection);
+		$latestPartySeatsResults = $partySeatsResultProvider->getPartySeatsForCountry($latestElection);
+		$latestResults = array();
+		foreach($latestPartySeatsResults as $result)
+		{
+			$latestResults[] = array('name' => $result->getAbbreviation(), 'color' => $result->getColor(), 'y' => $result->getSeats());
+		}
 		usort($latestResults, function($result1, $result2)
 		{
 			if($result1['y'] == $result2['y']) return 0;
