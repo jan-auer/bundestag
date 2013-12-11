@@ -2,7 +2,7 @@
 
 	/** @const */ var STATES_PATH         = 'btw_app_ajax_states';
 	/** @const */ var CONSTITUENCIES_PATH = 'btw_app_ajax_constituencies';
-	/** @const */ var RESULTS_PATH        = 'btw_app_ajax_results';
+	/** @const */ var DETAILS_PATH        = 'btw_app_ajax_results';
 
 	var Module = ng.module('btw', []);
 
@@ -18,7 +18,7 @@
 
 		$scope.$watch('year', loadStates);
 		$scope.$watch('state', loadConstituencies);
-		$scope.$watch(watchSelection, loadChartData);
+		$scope.$watch(watchSelection, loadDetails);
 
 		// Methods
 
@@ -41,10 +41,10 @@
 			return $scope.state + '|' + $scope.constituency;
 		}
 
-		function loadChartData() {
+		function loadDetails() {
 			var data = { year : $scope.year, stateId : $scope.state || 0, constituencyId : $scope.constituency || 0 };
-			load(RESULTS_PATH, data, function (data) {
-				$scope.data = data;
+			load(DETAILS_PATH, data, function (data) {
+				$scope.chart = data.chart;
 			});
 		}
 
