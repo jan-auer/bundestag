@@ -29,9 +29,9 @@ class DetailController extends Controller
 		$electionProvider = $this->get("btw_election_provider");
 		$stateProvider = $this->get("btw_state_provider");
 
-		$election = $electionProvider->getElectionFor($year);
+		$election = $electionProvider->forYear($year);
 		$states = array();
-		foreach ($stateProvider->getStatesFor($election) as $state) {
+		foreach ($stateProvider->getAllForElection($election) as $state) {
 			$states[] = array(
 				'id' => $state->getId(),
 				'name' => $state->getName()
@@ -45,7 +45,7 @@ class DetailController extends Controller
 	public function listConstituenciesAction($stateId)
 	{
 		$stateProvider = $this->get("btw_state_provider");
-		$state = $stateProvider->getStateById($stateId);
+		$state = $stateProvider->byId($stateId);
 		$constituencies = array();
 		foreach ($state->getConstituencies() as $constituency) {
 			$constituencies[] = array(
@@ -66,6 +66,7 @@ class DetailController extends Controller
 
 			$constituency = $constituencyProvider->byId($constituencyId);
 			$partyVotesResults = $partyVotesProvider->forConstituency($constituency);
+
 			foreach($partyVotesResults as $result)
 			{
 				$results[] = array('name' => $result->getAbbreviation(), 'color' => $result->getColor(), 'y' => $result->getVotes());
