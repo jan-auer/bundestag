@@ -95,8 +95,7 @@ class StateProvider {
 	public function getResultsFor(State $state)
 	{
 		$connection = $this->em->getConnection();
-		$statement = $connection->prepare("SELECT abbreviation as name, color, SUM(seats) :: INT as y FROM party_state_seats JOIN party USING (party_id, election_id) JOIN election USING (election_id) WHERE date_part('Y', date) = :electionYear AND party_state_seats.state_id=:stateId GROUP BY abbreviation, color");
-		$statement->bindValue('electionYear', date('Y', $election->getDate()->getTimestamp()));
+		$statement = $connection->prepare("SELECT abbreviation as name, color, SUM(seats) :: INT as y FROM party_state_seats JOIN party USING (party_id, election_id) WHERE party_state_seats.state_id=:stateId GROUP BY abbreviation, color");
 		$statement->bindValue('stateId', $state->getId());
 
 		$statement->execute();
