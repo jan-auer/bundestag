@@ -2,6 +2,7 @@
 	"name" : "btw",
 
 	"dependencies" : {
+		"angular" : "1.2",
 		"bootstrap" : "3.0",
 		"highcharts" : "3.0"
 	}
