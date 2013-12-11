@@ -71,6 +71,7 @@
 			link : function (scope, element, attrs) {
 				var chart = createChart(element, scope.data);
 				scope.$watch('config', function (config) {
+					config = config || {};
 					chart.series[0].setData(config.data, false);
 					chart.series[0].update({ name : config.type }, false);
 					chart.redraw(true);
