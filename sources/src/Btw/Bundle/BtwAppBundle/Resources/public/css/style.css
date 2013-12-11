@@ -38,12 +38,22 @@ a:hover {
 	color: white !important;
 }
 
+.btw-navbar .navbar-toggle:hover,
+.btw-navbar .navbar-toggle:focus,
+.btw-navbar .navbar-toggle:active {
+	background-color: rgba(255, 255, 255, 0.15);
+}
+
 .btw-navbar .navbar-toggle .icon-bar {
 	background-color: white;
 }
 
 .btw-navbar .navbar-nav > li > a:hover {
 	background: rgba(255, 255, 255, 0.15);
+}
+
+.btw-navbar .navbar-collapse {
+	background: linear-gradient(#666, #333);
 }
 
 .btw-footer {
@@ -53,12 +63,22 @@ a:hover {
 }
 
 .btw-loading {
-	position: absolute;
-	top:      0;
-	left:     0;
-	right:    0;
-	bottom:   0;
+	position:   absolute;
+	top:        0;
+	left:       0;
+	right:      0;
+	bottom:     0;
 	background: url(/bundles/btwapp/img/loading.gif) center 150px no-repeat rgba(245, 245, 245, .75);
+}
+
+/*****************************************************************************/
+/*****************************   RESPONSIVENESS   ****************************/
+/*****************************************************************************/
+
+@media (min-width: 768px) {
+	.navbar-collapse {
+		background: transparent !important;
+	}
 }
 
 /*****************************************************************************/
