@@ -14,6 +14,10 @@ a:hover {
 	color: #f36c00;
 }
 
+.container {
+	position: relative;
+}
+
 /*****************************************************************************/
 /**************************   BTW PAGE ELEMENTS   ****************************/
 /*****************************************************************************/
@@ -46,6 +50,15 @@ a:hover {
 	border-top:  1px solid #ddd;
 	margin-top:  2em;
 	padding-top: 2em;
+}
+
+.btw-loading {
+	position: absolute;
+	top:      0;
+	left:     0;
+	right:    0;
+	bottom:   0;
+	background: url(/bundles/btwapp/img/loading.gif) center 150px no-repeat rgba(245, 245, 245, .75);
 }
 
 /*****************************************************************************/

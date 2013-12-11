@@ -6,6 +6,7 @@
 
 		// Scope Exports
 
+		$scope.loading = 0;
 		$scope.state = 0;
 		$scope.constituency = 0;
 
@@ -18,8 +19,7 @@
 		// Methods
 
 		function loadStates(year) {
-			var url = Routing.generate('btw_app_ajax_states', { year : year });
-			$http.get(url).success(function (states) {
+			load('btw_app_ajax_states', { year : year }, function (states) {
 				$scope.states = states;
 			});
 		}
@@ -28,8 +28,7 @@
 			$scope.constituency = 0;
 			if (!state) return;
 
-			var url = Routing.generate('btw_app_ajax_constituencies', { 'stateId' : state });
-			$http.get(url).success(function (constituencies) {
+			load('btw_app_ajax_constituencies', { 'stateId' : state }, function (constituencies) {
 				$scope.constituencies = constituencies;
 			});
 		}
@@ -39,9 +38,19 @@
 		}
 
 		function loadChartData() {
-			var url = Routing.generate('btw_app_ajax_results', { year : $scope.year, stateId : $scope.state || 0, constituencyId : $scope.constituency || 0 });
-			$http.get(url).success(function (data) {
+			var data = { year : $scope.year, stateId : $scope.state || 0, constituencyId : $scope.constituency || 0 };
+			load('btw_app_ajax_results', data, function (data) {
 				$scope.data = data;
+			});
+		}
+
+		function load(path, data, success) {
+			$scope.loading++;
+
+			var url = Routing.generate(path, data);
+			$http.get(url).success(function (response) {
+				$scope.loading--;
+				(success || ng.noop)(response);
 			});
 		}
 
