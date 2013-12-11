@@ -41,7 +41,7 @@ class MembersOfBundestagProvider {
 			$membersOfBundestag[] = $memberOfBundestag;
 		}
 
-		$statement = $connection->prepare("SELECT c.name AS name, p.abbreviation AS party FROM Candidate c, elected_candidates ec, party p WHERE c.candidate_id=ec.candidate_id AND c.election_id=:electionId AND c.party_id=p.party_id AND candidate_id NOT IN (SELECT c.candidate_id AS name FROM Candidate c, constituency_winners cw WHERE c.candidate_id=cw.candidate_id AND c.election_id=:electionId)");
+		$statement = $connection->prepare("SELECT c.name AS name, p.abbreviation AS party FROM Candidate c, elected_candidates ec, party p WHERE c.candidate_id=ec.candidate_id AND c.election_id=:electionId AND c.party_id=p.party_id AND c.candidate_id NOT IN (SELECT c.candidate_id AS name FROM Candidate c, constituency_winners cw WHERE c.candidate_id=cw.candidate_id AND c.election_id=:electionId)");
 		$statement->bindValue('electionId', $election->getId());
 		$statement->execute();
 		foreach($statement->fetchAll() as $member)
@@ -61,7 +61,7 @@ class MembersOfBundestagProvider {
 		$membersOfBundestag = array();
 
 		$connection = $this->em->getConnection();
-		$statement = $connection->prepare("SELECT c.name AS name, p.abbreviation AS party FROM Candidate c, elected_candidates ec, constituency_candidacy cc, constituency ct, party p WHERE c.candidate_id=ec.candidate_id AND c.candidate_id=cc.candidate_id AND sc.constituency_id=ct.constituency_id AND ct.state_id=:stateId AND c.party_id=p.party_id");
+		$statement = $connection->prepare("SELECT c.name AS name, p.abbreviation AS party FROM Candidate c, elected_candidates ec, constituency_candidacy cc, constituency ct, party p WHERE c.candidate_id=ec.candidate_id AND c.candidate_id=cc.candidate_id AND cc.constituency_id=ct.constituency_id AND ct.state_id=:stateId AND c.party_id=p.party_id");
 		$statement->bindValue('stateId', $state->getId());
 		$statement->execute();
 		foreach($statement->fetchAll() as $member)
@@ -106,7 +106,7 @@ class MembersOfBundestagProvider {
 		}
 
 		$connection = $this->em->getConnection();
-		$statement = $connection->prepare("SELECT c.name AS name, p.abbreviation AS party FROM Candidate c, elected_candidates ec, constituency_candidacy cc, party p WHERE c.candidate_id=ec.candidate_id AND c.candidate_id=cc.candidate_id AND ct.constituency_id=:constituencyId AND c.party_id=p.party_id");
+		$statement = $connection->prepare("SELECT c.name AS name, p.abbreviation AS party FROM Candidate c, elected_candidates ec, constituency_candidacy cc, party p WHERE c.candidate_id=ec.candidate_id AND c.candidate_id=cc.candidate_id AND cc.constituency_id=:constituencyId AND c.party_id=p.party_id");
 		$statement->bindValue('constituencyId', $constituency->getId());
 		$statement->execute();
 		foreach($statement->fetchAll() as $member)
@@ -117,5 +117,6 @@ class MembersOfBundestagProvider {
 			$memberOfBundestag->setIsDirect(true);
 			$membersOfBundestag[] = $memberOfBundestag;
 		}
+		return $membersOfBundestag;
 	}
 } 

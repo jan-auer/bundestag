@@ -12,10 +12,23 @@ namespace Btw\Bundle\BtwAppBundle\Model;
 class LocationDetails
 {
 
+	private $name;
+
 	/**
-	 * @var
+	 * @param mixed $name
 	 */
-	private $population;
+	public function setName($name)
+	{
+		$this->name = $name;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
 
 	/**
 	 * @param mixed $participation
@@ -49,9 +62,8 @@ class LocationDetails
 		return $this->population;
 	}
 
-	/**
-	 * @var
-	 */
+	private $population;
+
 	private $participation;
 
 } 

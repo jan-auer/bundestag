@@ -61,46 +61,215 @@ class DetailController extends Controller
 		$results = array();
 		if ($stateId > 0 && $constituencyId > 0) {
 			//RESULTS PER CONSTITUENCY
-			$constituencyProvider = $this->get('btw_constituency_provider');
-			$partyVotesProvider = $this->get('btw_party_votes_result_provider');
-
-			$constituency = $constituencyProvider->byId($constituencyId);
-			$partyVotesResults = $partyVotesProvider->forConstituency($constituency);
-
-			foreach($partyVotesResults as $result)
-			{
-				$results[] = array('name' => $result->getAbbreviation(), 'color' => $result->getColor(), 'y' => $result->getVotes());
-			}
+			$results = $this->getResultForConstituency($constituencyId);
 		} else if ($stateId > 0 && $constituencyId == 0) {
 			//RESULTS PER STATE
-			$stateProvider = $this->get('btw_state_provider');
-			$partySeatsProvider = $this->get('btw_party_seats_result_provider');
-
-			$state = $stateProvider->byId($stateId);
-			$partySeatsResults = $partySeatsProvider->forState($state);
-			foreach($partySeatsResults as $result)
-			{
-				$results[] = array('name' => $result->getAbbreviation(), 'color' => $result->getColor(), 'y' => $result->getSeats());
-			}
+			$results = $this->getResultForState($stateId);
 		} else {
 			//TOTAL RESULTS
-			$electionProvider = $this->get('btw_election_provider');
-			$partySeatsProvider = $this->get('btw_party_seats_result_provider');
-
-			$election = $electionProvider->forYear($year);
-			$partySeatsResults = $partySeatsProvider->forCountry($election);
-			foreach($partySeatsResults as $result)
-			{
-				$results[] = array('name' => $result->getAbbreviation(), 'color' => $result->getColor(), 'y' => $result->getSeats());
-			}
+			$results = $this->getResultForCountry($year);
 		}
 
-		usort($results, function($result1, $result2)
+		return new Response(json_encode($results));
+	}
+
+	private function getResultForConstituency($constituencyId)
+	{
+		$scope = '';
+		$chart  = array();
+		$location   = array();
+		$members = array();
+		$parties = array();
+
+		$constituencyProvider = $this->get('btw_constituency_provider');
+		$partyVotesProvider = $this->get('btw_party_votes_result_provider');
+		$locationDetailsProvider = $this->get('btw_location_details_provider');
+		$membersOfBundestagProvider = $this->get('btw_members_of_bundestag_provider');
+		$partyResultsProvider = $this->get('btw_party_results_provider');
+
+		$constituency = $constituencyProvider->byId($constituencyId);
+
+		//SCOPE
+		$scope = $constituency->getName();
+
+		//CHART
+		$partyVotesResults = $partyVotesProvider->forConstituency($constituency);
+		foreach($partyVotesResults as $result)
+		{
+			$chart[] = array('name' => $result->getAbbreviation(), 'color' => $result->getColor(), 'y' => $result->getVotes());
+		}
+		usort($chart, function($result1, $result2)
 		{
 			if($result1['y'] == $result2['y']) return 0;
 			if($result1['y'] < $result2['y']) return 1;
 			return -1;
 		});
-		return new Response(json_encode($results));
+
+		//LOCATION
+		$locationDetails = $locationDetailsProvider->forConstituency($constituency);
+		$location = array('population' => $locationDetails->getPopulation(),
+						  'participation' => $locationDetails->getParticipation());
+
+		// MEMBERS
+		$membersOfBundestag = $membersOfBundestagProvider->forConstituency($constituency);
+		foreach($membersOfBundestag as $member)
+		{
+			$members[] = array('name' => $member->getName(),
+								'party' => $member->getPartyAbbreviation(),
+								'direct' => $member->getIsDirect());
+		}
+
+		// PARTIES
+		$partyResults = $partyResultsProvider->forConstituency($constituency);
+		foreach($partyResults as $result)
+		{
+			$parties[] = array('abbreviation' => $result->getPartyAbbreviation(),
+								'name' => $result->getPartyFullName(),
+								'votes' => $result->getVotes(),
+								'percentage' => $result->getPercentage(),
+								'seats' => $result->getSeats(),
+								'overhead' => $result->getOverhead());
+		}
+
+		return array('scope' => $scope,
+					'chart' => $chart,
+					'chartType' => "Zweitstimmen",
+					'location' => $location,
+					'members' => $members,
+					'parties' => $parties);
+	}
+
+	private function getResultForState($stateId)
+	{
+		$scope = '';
+		$chart  = array();
+		$location   = array();
+		$members = array();
+		$parties = array();
+
+		$stateProvider = $this->get('btw_state_provider');
+		$partySeatsProvider = $this->get('btw_party_seats_result_provider');
+		$locationDetailsProvider = $this->get('btw_location_details_provider');
+		$membersOfBundestagProvider = $this->get('btw_members_of_bundestag_provider');
+		$partyResultsProvider = $this->get('btw_party_results_provider');
+
+		$state = $stateProvider->byId($stateId);
+
+		//SCOPE
+		$scope = $state->getName();
+
+		//CHART
+		$partySeatsResults = $partySeatsProvider->forState($state);
+		foreach($partySeatsResults as $result)
+		{
+			$chart[] = array('name' => $result->getAbbreviation(), 'color' => $result->getColor(), 'y' => $result->getSeats());
+		}
+		usort($chart, function($result1, $result2)
+		{
+			if($result1['y'] == $result2['y']) return 0;
+			if($result1['y'] < $result2['y']) return 1;
+			return -1;
+		});
+
+		//LOCATION
+		$locationDetails = $locationDetailsProvider->forState($state);
+		$location = array('population' => $locationDetails->getPopulation(),
+			'participation' => $locationDetails->getParticipation());
+
+		//MEMBERS
+		$membersOfBundestag = $membersOfBundestagProvider->forState($state);
+		foreach($membersOfBundestag as $member)
+		{
+			$members[] = array('name' => $member->getName(),
+				'party' => $member->getPartyAbbreviation(),
+				'direct' => $member->getIsDirect());
+		}
+
+		//PARTIES
+		$partyResults = $partyResultsProvider->forState($state);
+		foreach($partyResults as $result)
+		{
+			$parties[] = array('abbreviation' => $result->getPartyAbbreviation(),
+				'name' => $result->getPartyFullName(),
+				'votes' => $result->getVotes(),
+				'percentage' => $result->getPercentage(),
+				'seats' => $result->getSeats(),
+				'overhead' => $result->getOverhead());
+		}
+
+		return array('scope' => $scope,
+			'chart' => $chart,
+			'chartType' => "Sitze",
+			'location' => $location,
+			'members' => $members,
+			'parties' => $parties);
+	}
+
+	private function getResultForCountry($year)
+	{
+		$scope = '';
+		$chart  = array();
+		$location   = array();
+		$members = array();
+		$parties = array();
+
+		$electionProvider = $this->get('btw_election_provider');
+		$partySeatsProvider = $this->get('btw_party_seats_result_provider');
+		$stateProvider = $this->get('btw_state_provider');
+		$partySeatsProvider = $this->get('btw_party_seats_result_provider');
+		$locationDetailsProvider = $this->get('btw_location_details_provider');
+		$membersOfBundestagProvider = $this->get('btw_members_of_bundestag_provider');
+		$partyResultsProvider = $this->get('btw_party_results_provider');
+
+		$election = $electionProvider->forYear($year);
+
+		//SCOPE
+		$scope = "Bundesrepublik Deutschland";
+
+		//CHART
+		$partySeatsResults = $partySeatsProvider->forCountry($election);
+		foreach($partySeatsResults as $result)
+		{
+			$chart[] = array('name' => $result->getAbbreviation(), 'color' => $result->getColor(), 'y' => $result->getSeats());
+		}
+		usort($chart, function($result1, $result2)
+		{
+			if($result1['y'] == $result2['y']) return 0;
+			if($result1['y'] < $result2['y']) return 1;
+			return -1;
+		});
+
+		//LOCATION
+		$locationDetails = $locationDetailsProvider->forCountry($election);
+		$location = array('population' => $locationDetails->getPopulation(),
+			'participation' => $locationDetails->getParticipation());
+
+		//MEMBERS
+		$membersOfBundestag = $membersOfBundestagProvider->forCountry($election);
+		foreach($membersOfBundestag as $member)
+		{
+			$members[] = array('name' => $member->getName(),
+				'party' => $member->getPartyAbbreviation(),
+				'direct' => $member->getIsDirect());
+		}
+
+		//PARTIES
+		$partyResults = $partyResultsProvider->forCountry($election);
+		foreach($partyResults as $result)
+		{
+			$parties[] = array('abbreviation' => $result->getPartyAbbreviation(),
+				'name' => $result->getPartyFullName(),
+				'votes' => $result->getVotes(),
+				'percentage' => $result->getPercentage(),
+				'seats' => $result->getSeats(),
+				'overhead' => $result->getOverhead());
+		}
+
+		return array('scope' => $scope,
+			'chart' => $chart,
+			'chartType' => "Sitze",
+			'location' => $location,
+			'members' => $members,
+			'parties' => $parties);
 	}
 }
