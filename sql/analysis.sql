@@ -31,9 +31,10 @@ CREATE OR REPLACE VIEW constituency_turnout (constituency_id, turnout, voters, e
 CREATE OR REPLACE VIEW constituency_votes (party_id, constituency_id, absoluteVotes, percentualVotes, totalVotes) AS (
   SELECT party_id, constituency_id, SUM(votes), SUM(votes) / total.totalvotes :: REAL, total.totalvotes
   FROM constituency_party_votes
-    NATURAL JOIN state_list,
-    (SELECT sum(count) AS totalvotes
-     FROM aggregated_second_result) total
+    NATURAL JOIN state_list
+    JOIN (SELECT constituency_id, sum(count) AS totalvotes
+     FROM aggregated_second_result
+     GROUP BY constituency_id) total USING (constituency_id)
   GROUP BY party_id, constituency_id, total.totalvotes
 );
 
