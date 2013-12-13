@@ -24,6 +24,12 @@ btw_app_ajax_year_results:
       options:
           expose : true
 
+btw_app_closest:
+      pattern : /detail/closest/{year}/{partyId}
+      defaults: { _controller: BtwAppBundle:Detail:closest, partyId: -1 }
+      options:
+          expose : true
+
 btw_app_elector:
     pattern: /elect/{year}
     defaults: { _controller: BtwAppBundle:Elector:index }
