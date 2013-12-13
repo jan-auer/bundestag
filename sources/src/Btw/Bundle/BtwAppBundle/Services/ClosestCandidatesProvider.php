@@ -1,53 +1,41 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: schaefep
- * Date: 13.12.13
- * Time: 21:03
- */
 
 namespace Btw\Bundle\BtwAppBundle\Services;
 
-
 use Btw\Bundle\BtwAppBundle\Model\ClosestCandidate;
-use Btw\Bundle\PersistenceBundle\Entity\Election;
 use Btw\Bundle\PersistenceBundle\Entity\Party;
 use Doctrine\ORM\EntityManager;
 
 class ClosestCandidatesProvider
+	extends AbstractProvider
 {
-
-	/** @var  EntityManager */
-	protected $em;
-
-	/**
-	 * @param EntityManager $entityManager
-	 */
 	function __construct(EntityManager $entityManager)
 	{
-		$this->em = $entityManager;
+		parent::__construct($entityManager);
 	}
 
+	/**
+	 * @param Party $party
+	 *
+	 * @return ClosestCandidate[]
+	 */
 	public function forParty(Party $party)
 	{
-		$candidates = array();
-		$connection = $this->em->getConnection();
-		$statement = $connection->prepare("SELECT const.name AS constituency, cand.name AS candidate, type
-										  FROM top_close_constituency_candidates tccc
-										   JOIN candidate cand USING (candidate_id)
-										   JOIN constituency const USING (constituency_id)
-										  WHERE tccc.party_id=:partyId AND tccc.ranking<=10");
-		$statement->bindValue('partyId', $party->getId());
-		$statement->execute();
-		foreach($statement->fetchAll() as $closest)
-		{
-			$candidate = new ClosestCandidate();
-			$candidate->setName($closest['candidate']);
-			$candidate->setConstituencyName($closest['constituency']);
-			$candidate->setType($closest['type']);
-			$candidates[] = $candidate;
-		}
+		$query = $this->prepareQuery("
+			SELECT const.name AS constituency, cand.name AS candidate, type
+			FROM top_close_constituency_candidates tccc
+			  JOIN candidate cand USING (candidate_id)
+			  JOIN constituency const USING (constituency_id)
+			WHERE tccc.party_id=:partyid AND tccc.ranking<=10");
 
-		return $candidates;
+		$query->bindParam('partyId', $party->getId());
+
+		return $this->executeQuery($query, function ($result) {
+			$candidate = new ClosestCandidate();
+			$candidate->setName($result['candidate']);
+			$candidate->setConstituencyName($result['constituency']);
+			$candidate->setType($result['type']);
+			return $candidate;
+		});
 	}
-} 
+}
