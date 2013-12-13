@@ -1,0 +1,27 @@
+<h3>
+    <span class="label" style="background: {{ color }}">&nbsp;&nbsp;</span>&nbsp;
+    {{ abbr }}: Knappste Gewinner / Verlierer
+</h3>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Kandidat</th>
+            <th>Wahlkreis</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for candidate in candidates %}
+        <tr>
+            <td>{{ candidate.name }}</td>
+            <td>{{ candidate.constituency }}</td>
+            <td>
+                <span class="label label-{{ candidate.type == 'W' ? 'success' : 'danger' }}">
+                    {{ candidate.type == 'W' ? 'Gewinner' : 'Verlierer' }}
+                </span>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

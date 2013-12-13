@@ -55,7 +55,11 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="(id, result) in context.parties">
-                            <td class="text-center"><span class="label" style="background: {{ result.party.color }}">&nbsp;&nbsp;</span></td>
+                            <td class="text-center">
+                                <a bs-modal="{{ closestUrl(result.party.id) }}" href="javascript:void(0)">
+                                    <span class="label" style="background: {{ result.party.color }}">&nbsp;&nbsp;</span>
+                                </a>
+                            </td>
                             <td>{{ result.party.name }}</td>
                             <td class="text-right">
                                 {{ result.votes | number }}

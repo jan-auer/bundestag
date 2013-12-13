@@ -1,6 +1,7 @@
 !function (ng, Module) {
 
 	/** @const */ var DETAILS_PATH = 'btw_app_ajax_year_results';
+	/** @const */ var CLOSEST_PATH = 'btw_app_closest';
 
 	Module.controller('DetailsController', ['$scope', '$http', 'election', 'ALL_STATES', 'ALL_CONSTITUENCIES',
 	function ($scope, $http, election, ALL_STATES, ALL_CONSTITUENCIES) {
@@ -10,6 +11,8 @@
 		$scope.loading = 0;
 		$scope.state = ALL_STATES;
 		$scope.constituency = ALL_CONSTITUENCIES;
+
+		$scope.closestUrl = closestUrl;
 
 		// Events
 
@@ -51,14 +54,10 @@
 			});
 		}
 
-	}]);
+		function closestUrl (party) {
+			return Routing.generate(CLOSEST_PATH, { partyId : party });
+		}
 
-	Module.directive('bsTooltip', function () {
-		return {
-			link : function (scope, element, attrs) {
-				element.tooltip({ title : attrs.bsTooltip });
-			}
-		};
-	});
+	}]);
 
 }(angular, BTW);
