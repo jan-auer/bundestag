@@ -38,6 +38,7 @@
 		function updateDetails() {
 			if (!$scope.state || !$scope.constituency) return;
 			$scope.context = $scope.state.id ? $scope.constituency.id ? $scope.constituency : $scope.state : election.getCountry();
+			$scope.limit = false;
 		}
 
 		function load(path, data, success) {

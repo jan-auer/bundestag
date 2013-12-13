@@ -82,7 +82,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="member in context.members">
+                        <tr ng-repeat="member in (limit ? (context.members) : (context.members|limitTo:10))">
                             <td class="text-center"><span class="label" style="background: {{ member.party.color }}">&nbsp;&nbsp;</span></td>
                             <td>{{ member.party.abbr }}</td>
                             <td>{{ member.name }}</td>
@@ -90,6 +90,8 @@
                         </tr>
                     </tbody>
                 </table>
+
+                <a href="javascript:void(0)" ng-click="limit=true" ng-show="!limit && context.members.length > 10">Alle Abgeordneten anzeigen...</a>
             </div>
         </div>
 
