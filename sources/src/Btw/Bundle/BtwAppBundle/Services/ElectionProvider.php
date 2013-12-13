@@ -28,6 +28,16 @@ class ElectionProvider
 	}
 
 	/**
+	 * @return int[]
+	 */
+	public function getAllYears()
+	{
+		return array_map(function ($election) {
+			return date('Y', $election->getDate()->getTimestamp());
+		}, $this->getAll());
+	}
+
+	/**
 	 * @param string $year
 	 *
 	 * @return Election

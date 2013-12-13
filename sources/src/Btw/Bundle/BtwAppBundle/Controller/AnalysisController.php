@@ -16,7 +16,7 @@ class AnalysisController extends Controller
 
 	public function indexAction()
 	{
-		$years    = $this->getElectionYears();
+		$years    = $this->getElectionProvider()->getAllYears();
 		$year     = max($years);
 		$election = $this->getElectionProvider()->forYear($year);
 
@@ -29,15 +29,6 @@ class AnalysisController extends Controller
 				'years'   => $years,
 				'results' => $serialized)
 		);
-	}
-
-	private function getElectionYears()
-	{
-		$elections = $this->getElectionProvider()->getAll();
-
-		return array_map(function ($election) {
-			return date('Y', $election->getDate()->getTimestamp());
-		}, $elections);
 	}
 
 	private function serializeResult(PartyResult $result)
