@@ -15,6 +15,30 @@ class ConstituencyDetail {
 
 	private $stateId;
 
+	private $name;
+
+	private $electives;
+
+	private $voters;
+
+	private $votersPrev;
+
+	/**
+	 * @param mixed $votersPrev
+	 */
+	public function setVotersPrev($votersPrev)
+	{
+		$this->votersPrev = $votersPrev;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getVotersPrev()
+	{
+		return $this->votersPrev;
+	}
+
 	/**
 	 * @param mixed $constituencyId
 	 */
@@ -94,10 +118,4 @@ class ConstituencyDetail {
 	{
 		return $this->voters;
 	}
-
-	private $name;
-
-	private $electives;
-
-	private $voters;
 } 
