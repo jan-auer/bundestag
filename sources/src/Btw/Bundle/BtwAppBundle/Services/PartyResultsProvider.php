@@ -15,7 +15,8 @@ use Btw\Bundle\PersistenceBundle\Entity\Election;
 use Btw\Bundle\PersistenceBundle\Entity\Constituency;
 use Doctrine\ORM\EntityManager;
 
-class PartyResultsProvider {
+class PartyResultsProvider
+{
 
 	/** @var  EntityManager */
 	protected $em;
@@ -29,10 +30,17 @@ class PartyResultsProvider {
 	{
 		$partyResults = array();
 		$connection = $this->em->getConnection();
-		$statement = $connection->prepare("SELECT abbreviation AS abbr, party.name AS name, color, SUM(party_state_seats.seats) :: INT AS seats, overhead FROM party_state_seats JOIN party USING (party_id, election_id) JOIN election USING (election_id) JOIN state_party_seats USING (state_id, party_id) WHERE date_part('Y', date) = :electionYear GROUP BY abbreviation, color, party.name, overhead");
+		$statement = $connection->prepare("SELECT party_id, abbreviation AS abbr, name, color, party_seats.seats AS seats, SUM(overhead) AS overhead
+										   FROM party_seats
+										    JOIN state_party_seats using (party_id)
+										    JOIN party using (party_id)
+										    JOIN election using (election_id)
+										   WHERE date_part('Y', date) = :electionYear
+										   GROUP BY party_id, abbreviation, name, color, party_seats.seats;");
 		$statement->bindValue('electionYear', date('Y', $election->getDate()->getTimestamp()));
 		$statement->execute();
 		foreach ($statement->fetchAll() AS $result) {
+			$statement= $connection->prepare("")
 			$partyResult = new PartyResult();
 			$partyResult->setPartyAbbreviation($result['abbr']);
 			$partyResult->setPartyFullName($result['name']);
@@ -51,18 +59,39 @@ class PartyResultsProvider {
 	{
 		$partyResults = array();
 		$connection = $this->em->getConnection();
-		$statement = $connection->prepare("SELECT abbreviation as abbr, party.name AS name, color, SUM(party_state_seats.seats) :: INT as seats, overhead FROM party_state_seats JOIN party USING (party_id, election_id) JOIN state_party_seats USING (state_id, party_id) WHERE party_state_seats.state_id=:stateId GROUP BY abbreviation, color, party.name, overhead");
+		$statement = $connection->prepare("SELECT abbreviation as abbr, party.name AS name, party.party_id AS party_id, color, SUM(party_state_seats.seats) :: INT as seats, SUM(overhead) AS overhead
+										   FROM party_state_seats
+										    JOIN party USING (party_id, election_id)
+										    JOIN state_party_seats USING (state_id, party_id)
+										   WHERE party_state_seats.state_id = :stateId
+										   GROUP BY party_id, abbreviation, color, party.party_id, party.name");
 		$statement->bindValue('stateId', $state->getId());
 		$statement->execute();
 		foreach ($statement->fetchAll() AS $result) {
+			$partyId = $result['party_id'];
+			$statement = $connection->prepare("SELECT SUM(absoluteVotes) AS votes, totalVotes as total
+											   FROM constituency_votes cv, constituency c, state s
+											   WHERE cv.constituency_id=c.constituency_id AND c.state_id=s.state_id AND s.state_id=:stateId AND cv.party_id=:partyId
+											   GROUP BY s.state_id, cv.party_id, totalVotes");
+			$statement->bindValue('stateId', $state->getId());
+			$statement->bindValue('partyId', $partyId);
+			$statement->execute();
+			$votes = 0;
+			$percentage = 0;
+			foreach ($statement->fetchAll() AS $voteresult) {
+				$total = $voteresult['total'];
+				$votes = $voteresult['votes'];
+				$percentage = $votes / $total;
+			}
+
 			$partyResult = new PartyResult();
 			$partyResult->setPartyAbbreviation($result['abbr']);
 			$partyResult->setPartyFullName($result['name']);
 			$partyResult->setColor($result['color']);
 			$partyResult->setSeats($result['seats']);
 			$partyResult->setOverhead($result['overhead']);
-			$partyResult->setVotes('-');
-			$partyResult->setPercentage('-');
+			$partyResult->setVotes($votes);
+			$partyResult->setPercentage($percentage);
 			$partyResults[] = $partyResult;
 		}
 
@@ -73,7 +102,9 @@ class PartyResultsProvider {
 	{
 		$partyResults = array();
 		$connection = $this->em->getConnection();
-		$statement = $connection->prepare("SELECT abbreviation AS abbr, p.name AS name, color, absoluteVotes :: INT AS votes, percentualVotes :: INT AS percent FROM constituency_votes cv, party p WHERE cv.party_id=p.party_id AND constituency_id=:constituencyId");
+		$statement = $connection->prepare("SELECT abbreviation AS abbr, p.name AS name, color, absoluteVotes :: INT AS votes, percentualVotes :: INT AS percent
+										   FROM constituency_votes cv, party p
+										   WHERE cv.party_id=p.party_id AND constituency_id=:constituencyId");
 		$statement->bindValue('constituencyId', $constituency->getId());
 		$statement->execute();
 		foreach ($statement->fetchAll() as $result) {
