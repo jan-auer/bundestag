@@ -27,6 +27,7 @@
 					if (!modal) modal = createModal(attrs.bsModal);
 					modal.modal('show');
 				});
+				element.on('$destroy', function () { modal && modal.remove(); });
 			}
 		}
 	});
