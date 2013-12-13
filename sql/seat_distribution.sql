@@ -93,27 +93,27 @@ CREATE OR REPLACE VIEW state_party_seats (state_id, party_id, seats, overhead) A
 
 CREATE OR REPLACE VIEW party_seats (party_id, seats, candidates) AS (
     WITH total_votes (election_id, v) AS (
-	SELECT election_id, sum(votes) :: REAL
+        SELECT election_id, sum(votes) :: REAL
         FROM state_party_votes
-	  JOIN state USING (state_id)
-	GROUP BY election_id
+          JOIN state USING (state_id)
+        GROUP BY election_id
     ), total_seats (election_id, s) AS (
-	SELECT election_id, sum(seats) :: REAL
+        SELECT election_id, sum(seats) :: REAL
         FROM state_party_seats
-	  JOIN state USING (state_id)
-	GROUP BY election_id
+          JOIN state USING (state_id)
+        GROUP BY election_id
     ), party_seats_votes (election_id, party_id, seats, votes) AS (
-	SELECT election_id, party_id, sum(seats), sum(votes)
+        SELECT election_id, party_id, sum(seats), sum(votes)
         FROM state_party_seats
-	  JOIN state USING (state_id)
+          JOIN state USING (state_id)
           JOIN state_party_votes USING (state_id, party_id)
-	GROUP BY election_id, party_id
+        GROUP BY election_id, party_id
     ), divisor (election_id, divisor, rank) AS (
-	SELECT election_id, votes / (seats - .49) divisor,
-	  row_number() OVER (PARTITION BY election_id ORDER BY seats / s - votes / v DESC)
-	FROM party_seats_votes
-	  JOIN total_seats USING (election_id)
-	  JOIN total_votes USING (election_id)
+        SELECT election_id, votes / (seats - .49) divisor,
+          row_number() OVER (PARTITION BY election_id ORDER BY seats / s - votes / v DESC)
+        FROM party_seats_votes
+          JOIN total_seats USING (election_id)
+          JOIN total_votes USING (election_id)
     ), party_candidates (party_id, candidates) AS (
         SELECT party_id, sum(candidates) :: INT
         FROM state_party_candidates
@@ -173,8 +173,3 @@ CREATE OR REPLACE VIEW elected_candidates (candidate_id) AS (
       LEFT JOIN state_party_candidates USING (party_id, state_id)
     WHERE position <= seats - coalesce(candidates, 0)
 );
-
-
-
-
--- ===================================================================
