@@ -11,7 +11,7 @@
         </div>
         <div class="col-md-4">
             <table class="table table-striped">
-                {% for party in population %}
+                {% for party in results %}
 
                 <tr>
                     <th>
@@ -30,6 +30,6 @@
 
 {% block scripts %}
     <script type="text/javascript">
-        createChart('#chart', {{ population | json_encode() | raw }});
+        createChart('#chart', {{ results | json_encode() | raw }});
     </script>
 {% endblock %}
