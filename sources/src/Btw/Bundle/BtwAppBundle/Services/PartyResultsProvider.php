@@ -10,6 +10,8 @@ namespace Btw\Bundle\BtwAppBundle\Services;
 
 
 use Btw\Bundle\BtwAppBundle\Model\PartyResult;
+use Btw\Bundle\BtwAppBundle\Model\SeatsResult;
+use Btw\Bundle\BtwAppBundle\Model\VotesResult;
 use Btw\Bundle\PersistenceBundle\Entity\State;
 use Btw\Bundle\PersistenceBundle\Entity\Election;
 use Btw\Bundle\PersistenceBundle\Entity\Constituency;
@@ -24,6 +26,55 @@ class PartyResultsProvider
 	function __construct(EntityManager $entityManager)
 	{
 		$this->em = $entityManager;
+	}
+
+	public function getSeatsForElection(Election $election)
+	{
+		$results = array();
+		$connection = $this->em->getConnection();
+		$statement = $connection->prepare("SELECT party_id AS party, party_seats.seats AS seats, SUM(overhead) AS overhead, state_id AS state
+										   FROM party_seats
+										    JOIN state_party_seats using (party_id)
+										    JOIN party using (party_id)
+										    JOIN election using (election_id)
+										   WHERE date_part('Y', date) = :electionYear
+										   GROUP BY party_id, state_id, party_seats.seats;");
+		$statement->bindValue('electionYear', date('Y', $election->getDate()->getTimestamp()));
+		$statement->execute();
+		foreach($statement->fetchAll() AS $result)
+		{
+			$seatResult = new SeatsResult();
+			$seatResult->setPartyId($result['party']);
+			$seatResult->setOverhead($result['overhead']);
+			$seatResult->setSeats($result['seats']);
+			$seatResult->setStateId($result['state']);
+		}
+
+		return $results;
+	}
+
+	public function getVotesForElection(Election $election)
+	{
+		$results = array();
+		$connection = $this->em->getConnection();
+		$statement = $connection->prepare("SELECT state_id AS state, constituency_id AS constituency, party_id AS party, absoluteVotes :: INT AS votes
+										   FROM constituency_votes cv
+										    JOIN constituency USING (constituency_id)
+										    JOIN state s USING (state_id)
+										   WHERE s.election_id = :electionId");
+		$statement->bindValue('electionId', $election->getId());
+		$statement->execute();
+		foreach($statement->fetchAll() as $result)
+		{
+			$voteResult = new VotesResult();
+			$voteResult->setStateId($result['state']);
+			$voteResult->setConstituencyId($result['constituency']);
+			$voteResult->setPartyId($result['party']);
+			$voteResult->setVotes($result['votes']);
+			$results[] = $voteResult;
+		}
+
+		return $results;
 	}
 
 	public function forCountry(Election $election)
