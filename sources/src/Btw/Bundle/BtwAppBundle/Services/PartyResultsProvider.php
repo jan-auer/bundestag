@@ -40,7 +40,7 @@ class PartyResultsProvider
 		$statement->bindValue('electionYear', date('Y', $election->getDate()->getTimestamp()));
 		$statement->execute();
 		foreach ($statement->fetchAll() AS $result) {
-			$statement= $connection->prepare("")
+			$statement= $connection->prepare("");
 			$partyResult = new PartyResult();
 			$partyResult->setPartyAbbreviation($result['abbr']);
 			$partyResult->setPartyFullName($result['name']);
