@@ -23,7 +23,7 @@ class ConstituencyProvider
 	 */
 	public function byId($id)
 	{
-		return $this->getRepository('BtwPersistenceBundle:Constituency')->find($id);
+		return $this->getRepository('Constituency')->find($id);
 	}
 
 	/**

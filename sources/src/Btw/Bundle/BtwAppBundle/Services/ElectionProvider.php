@@ -7,16 +7,15 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
 class ElectionProvider
+	extends AbstractProvider
 {
 
-	/** @var  EntityManager */
-	private $em;
 	/** @var  EntityRepository */
 	private $repository;
 
 	function __construct(EntityManager $entityManager)
 	{
-		$this->em = $entityManager;
+		parent::__construct($entityManager);
 	}
 
 	/**
@@ -24,7 +23,7 @@ class ElectionProvider
 	 */
 	public function getAll()
 	{
-		return $this->getRepository()->findAll();
+		return $this->getMyRepository()->findAll();
 	}
 
 	/**
@@ -40,12 +39,14 @@ class ElectionProvider
 	/**
 	 * @param string $year
 	 *
-	 * @return Election
+	 * @return Election|null
+	 *
+	 * @todo Use a DQL query.
 	 */
 	public function forYear($year)
 	{
 		/** @var Election[] $elections */
-		$elections = $this->getRepository()->findAll();
+		$elections = $this->getMyRepository()->findAll();
 
 		foreach ($elections as $election) {
 			if (date('Y', $election->getDate()->getTimestamp()) == $year)
@@ -62,22 +63,16 @@ class ElectionProvider
 	public function getPreviousElectionFor(Election $election)
 	{
 		$currentYear = date('Y', $election->getDate()->getTimestamp());
-		$elections = $this->getAll();
-		foreach($elections as $e)
-		{
-			$y = date('Y', $e->getDate()->getTimestamp()) ;
-			if($currentYear == ($y + 4)) return $e;
-		}
-		return null;
+		return $this->forYear($currentYear - 4);
 	}
 
 	/**
 	 * @return EntityRepository
 	 */
-	private function getRepository()
+	private function getMyRepository()
 	{
 		if ($this->repository == null) {
-			$this->repository = $this->em->getRepository('BtwPersistenceBundle:Election');
+			$this->repository = $this->getRepository('Election');
 		}
 		return $this->repository;
 	}

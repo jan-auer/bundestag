@@ -58,7 +58,7 @@ class AbstractProvider
 	 */
 	protected function getRepository($entityName)
 	{
-		return $this->em->getRepository($entityName);
+		return $this->em->getRepository('BtwPersistenceBundle:' . $entityName);
 	}
 
 }
