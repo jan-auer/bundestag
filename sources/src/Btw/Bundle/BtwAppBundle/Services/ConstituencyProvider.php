@@ -35,15 +35,6 @@ class ConstituencyProvider
 		return $this->em->find('BtwPersistenceBundle:Constituency', $id);
 	}
 
-	public function getAllForElection($election)
-	{
-		$query = $this->em->createQuery('SELECT c
-								FROM Btw\Bundle\PersistenceBundle\Entity\Constituency c JOIN c.state s
-								WHERE s.election = :election');
-		$query->setParameter('election', $election);
-		return $query->getResult();
-	}
-
 	public function getAllDetailsForElection($election)
 	{
 		$constituencies = array();
