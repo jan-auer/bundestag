@@ -19,6 +19,24 @@ class VotesResult {
 
 	private $votes;
 
+	private $votesPrev;
+
+	/**
+	 * @param mixed $votesPrev
+	 */
+	public function setVotesPrev($votesPrev)
+	{
+		$this->votesPrev = $votesPrev;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getVotesPrev()
+	{
+		return $this->votesPrev;
+	}
+
 	/**
 	 * @param mixed $constituencyId
 	 */
