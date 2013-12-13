@@ -36,10 +36,9 @@ class PartyResultsProvider
 										   FROM party_seats
 										    JOIN state_party_seats using (party_id)
 										    JOIN party using (party_id)
-										    JOIN election using (election_id)
-										   WHERE date_part('Y', date) = :electionYear
-										   GROUP BY party_id, state_id, party_seats.seats;");
-		$statement->bindValue('electionYear', date('Y', $election->getDate()->getTimestamp()));
+										   WHERE election_id = :electionId
+										   GROUP BY party_id, state_id, party_seats.seats");
+		$statement->bindValue('electionId', $election->getId());
 		$statement->execute();
 		foreach($statement->fetchAll() AS $result)
 		{
@@ -48,6 +47,7 @@ class PartyResultsProvider
 			$seatResult->setOverhead($result['overhead']);
 			$seatResult->setSeats($result['seats']);
 			$seatResult->setStateId($result['state']);
+			$results[] = $seatResult;
 		}
 
 		return $results;
