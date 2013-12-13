@@ -5,6 +5,7 @@ namespace Btw\Bundle\BtwAppBundle\Services;
 
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 
 class AbstractProvider
 {
@@ -42,9 +43,22 @@ class AbstractProvider
 		return array_map($mapper, $query->fetchAll());
 	}
 
+	/**
+	 * @return EntityManager
+	 */
 	protected function getEntityManager()
 	{
 		return $this->em;
+	}
+
+	/**
+	 * @param string $entityName
+	 *
+	 * @return EntityRepository
+	 */
+	protected function getRepository($entityName)
+	{
+		return $this->em->getRepository($entityName);
 	}
 
 }
