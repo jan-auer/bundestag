@@ -25,6 +25,11 @@ class PartyProvider {
 		$this->em = $entityManager;
 	}
 
+	public function byId($id)
+	{
+		return $this->em->find('BtwPersistenceBundle:Party', $id);
+	}
+
 	/**
 	 * @param Election $election
 	 * @return array
