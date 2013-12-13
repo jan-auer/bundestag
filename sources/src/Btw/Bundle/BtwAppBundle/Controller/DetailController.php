@@ -141,4 +141,28 @@ class DetailController extends Controller
 						'seats' => $seats);
 		return new Response(json_encode($result));
 	}
+
+	public function closestAction($year, $partyId)
+	{
+		$electionProvider = $this->get('btw_election_provider');
+		$partyProvider = $this->get('btw_party_provider');
+		$closestProvider = $this->get('btw_closest_candidates_provider');
+
+		$election = $electionProvider->forYear($year);
+		$party = $partyProvider->byId($partyId);
+
+		$closests = array();
+		foreach($closestProvider->forParty($election, $party) as $closest)
+		{
+			$closests[] = array('name' => $closest->getName(),
+							   'constituency' => $closest->getConstituencyName(),
+							   'type' => $closest->getType());
+		}
+
+		$result = array('closest' => $closests,
+						'abbr' => $party->getAbbreviation(),
+		                'name' => $party->getName());
+
+		return $this->render('BtwAppBundle:Analysis:closest.html.twig', $result);
+	}
 }
