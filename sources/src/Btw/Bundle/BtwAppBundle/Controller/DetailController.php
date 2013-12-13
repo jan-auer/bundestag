@@ -159,7 +159,8 @@ class DetailController extends Controller
 
 		$result = array('candidates' => $closests,
 						'abbr' => $party->getAbbreviation(),
-		                'name' => $party->getName());
+		                'name' => $party->getName(),
+						'color' => $party->getColor());
 
 		return $this->render('BtwAppBundle:Analysis:closest.html.twig', $result);
 	}
