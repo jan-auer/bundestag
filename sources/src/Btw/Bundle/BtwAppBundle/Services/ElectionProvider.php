@@ -46,6 +46,22 @@ class ElectionProvider
 	}
 
 	/**
+	 * @param Election $election
+	 * @return Election|null
+	 */
+	public function getPreviousElectionFor(Election $election)
+	{
+		$currentYear = date('Y', $election->getDate()->getTimestamp());
+		$elections = $this->getAll();
+		foreach($elections as $e)
+		{
+			$y = date('Y', $e->getDate()->getTimestamp()) ;
+			if($currentYear == ($y + 4)) return $e;
+		}
+		return null;
+	}
+
+	/**
 	 * @return EntityRepository
 	 */
 	private function getRepository()
