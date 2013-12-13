@@ -160,8 +160,6 @@
 			var country = this.getCountry();
 			var countryParties = ensure(country, 'parties', {});
 
-			console.log(results, results.length);
-
 			ng.forEach(results, function (result) {
 				var party = this.getParty(result.party);
 
