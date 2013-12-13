@@ -1,70 +1,102 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: schaefep
- * Date: 11.12.13
- * Time: 19:10
- */
 
 namespace Btw\Bundle\BtwAppBundle\Model;
 
-
-use Btw\Bundle\PersistenceBundle\Entity\Candidate;
-
-class MemberOfBundestag {
-
+class MemberOfBundestag
+	implements ModelInterface
+{
+	/** @var  string */
 	private $name;
-
-	private $candidateId;
-
-	private $stateId;
-
-	private $constituencyId;
-
-	private $partyId;
+	/** @var int */
+	private $candidate;
+	/** @var  int */
+	private $state;
+	/** @var  int */
+	private $constituency;
+	/** @var  int */
+	private $party;
 
 	/**
-	 * @param mixed $candidateId
+	 * @param array $data
+	 *
+	 * @return MemberOfBundestag
 	 */
-	public function setCandidateId($candidateId)
+	public static function fromArray(array &$data)
 	{
-		$this->candidateId = $candidateId;
+		$model = new MemberOfBundestag();
+		$model->setName($data['name']);
+		$model->setCandidate($data['candidate']);
+		$model->setState($data['state']);
+		$model->setConstituency($data['constituency']);
+		$model->setParty($data['party']);
+		return $model;
 	}
 
 	/**
-	 * @return mixed
+	 * @return array
 	 */
-	public function getCandidateId()
+	public function toArray()
 	{
-		return $this->candidateId;
+		return array(
+			'name'         => $this->getName(),
+			'candidate'    => $this->getCandidate(),
+			'state'        => $this->getState(),
+			'constituency' => $this->getConstituency(),
+			'party'        => $this->getParty(),
+		);
 	}
 
 	/**
-	 * @param mixed $constituencyId
+	 * @param int $candidate
+	 *
+	 * @return MemberOfBundestag
 	 */
-	public function setConstituencyId($constituencyId)
+	public function setCandidate($candidate)
 	{
-		$this->constituencyId = $constituencyId;
+		$this->candidate = $candidate;
+		return $this;
 	}
 
 	/**
-	 * @return mixed
+	 * @return int
 	 */
-	public function getConstituencyId()
+	public function getCandidate()
 	{
-		return $this->constituencyId;
+		return $this->candidate;
 	}
 
 	/**
-	 * @param mixed $name
+	 * @param int $constituency
+	 *
+	 * @return MemberOfBundestag
+	 */
+	public function setConstituency($constituency)
+	{
+		$this->constituency = $constituency;
+		return $this;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getConstituency()
+	{
+		return $this->constituency;
+	}
+
+	/**
+	 * @param string $name
+	 *
+	 * @return MemberOfBundestag
 	 */
 	public function setName($name)
 	{
 		$this->name = $name;
+		return $this;
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getName()
 	{
@@ -72,36 +104,41 @@ class MemberOfBundestag {
 	}
 
 	/**
-	 * @param mixed $partyId
+	 * @param int $party
+	 *
+	 * @return MemberOfBundestag
 	 */
-	public function setPartyId($partyId)
+	public function setParty($party)
 	{
-		$this->partyId = $partyId;
+		$this->party = $party;
+		return $this;
 	}
 
 	/**
-	 * @return mixed
+	 * @return int
 	 */
-	public function getPartyId()
+	public function getParty()
 	{
-		return $this->partyId;
+		return $this->party;
 	}
 
 	/**
-	 * @param mixed $stateId
+	 * @param int $state
+	 *
+	 * @return MemberOfBundestag
 	 */
-	public function setStateId($stateId)
+	public function setState($state)
 	{
-		$this->stateId = $stateId;
+		$this->state = $state;
+		return $this;
 	}
 
 	/**
-	 * @return mixed
+	 * @return int
 	 */
-	public function getStateId()
+	public function getState()
 	{
-		return $this->stateId;
+		return $this->state;
 	}
 
-
-} 
+}

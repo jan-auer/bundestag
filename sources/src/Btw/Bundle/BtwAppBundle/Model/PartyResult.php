@@ -1,33 +1,92 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: schaefep
- * Date: 11.12.13
- * Time: 21:41
- */
 
 namespace Btw\Bundle\BtwAppBundle\Model;
 
-
 class PartyResult
+	implements ModelInterface
 {
 
-	private $partyAbbreviation;
-
-	private $partyFullName;
-
+	/** @var  string */
+	private $abbr;
+	/** @var  string */
+	private $name;
+	/** @var  string */
 	private $color;
+	/** @var  int */
+	private $seats;
+	/** @var  int */
+	private $overhead;
+	/** @var  int */
+	private $votes;
+	/** @var  number */
+	private $percentage;
 
 	/**
-	 * @param mixed $color
+	 * @param array $data
+	 *
+	 * @return PartyResult
+	 */
+	public static function fromArray(array &$data)
+	{
+		$model = new PartyResult();
+		$model->setAbbr($data['abbr']);
+		$model->setName($data['name']);
+		$model->setColor($data['color']);
+		$model->setSeats($data['seats']);
+		$model->setOverhead($data['overhead']);
+		$model->setVotes($data['votes']);
+		$model->setPercentage($data['percentage']);
+		return $model;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function toArray()
+	{
+		return array(
+			'abbr'       => $this->getAbbr(),
+			'name'       => $this->getName(),
+			'color'      => $this->getColor(),
+			'seats'      => $this->getSeats(),
+			'overhead'   => $this->getOverhead(),
+			'votes'      => $this->getVotes(),
+			'percentage' => $this->getPercentage(),
+		);
+	}
+
+	/**
+	 * @param string $abbr
+	 *
+	 * @return PartyResult
+	 */
+	public function setAbbr($abbr)
+	{
+		$this->abbr = $abbr;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getAbbr()
+	{
+		return $this->abbr;
+	}
+
+	/**
+	 * @param string $color
+	 *
+	 * @return PartyResult
 	 */
 	public function setColor($color)
 	{
 		$this->color = $color;
+		return $this;
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getColor()
 	{
@@ -35,15 +94,37 @@ class PartyResult
 	}
 
 	/**
-	 * @param mixed $overhead
+	 * @param string $name
+	 *
+	 * @return PartyResult
+	 */
+	public function setName($name)
+	{
+		$this->name = $name;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	/**
+	 * @param int $overhead
+	 *
+	 * @return PartyResult
 	 */
 	public function setOverhead($overhead)
 	{
 		$this->overhead = $overhead;
+		return $this;
 	}
 
 	/**
-	 * @return mixed
+	 * @return int
 	 */
 	public function getOverhead()
 	{
@@ -51,47 +132,18 @@ class PartyResult
 	}
 
 	/**
-	 * @param mixed $partyAbbreviation
-	 */
-	public function setPartyAbbreviation($partyAbbreviation)
-	{
-		$this->partyAbbreviation = $partyAbbreviation;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getPartyAbbreviation()
-	{
-		return $this->partyAbbreviation;
-	}
-
-	/**
-	 * @param mixed $partyFullName
-	 */
-	public function setPartyFullName($partyFullName)
-	{
-		$this->partyFullName = $partyFullName;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getPartyFullName()
-	{
-		return $this->partyFullName;
-	}
-
-	/**
-	 * @param mixed $percentage
+	 * @param number $percentage
+	 *
+	 * @return PartyResult
 	 */
 	public function setPercentage($percentage)
 	{
 		$this->percentage = $percentage;
+		return $this;
 	}
 
 	/**
-	 * @return mixed
+	 * @return number
 	 */
 	public function getPercentage()
 	{
@@ -99,15 +151,18 @@ class PartyResult
 	}
 
 	/**
-	 * @param mixed $seats
+	 * @param int $seats
+	 *
+	 * @return PartyResult
 	 */
 	public function setSeats($seats)
 	{
 		$this->seats = $seats;
+		return $this;
 	}
 
 	/**
-	 * @return mixed
+	 * @return int
 	 */
 	public function getSeats()
 	{
@@ -115,26 +170,22 @@ class PartyResult
 	}
 
 	/**
-	 * @param mixed $votes
+	 * @param int $votes
+	 *
+	 * @return PartyResult
 	 */
 	public function setVotes($votes)
 	{
 		$this->votes = $votes;
+		return $this;
 	}
 
 	/**
-	 * @return mixed
+	 * @return int
 	 */
 	public function getVotes()
 	{
 		return $this->votes;
 	}
 
-	private $seats;
-
-	private $votes;
-
-	private $percentage;
-
-	private $overhead;
-} 
+}

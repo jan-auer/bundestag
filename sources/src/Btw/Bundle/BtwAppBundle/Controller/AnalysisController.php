@@ -34,8 +34,8 @@ class AnalysisController extends Controller
 	private function serializeResult(PartyResult $result)
 	{
 		return array(
-			'name'  => $result->getPartyAbbreviation(),
-			'label' => $result->getPartyFullName(),
+			'name'  => $result->getAbbr(),
+			'label' => $result->getName(),
 			'color' => $result->getColor(),
 			'seats' => $result->getSeats(),
 			'y'     => $result->getSeats(),

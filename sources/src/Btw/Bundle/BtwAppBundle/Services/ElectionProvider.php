@@ -58,6 +58,7 @@ class ElectionProvider
 
 	/**
 	 * @param Election $election
+	 *
 	 * @return Election|null
 	 */
 	public function getPreviousElectionFor(Election $election)
