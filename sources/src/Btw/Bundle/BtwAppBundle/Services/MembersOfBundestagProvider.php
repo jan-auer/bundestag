@@ -49,7 +49,7 @@ class MembersOfBundestagProvider
 			$membersOfBundestag[] = $memberOfBundestag;
 		}
 
-		$statement = $connection->prepare("SELECT c.candidate_id AS id, c.name AS name, state_id AS state, constituency_id AS constituency, party_id AS party
+		$statement = $connection->prepare("SELECT c.candidate_id AS id, c.name AS name, state_id AS state, 0 AS constituency, party_id AS party
 										   FROM Candidate c
 										    JOIN elected_candidates ec USING(candidate_id)
 										    JOIN party p USING (party_id)
