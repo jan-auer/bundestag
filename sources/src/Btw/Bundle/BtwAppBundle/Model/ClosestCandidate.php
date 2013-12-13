@@ -1,48 +1,76 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: schaefep
- * Date: 13.12.13
- * Time: 21:13
- */
 
 namespace Btw\Bundle\BtwAppBundle\Model;
 
+class ClosestCandidate
+	implements ModelInterface
+{
 
-class ClosestCandidate {
-
+	/** @var  string */
 	private $name;
-
-	private $constituencyName;
-
+	/** @var  string */
+	private $constituency;
+	/** @var  string */
 	private $type;
 
 	/**
-	 * @param mixed $constituencyName
+	 * @param array $data
+	 *
+	 * @return ClosestCandidate
 	 */
-	public function setConstituencyName($constituencyName)
+	public static function fromArray(array &$data)
 	{
-		$this->constituencyName = $constituencyName;
+		$model = new ClosestCandidate();
+		$model->setName($data['name']);
+		$model->setConstituency($data['constituency']);
+		$model->setType($data['type']);
+		return model;
 	}
 
 	/**
-	 * @return mixed
+	 * @return array
 	 */
-	public function getConstituencyName()
+	public function toArray()
 	{
-		return $this->constituencyName;
+		return array(
+			'name'         => $this->getName(),
+			'constituency' => $this->getConstituency(),
+			'type'         => $this->getType(),
+		);
 	}
 
 	/**
-	 * @param mixed $name
+	 * @param string $constituencyName
+	 *
+	 * @return ClosestCandidate
+	 */
+	public function setConstituency($constituencyName)
+	{
+		$this->constituency = $constituencyName;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getConstituency()
+	{
+		return $this->constituency;
+	}
+
+	/**
+	 * @param string $name
+	 *
+	 * @return ClosestCandidate
 	 */
 	public function setName($name)
 	{
 		$this->name = $name;
+		return $this;
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getName()
 	{
@@ -50,18 +78,22 @@ class ClosestCandidate {
 	}
 
 	/**
-	 * @param mixed $type
+	 * @param string $type
+	 *
+	 * @return ClosestCandidate
 	 */
 	public function setType($type)
 	{
 		$this->type = $type;
+		return $this;
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getType()
 	{
 		return $this->type;
 	}
-} 
+
+}

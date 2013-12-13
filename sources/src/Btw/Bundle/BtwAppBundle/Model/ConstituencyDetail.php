@@ -1,70 +1,88 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: schaefep
- * Date: 13.12.13
- * Time: 17:33
- */
 
 namespace Btw\Bundle\BtwAppBundle\Model;
 
+class ConstituencyDetail
+	implements ModelInterface
+{
 
-class ConstituencyDetail {
-
-	private $constituencyId;
-
+	/** @var  int */
+	private $id;
+	/** @var  int */
 	private $stateId;
-
+	/** @var  string */
 	private $name;
-
+	/** @var  int */
 	private $electives;
-
+	/** @var  int */
 	private $voters;
-
+	/** @var  int */
 	private $votersPrev;
 
 	/**
-	 * @param mixed $votersPrev
+	 * @param array $data
+	 *
+	 * @return ConstituencyDetail
 	 */
-	public function setVotersPrev($votersPrev)
+	public static function fromArray(array &$data)
 	{
-		$this->votersPrev = $votersPrev;
+		$model = new ConstituencyDetail();
+		$model->setId($data['id']);
+		$model->setStateId($data['state']);
+		$model->setName($data['name']);
+		$model->setElectives($data['electives']);
+		$model->setVoters($data['voters']);
+		$model->setVotersPrev($data['voters_prev']);
+		return $model;
 	}
 
 	/**
-	 * @return mixed
+	 * @return array
 	 */
-	public function getVotersPrev()
+	public function toArray()
 	{
-		return $this->votersPrev;
+		return array(
+			'id'         => $this->getId(),
+			'state'      => $this->getStateId(),
+			'name'       => $this->getName(),
+			'electives'  => $this->getElectives(),
+			'voters'     => $this->getVoters(),
+			'votersPrev' => $this->getVotersPrev(),
+		);
 	}
 
 	/**
-	 * @param mixed $constituencyId
+	 * @param int $constituencyId
+	 *
+	 * @return ConstituencyDetail
 	 */
-	public function setConstituencyId($constituencyId)
+	public function setId($constituencyId)
 	{
-		$this->constituencyId = $constituencyId;
+		$this->id = $constituencyId;
+		return $this;
 	}
 
 	/**
-	 * @return mixed
+	 * @return int
 	 */
-	public function getConstituencyId()
+	public function getId()
 	{
-		return $this->constituencyId;
+		return $this->id;
 	}
 
 	/**
-	 * @param mixed $electives
+	 * @param int $electives
+	 *
+	 * @return ConstituencyDetail
 	 */
 	public function setElectives($electives)
 	{
 		$this->electives = $electives;
+		return $this;
 	}
 
 	/**
-	 * @return mixed
+	 * @return int
 	 */
 	public function getElectives()
 	{
@@ -72,15 +90,18 @@ class ConstituencyDetail {
 	}
 
 	/**
-	 * @param mixed $name
+	 * @param string $name
+	 *
+	 * @return ConstituencyDetail
 	 */
 	public function setName($name)
 	{
 		$this->name = $name;
+		return $this;
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getName()
 	{
@@ -88,15 +109,18 @@ class ConstituencyDetail {
 	}
 
 	/**
-	 * @param mixed $stateId
+	 * @param int $stateId
+	 *
+	 * @return ConstituencyDetail
 	 */
 	public function setStateId($stateId)
 	{
 		$this->stateId = $stateId;
+		return $this;
 	}
 
 	/**
-	 * @return mixed
+	 * @return int
 	 */
 	public function getStateId()
 	{
@@ -104,18 +128,41 @@ class ConstituencyDetail {
 	}
 
 	/**
-	 * @param mixed $voters
+	 * @param int $voters
+	 *
+	 * @return ConstituencyDetail
 	 */
 	public function setVoters($voters)
 	{
 		$this->voters = $voters;
+		return $this;
 	}
 
 	/**
-	 * @return mixed
+	 * @return int
 	 */
 	public function getVoters()
 	{
 		return $this->voters;
 	}
-} 
+
+	/**
+	 * @param int $votersPrev
+	 *
+	 * @return ConstituencyDetail
+	 */
+	public function setVotersPrev($votersPrev)
+	{
+		$this->votersPrev = $votersPrev;
+		return $this;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getVotersPrev()
+	{
+		return $this->votersPrev;
+	}
+
+}

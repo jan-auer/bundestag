@@ -1,85 +1,122 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: schaefep
- * Date: 13.12.13
- * Time: 16:01
- */
 
 namespace Btw\Bundle\BtwAppBundle\Model;
 
+class VotesResult
+	implements ModelInterface
+{
 
-class VotesResult {
-
-	private $stateId;
-
-	private $constituencyId;
-
-	private $partyId;
-
+	/** @var  int */
+	private $state;
+	/** @var  int */
+	private $constituency;
+	/** @var  int */
+	private $party;
+	/** @var  int */
 	private $votes;
 
 	/**
-	 * @param mixed $constituencyId
+	 * @param array $data
+	 *
+	 * @return VotesResult
 	 */
-	public function setConstituencyId($constituencyId)
+	public static function fromArray(array &$data)
 	{
-		$this->constituencyId = $constituencyId;
+		$model = new VotesResult();
+		$model->setState($data['state']);
+		$model->setConstituency($data['constituency']);
+		$model->setParty($data['party']);
+		$model->setVotes($data['votes']);
+		return $model;
 	}
 
 	/**
-	 * @return mixed
+	 * @return array
 	 */
-	public function getConstituencyId()
+	public function toArray()
 	{
-		return $this->constituencyId;
+		return array(
+			'state'        => $this->getState(),
+			'constituency' => $this->getConstituency(),
+			'party'        => $this->getParty(),
+			'votes'        => $this->getVotes(),
+		);
 	}
 
 	/**
-	 * @param mixed $partyId
+	 * @param int $constituency
+	 *
+	 * @return VotesResult
 	 */
-	public function setPartyId($partyId)
+	public function setConstituency($constituency)
 	{
-		$this->partyId = $partyId;
+		$this->constituency = $constituency;
+		return $this;
 	}
 
 	/**
-	 * @return mixed
+	 * @return int
 	 */
-	public function getPartyId()
+	public function getConstituency()
 	{
-		return $this->partyId;
+		return $this->constituency;
 	}
 
 	/**
-	 * @param mixed $stateId
+	 * @param int $party
+	 *
+	 * @return VotesResult
 	 */
-	public function setStateId($stateId)
+	public function setParty($party)
 	{
-		$this->stateId = $stateId;
+		$this->party = $party;
+		return $this;
 	}
 
 	/**
-	 * @return mixed
+	 * @return int
 	 */
-	public function getStateId()
+	public function getParty()
 	{
-		return $this->stateId;
+		return $this->party;
 	}
 
 	/**
-	 * @param mixed $votes
+	 * @param int $state
+	 *
+	 * @return VotesResult
+	 */
+	public function setState($state)
+	{
+		$this->state = $state;
+		return $this;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getState()
+	{
+		return $this->state;
+	}
+
+	/**
+	 * @param int $votes
+	 *
+	 * @return VotesResult
 	 */
 	public function setVotes($votes)
 	{
 		$this->votes = $votes;
+		return $this;
 	}
 
 	/**
-	 * @return mixed
+	 * @return int
 	 */
 	public function getVotes()
 	{
 		return $this->votes;
 	}
-} 
+
+}
