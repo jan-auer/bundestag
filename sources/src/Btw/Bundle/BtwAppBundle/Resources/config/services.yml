@@ -5,6 +5,7 @@ parameters:
      btw_members_of_bundestag_provider.class: Btw\Bundle\BtwAppBundle\Services\MembersOfBundestagProvider
      btw_party_results_provider.class: Btw\Bundle\BtwAppBundle\Services\PartyResultsProvider
      btw_party_provider.class: Btw\Bundle\BtwAppBundle\Services\PartyProvider
+     btw_closest_candidates_provider.class: Btw\Bundle\BtwAppBundle\Services\ClosestCandidatesProvider
 
      btw_election_analysis_form_builder.class: Btw\Bundle\BtwAppBundle\FormBuilder\ElectionAnalysisFormBuilder
 
@@ -33,6 +34,10 @@ services:
                      class: "%btw_party_provider.class%"
                      arguments:
                                         entityManager: "@doctrine.orm.entity_manager"
+     btw_closest_candidates_provider:
+                          class: "%btw_closest_candidates_provider.class%"
+                          arguments:
+                                             entityManager: "@doctrine.orm.entity_manager"
 
      btw_election_analysis_form_builder:
       class: "%btw_election_analysis_form_builder.class%"
