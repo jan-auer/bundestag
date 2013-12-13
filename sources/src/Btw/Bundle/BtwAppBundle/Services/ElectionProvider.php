@@ -1,21 +1,18 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: manuel
- * Date: 06/12/13
- * Time: 21:03
- */
 
 namespace Btw\Bundle\BtwAppBundle\Services;
 
+use Btw\Bundle\PersistenceBundle\Entity\Election;
 use Doctrine\ORM\EntityManager;
-
+use Doctrine\ORM\EntityRepository;
 
 class ElectionProvider
 {
 
 	/** @var  EntityManager */
 	private $em;
+	/** @var  EntityRepository */
+	private $repository;
 
 	function __construct(EntityManager $entityManager)
 	{
@@ -23,22 +20,40 @@ class ElectionProvider
 	}
 
 	/**
-	 * @return array
+	 * @return Election[]
 	 */
 	public function getAll()
 	{
-		$electionsRepository = $this->em->getRepository('BtwPersistenceBundle:Election');
-		return$electionsRepository->findAll();
+		return $this->getRepository()->findAll();
 	}
 
 	/**
-	 * @param $year
-	 * @return mixed
+	 * @param string $year
+	 *
+	 * @return Election
 	 */
 	public function forYear($year)
 	{
-		$electionsRepository = $this->em->getRepository('BtwPersistenceBundle:Election');
-		$elections = $electionsRepository->findAll();
-		foreach($elections as $election) if(date('Y', $election->getDate()->getTimestamp()) == $year) return $election;
+		/** @var Election[] $elections */
+		$elections = $this->getRepository()->findAll();
+
+		foreach ($elections as $election) {
+			if (date('Y', $election->getDate()->getTimestamp()) == $year)
+				return $election;
+		}
+
+		return null;
 	}
+
+	/**
+	 * @return EntityRepository
+	 */
+	private function getRepository()
+	{
+		if ($this->repository == null) {
+			$this->repository = $this->em->getRepository('BtwPersistenceBundle:Election');
+		}
+		return $this->repository;
+	}
+
 }
