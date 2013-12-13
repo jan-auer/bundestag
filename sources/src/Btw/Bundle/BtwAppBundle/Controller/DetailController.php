@@ -72,12 +72,13 @@ class DetailController extends Controller
 
 		//2. Constituencies
 		$constituencies = array();
-		foreach($constituencyProvider->getAllForElection($election) as $constituency)
+		foreach($constituencyProvider->getAllDetailsForElection($election) as $constituency)
 		{
-			$constituencies[] = array('id' => $constituency->getId(),
-									  'state' => $constituency->getState()->getId(),
+			$constituencies[] = array('id' => $constituency->getConstituencyId(),
+									  'state' => $constituency->getStateId(),
 									  'name' => $constituency->getName(),
-									  'electives' => $constituency->getElectives(),);
+									  'electives' => $constituency->getElectives(),
+									  'voters' => $constituency->getVoters());
 		}
 
 		//3. Parties
