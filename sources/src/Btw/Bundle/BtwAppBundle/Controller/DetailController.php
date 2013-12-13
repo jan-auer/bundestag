@@ -68,6 +68,7 @@ class DetailController extends Controller
 
 		//INIT
 		$election = $electionProvider->forYear($year);
+		$prevElection = $electionProvider->getPreviousElectionFor($election);
 
 		//DATA
 
@@ -82,13 +83,14 @@ class DetailController extends Controller
 
 		//2. Constituencies
 		$constituencies = array();
-		foreach($constituencyProvider->getAllDetailsForElection($election) as $constituency)
+		foreach($constituencyProvider->getAllDetailsForElection($election, $prevElection) as $constituency)
 		{
 			$constituencies[] = array('id' => $constituency->getConstituencyId(),
 									  'state' => $constituency->getStateId(),
 									  'name' => $constituency->getName(),
 									  'electives' => $constituency->getElectives(),
-									  'voters' => $constituency->getVoters());
+									  'voters' => $constituency->getVoters(),
+									  'voters-prev' => $constituency->getVotersPrev());
 		}
 
 		//3. Parties
