@@ -36,12 +36,12 @@ class PartyResultsProvider
 	{
 		$results = array();
 		$connection = $this->em->getConnection();
-		$statement = $connection->prepare("SELECT party_id AS party, party_seats.seats AS seats, SUM(overhead) AS overhead, state_id AS state
-										   FROM party_seats
-										    JOIN state_party_seats using (party_id)
-										    JOIN party using (party_id)
-										   WHERE election_id = :electionId
-										   GROUP BY party_id, state_id, party_seats.seats");
+		$statement = $connection->prepare("
+			SELECT state_id state, party_id party, sum(pss.seats) seats, sum(overhead) overhead
+			FROM party_state_seats pss
+			  JOIN state_party_seats sps USING (state_id, party_id)
+			WHERE election_id = :electionId
+			GROUP BY state_id, party_id");
 		$statement->bindValue('electionId', $election->getId());
 		$statement->execute();
 		foreach($statement->fetchAll() AS $result)
@@ -192,4 +192,4 @@ class PartyResultsProvider
 
 		return $partyResults;
 	}
-} 
+}
