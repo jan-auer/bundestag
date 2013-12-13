@@ -42,6 +42,95 @@ class DetailController extends Controller
 
 	}
 
+	public function electionResultsAction($year)
+	{
+		$population = 0;
+		$participation = 0;
+
+		//INJECT SERVICES
+		$electionProvider = $this->get("btw_election_provider");
+		$stateProvider = $this->get("btw_state_provider");
+		$locationDetailsProvider = $this->get('btw_location_details_provider');
+		$constituencyProvider = $this->get('btw_constituency_provider');
+		$partyProvider = $this->get('btw_party_provider');
+		$mdbProvider = $this->get('btw_members_of_bundestag_provider');
+		$partyResultsProvider = $this->get('btw_party_results_provider');
+
+		//INIT
+		$election = $electionProvider->forYear($year);
+
+		//DATA
+
+		//1. States
+		$states = array();
+		foreach($stateProvider->getAllForElection($election) as $state)
+		{
+			$states[] = array('id' => $state->getId(),
+							  'name' => $state->getName(),
+							  'population' => $state->getPopulation());
+		}
+
+		//2. Constituencies
+		$constituencies = array();
+		foreach($constituencyProvider->getAllForElection($election) as $constituency)
+		{
+			$constituencies[] = array('id' => $constituency->getId(),
+									  'state' => $constituency->getState()->getId(),
+									  'name' => $constituency->getName(),
+									  'electives' => $constituency->getElectives(),);
+		}
+
+		//3. Parties
+		$parties = array();
+		foreach($partyProvider->getAllForElection($election) as $party)
+		{
+			$parties[] = array('id' => $party->getId(),
+							   'name' => $party->getName(),
+							   'abbr' => $party->getAbbreviation(),
+							   'color' => $party->getColor());
+		}
+
+		//4. MdBs
+		$members = array();
+		foreach($mdbProvider->getAllForElection($election) as $member)
+		{
+			$members[] = array('id' => $member->getCandidateId(),
+							   'name' => $member->getName(),
+							   'state' => $member->getStateId(),
+							   'constituency' => $member->getConstituencyId(),
+							   'party' => $member->getPartyId());
+		}
+
+		//5. Votes
+		$votes = array();
+		foreach($partyResultsProvider->getVotesForElection($election) as $result)
+		{
+			$votes[] = array('state' => $result->getStateId(),
+							 'constituency' => $result->getConstituencyId(),
+							 'party' => $result->getPartyId(),
+							 'votes' => $result->getVotes());
+		}
+
+		//6. Seats
+		$seats = array();
+		foreach($partyResultsProvider->getSeatsForElection($election) as $result)
+		{
+			$seats[] = array($result->getStateId(),
+							 $result->getPartyId(),
+							 $result->getSeats(),
+							 $result->getOverhead());
+		}
+
+		//RESULT
+		$result = array('states' => $states,
+						'constituencies' => $constituencies,
+						'parties' => $parties,
+						'members' => $members,
+						'votes' => $votes,
+						'seats' => $seats);
+		return new Response(json_encode($result));
+	}
+
 	public function listConstituenciesAction($stateId)
 	{
 		$stateProvider = $this->get("btw_state_provider");
