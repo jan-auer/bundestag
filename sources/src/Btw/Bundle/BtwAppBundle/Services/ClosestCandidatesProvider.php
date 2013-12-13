@@ -22,20 +22,15 @@ class ClosestCandidatesProvider
 	public function forParty(Party $party)
 	{
 		$query = $this->prepareQuery("
-			SELECT const.name AS constituency, cand.name AS candidate, type
+			SELECT const.name AS constituency, cand.name AS name, type AS type
 			FROM top_close_constituency_candidates tccc
 			  JOIN candidate cand USING (candidate_id)
 			  JOIN constituency const USING (constituency_id)
-			WHERE tccc.party_id=:partyid AND tccc.ranking<=10");
+			WHERE tccc.party_id=:partyId AND tccc.ranking<=10");
 
 		$query->bindParam('partyId', $party->getId());
-
 		return $this->executeQuery($query, function ($result) {
-			$candidate = new ClosestCandidate();
-			$candidate->setName($result['candidate']);
-			$candidate->setConstituencyName($result['constituency']);
-			$candidate->setType($result['type']);
-			return $candidate;
+			return ClosestCandidate::fromArray($result);
 		});
 	}
 }

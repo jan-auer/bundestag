@@ -40,21 +40,13 @@ class ConstituencyProvider
 			  JOIN constituency_turnout ct USING (constituency_id)
 			  JOIN constituency cprev USING (name)
 			  LEFT JOIN constituency_turnout ctprev ON (cprev.constituency_id = ctprev.constituency_id)
-			WHERE c.election_id = :electionid AND cprev.election_id = :prevelectionid
+			WHERE c.election_id = :electionId AND cprev.election_id = :prevElectionId
 		");
 
 		$query->bindValue('electionId', $election->getId());
 		$query->bindValue('prevElectionId', is_null($prevElection) ? 0 : $prevElection->getId());
-
 		return $this->executeQuery($query, function ($result) {
-			$detail = new ConstituencyDetail();
-			$detail->setConstituencyId($result['id']);
-			$detail->setName($result['name']);
-			$detail->setStateId($result['state']);
-			$detail->setElectives($result['electives']);
-			$detail->setVoters($result['voters']);
-			$detail->setVotersPrev($result['voters_prev']);
-			return $detail;
+			return ConstituencyDetail::fromArray($result);
 		});
 	}
 
