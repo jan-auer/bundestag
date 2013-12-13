@@ -49,17 +49,17 @@ class MembersOfBundestagProvider
 			$membersOfBundestag[] = $memberOfBundestag;
 		}
 
-		$statement = $connection->prepare("SELECT c.candidate_id AS id, c.name AS name, state_id AS state, constituency_id AS constituency, party_id AS party
+		$statement = $connection->prepare("SELECT c.candidate_id AS id, c.name AS name, sl.state_id AS state, p.party_id AS party
 										   FROM Candidate c
-										    JOIN elected_candidates ec USING(candidate_id)
+										    JOIN elected_candidates USING(candidate_id)
 										    JOIN party p USING (party_id)
-										    JOIN constituency_candidacy cc USING (candidate_id)
-										    JOIN constituency USING (constituency_id)
-										    JOIN state s USING (state_id)
-										   WHERE c.election_id=:electionId AND c.candidate_id NOT IN
-										        (SELECT c.candidate_id AS name
-										         FROM Candidate c, constituency_winners cw
-										         WHERE c.candidate_id=cw.candidate_id AND c.election_id=:electionId)");
+										    JOIN state_candidacy USING (candidate_id)
+										    JOIN state_list sl USING (state_list_id)
+										   WHERE c.election_id = :electionId AND c.candidate_id NOT IN
+										   		(SELECT candidate_id AS name
+										         FROM Candidate
+										          JOIN constituency_winners USING (candidate_id)
+										         WHERE election_id=:electionId)");
 		$statement->bindValue('electionId', $election->getId());
 		$statement->execute();
 		foreach ($statement->fetchAll() as $member) {
