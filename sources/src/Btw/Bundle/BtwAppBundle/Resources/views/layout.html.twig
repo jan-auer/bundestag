@@ -11,15 +11,18 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('vendor/bootstrap/dist/css/bootstrap-theme.min.css') }}" />
         <link rel="stylesheet" type="text/css" href="{{ asset('bundles/btwapp/css/style.css') }}" />
 
+	<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+	<script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
         <script type="text/javascript" src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
 	    <script type="text/javascript" src="{{ asset('vendor/angular/angular.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('vendor/highcharts/highcharts.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('bundles/btwapp/js/chart.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('bundles/btwapp/js/btw.js') }}"></script>
 
-        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-        <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+	<script type="text/javascript"> var BTW = angular.module('btw', []); </script>
+	<script type="text/javascript" src="{{ asset('bundles/btwapp/js/chart.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('bundles/btwapp/js/election.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('bundles/btwapp/js/details.js') }}"></script>
 
 
         {% block head %}{% endblock %}
