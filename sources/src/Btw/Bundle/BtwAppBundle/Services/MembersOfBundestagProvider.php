@@ -29,7 +29,6 @@ class MembersOfBundestagProvider
 	public function getAllForElection(Election $election)
 	{
 		$membersOfBundestag = array();
-
 		$connection = $this->em->getConnection();
 		$statement = $connection->prepare("SELECT c.candidate_id AS id, c.name AS name, state_id AS state, constituency_id AS constituency, p.party_id AS party
 										   FROM Candidate c
@@ -39,6 +38,7 @@ class MembersOfBundestagProvider
 										    JOIN party p USING (party_id)
 										   WHERE c.election_id=:electionId");
 		$statement->bindValue('electionId', $election->getId());
+		$statement->execute();
 		foreach ($statement->fetchAll() as $member) {
 			$memberOfBundestag = new MemberOfBundestag();
 			$memberOfBundestag->setCandidateId($member['id']);
@@ -49,7 +49,7 @@ class MembersOfBundestagProvider
 			$membersOfBundestag[] = $memberOfBundestag;
 		}
 
-		$statement = $connection->prepare("SELECT c.candidate_id AS id, c.name AS name, state_id AS state, 0 AS constituency, party_id AS party
+		$statement = $connection->prepare("SELECT c.candidate_id AS id, c.name AS name, state_id AS state, constituency_id AS constituency, party_id AS party
 										   FROM Candidate c
 										    JOIN elected_candidates ec USING(candidate_id)
 										    JOIN party p USING (party_id)
@@ -67,7 +67,7 @@ class MembersOfBundestagProvider
 			$memberOfBundestag->setCandidateId($member['id']);
 			$memberOfBundestag->setName($member['name']);
 			$memberOfBundestag->setStateId($member['state']);
-			$memberOfBundestag->setConstituencyId($member['constituency']);
+			$memberOfBundestag->setConstituencyId(0);
 			$memberOfBundestag->setPartyId($member['party']);
 			$membersOfBundestag[] = $memberOfBundestag;
 		}
