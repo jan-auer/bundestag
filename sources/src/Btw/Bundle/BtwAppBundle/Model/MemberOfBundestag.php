@@ -56,6 +56,22 @@ class MemberOfBundestag {
 	}
 
 	/**
+	 * @param mixed $name
+	 */
+	public function setName($name)
+	{
+		$this->name = $name;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	/**
 	 * @param mixed $partyId
 	 */
 	public function setPartyId($partyId)
@@ -87,55 +103,5 @@ class MemberOfBundestag {
 		return $this->stateId;
 	}
 
-	private $partyAbbreviation;
 
-	private $isDirect;
-
-	/**
-	 * @param mixed $isDirect
-	 */
-	public function setIsDirect($isDirect)
-	{
-		$this->isDirect = $isDirect;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getIsDirect()
-	{
-		return $this->isDirect;
-	}
-
-	/**
-	 * @param mixed $name
-	 */
-	public function setName($name)
-	{
-		$this->name = $name;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getName()
-	{
-		return $this->name;
-	}
-
-	/**
-	 * @param mixed $partyAbbreviation
-	 */
-	public function setPartyAbbreviation($partyAbbreviation)
-	{
-		$this->partyAbbreviation = $partyAbbreviation;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getPartyAbbreviation()
-	{
-		return $this->partyAbbreviation;
-	}
 } 
