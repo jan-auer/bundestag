@@ -116,10 +116,10 @@ class DetailController extends Controller
 		$seats = array();
 		foreach($partyResultsProvider->getSeatsForElection($election) as $result)
 		{
-			$seats[] = array($result->getStateId(),
-							 $result->getPartyId(),
-							 $result->getSeats(),
-							 $result->getOverhead());
+			$seats[] = array('state' => $result->getStateId(),
+							 'party' => $result->getPartyId(),
+							 'seats' => $result->getSeats(),
+							 'overhead' => $result->getOverhead());
 		}
 
 		//RESULT
