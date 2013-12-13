@@ -28,7 +28,7 @@ class ClosestCandidatesProvider
 		$this->em = $entityManager;
 	}
 
-	public function forParty(Election $election, Party $party)
+	public function forParty(Party $party)
 	{
 		$candidates = array();
 		$connection = $this->em->getConnection();
@@ -36,8 +36,7 @@ class ClosestCandidatesProvider
 										  FROM top_close_constituency_candidates tccc
 										   JOIN candidate cand USING (candidate_id)
 										   JOIN constituency const USING (constituency_id)
-										  WHERE tccc.election_id=:electionId AND tccc.party_id=:partyId");
-		$statement->bindValue('electionId', $election->getId());
+										  WHERE tccc.party_id=:partyId");
 		$statement->bindValue('partyId', $party->getId());
 		$statement->execute();
 		foreach($statement->fetchAll() as $closest)
