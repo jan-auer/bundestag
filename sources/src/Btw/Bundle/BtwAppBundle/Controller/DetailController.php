@@ -116,12 +116,13 @@ class DetailController extends Controller
 
 		//5. Votes
 		$votes = array();
-		foreach($partyResultsProvider->getVotesForElection($election) as $result)
+		foreach($partyResultsProvider->getVotesForElection($election, $prevElection) as $result)
 		{
 			$votes[] = array('state' => $result->getStateId(),
 							 'constituency' => $result->getConstituencyId(),
 							 'party' => $result->getPartyId(),
-							 'votes' => $result->getVotes());
+							 'votes' => $result->getVotes(),
+							 'votes-prev' => $result->getVotesPrev());
 		}
 
 		//6. Seats

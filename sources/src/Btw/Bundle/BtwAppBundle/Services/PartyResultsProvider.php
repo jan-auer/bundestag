@@ -61,16 +61,20 @@ class PartyResultsProvider
 	 * @param Election $election
 	 * @return array
 	 */
-	public function getVotesForElection(Election $election)
+	public function getVotesForElection(Election $election, Election $previousElection)
 	{
 		$results = array();
 		$connection = $this->em->getConnection();
-		$statement = $connection->prepare("SELECT state_id AS state, constituency_id AS constituency, party_id AS party, absoluteVotes :: INT AS votes
+		$statement = $connection->prepare("SELECT state_id AS state, constituency_id AS constituency, party_id AS party, absoluteVotes :: INT AS votes, oldAbsoluteVotes :: INT AS votes_prev
 										   FROM constituency_votes cv
-										    JOIN constituency USING (constituency_id)
+										    JOIN constituency c USING (constituency_id)
 										    JOIN state s USING (state_id)
+										    JOIN party p USING (party_id)
+										    JOIN constituency_votes_history h ON (h.constituency_name = c.name AND date_part('Y', newDate)=:newYear AND date_part('Y', oldDate)=:oldYear AND p.abbreviation = h.party_abbreviation)
 										   WHERE s.election_id = :electionId");
 		$statement->bindValue('electionId', $election->getId());
+		$statement->bindValue('oldYear', date('Y', $previousElection->getDate()->getTimestamp()));
+		$statement->bindValue('newYear', date('Y', $election->getDate()->getTimestamp()));
 		$statement->execute();
 		foreach($statement->fetchAll() as $result)
 		{
@@ -79,6 +83,7 @@ class PartyResultsProvider
 			$voteResult->setConstituencyId($result['constituency']);
 			$voteResult->setPartyId($result['party']);
 			$voteResult->setVotes($result['votes']);
+			$voteResult->setVotesPrev($result['votes_prev']);
 			$results[] = $voteResult;
 		}
 
