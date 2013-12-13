@@ -21,6 +21,9 @@ class StateProvider
 	/** @var  EntityManager */
 	protected $em;
 
+	/**
+	 * @param EntityManager $entityManager
+	 */
 	function __construct(EntityManager $entityManager)
 	{
 		$this->em = $entityManager;

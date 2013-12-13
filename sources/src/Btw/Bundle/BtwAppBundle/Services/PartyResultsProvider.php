@@ -28,6 +28,10 @@ class PartyResultsProvider
 		$this->em = $entityManager;
 	}
 
+	/**
+	 * @param Election $election
+	 * @return array
+	 */
 	public function getSeatsForElection(Election $election)
 	{
 		$results = array();
@@ -53,6 +57,10 @@ class PartyResultsProvider
 		return $results;
 	}
 
+	/**
+	 * @param Election $election
+	 * @return array
+	 */
 	public function getVotesForElection(Election $election)
 	{
 		$results = array();
@@ -77,6 +85,10 @@ class PartyResultsProvider
 		return $results;
 	}
 
+	/**
+	 * @param Election $election
+	 * @return array
+	 */
 	public function forCountry(Election $election)
 	{
 		$partyResults = array();
@@ -106,6 +118,10 @@ class PartyResultsProvider
 		return $partyResults;
 	}
 
+	/**
+	 * @param State $state
+	 * @return array
+	 */
 	public function forState(State $state)
 	{
 		$partyResults = array();
@@ -149,6 +165,10 @@ class PartyResultsProvider
 		return $partyResults;
 	}
 
+	/**
+	 * @param Constituency $constituency
+	 * @return array
+	 */
 	public function forConstituency(Constituency $constituency)
 	{
 		$partyResults = array();
