@@ -1,6 +1,3 @@
-DROP VIEW IF EXISTS state_seats CASCADE;
-DROP VIEW IF EXISTS state_party_candidates CASCADE;
-
 -- STEP 1: How many seats does each state get in the Bundestag?
 
 CREATE OR REPLACE VIEW state_seats (state_id, seats) AS (
