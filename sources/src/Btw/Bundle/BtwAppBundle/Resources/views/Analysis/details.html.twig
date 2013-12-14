@@ -49,8 +49,8 @@
                         <tr>
                             <th></th>
                             <th>Partei</th>
-                            <th>Stimmen</th>
-                            <th>Sitze</th>
+                            <th class="text-right">Stimmen</th>
+                            <th class="text-right">Sitze</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -60,7 +60,7 @@
                                     <span class="label" style="background: {{ result.party.color }}">&nbsp;&nbsp;</span>
                                 </a>
                             </td>
-                            <td>{{ result.party.name }}</td>
+                            <td>{{ result.party.abbr }}</td>
                             <td class="text-right">
                                 {{ result.votes | number }}
                                 (<b>{{ (result.votes / context.voters * 100) | number:2 }}%</b><span class="text-muted" data-ng-show="context.votersPrev > -1">
