@@ -14,6 +14,8 @@ class VotesResult
 	private $party;
 	/** @var  int */
 	private $votes;
+	/** @var  int */
+	private $votesPrev;
 
 	/**
 	 * @param array $data
@@ -27,6 +29,7 @@ class VotesResult
 		$model->setConstituency($data['constituency']);
 		$model->setParty($data['party']);
 		$model->setVotes($data['votes']);
+		$model->setVotesPrev($data['votes_prev']);
 		return $model;
 	}
 
@@ -40,7 +43,24 @@ class VotesResult
 			'constituency' => $this->getConstituency(),
 			'party'        => $this->getParty(),
 			'votes'        => $this->getVotes(),
+			'votesPrev'    => $this->getVotesPrev(),
 		);
+	}
+
+	/**
+	 * @param mixed $votesPrev
+	 */
+	public function setVotesPrev($votesPrev)
+	{
+		$this->votesPrev = $votesPrev;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getVotesPrev()
+	{
+		return $this->votesPrev;
 	}
 
 	/**

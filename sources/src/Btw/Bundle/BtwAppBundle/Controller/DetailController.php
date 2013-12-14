@@ -85,12 +85,7 @@ class DetailController extends Controller
 		$constituencies = array();
 		foreach($constituencyProvider->getAllDetailsForElection($election, $prevElection) as $constituency)
 		{
-			$constituencies[] = array('id' => $constituency->getConstituencyId(),
-									  'state' => $constituency->getStateId(),
-									  'name' => $constituency->getName(),
-									  'electives' => $constituency->getElectives(),
-									  'voters' => $constituency->getVoters(),
-									  'voters-prev' => $constituency->getVotersPrev());
+			$constituencies[] = $constituency->toArray();
 		}
 
 		//3. Parties
@@ -107,31 +102,21 @@ class DetailController extends Controller
 		$members = array();
 		foreach($mdbProvider->getAllForElection($election) as $member)
 		{
-			$members[] = array('id' => $member->getCandidateId(),
-							   'name' => $member->getName(),
-							   'state' => $member->getStateId(),
-							   'constituency' => $member->getConstituencyId(),
-							   'party' => $member->getPartyId());
+			$members[] = $member->toArray();
 		}
 
 		//5. Votes
 		$votes = array();
-		foreach($partyResultsProvider->getVotesForElection($election) as $result)
+		foreach($partyResultsProvider->getVotesForElection($election, $prevElection) as $result)
 		{
-			$votes[] = array('state' => $result->getStateId(),
-							 'constituency' => $result->getConstituencyId(),
-							 'party' => $result->getPartyId(),
-							 'votes' => $result->getVotes());
+			$votes[] = $result->toArray();
 		}
 
 		//6. Seats
 		$seats = array();
 		foreach($partyResultsProvider->getSeatsForElection($election) as $result)
 		{
-			$seats[] = array('state' => $result->getStateId(),
-							 'party' => $result->getPartyId(),
-							 'seats' => $result->getSeats(),
-							 'overhead' => $result->getOverhead());
+			$seats[] = $result->toArray();
 		}
 
 		//RESULT
