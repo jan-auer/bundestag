@@ -16,10 +16,6 @@ class PartyResult
 	private $seats;
 	/** @var  int */
 	private $overhead;
-	/** @var  int */
-	private $votes;
-	/** @var  number */
-	private $percentage;
 
 	/**
 	 * @param array $data
@@ -34,8 +30,6 @@ class PartyResult
 		$model->setColor($data['color']);
 		$model->setSeats($data['seats']);
 		$model->setOverhead($data['overhead']);
-		$model->setVotes($data['votes']);
-		$model->setPercentage($data['percentage']);
 		return $model;
 	}
 
@@ -45,13 +39,11 @@ class PartyResult
 	public function toArray()
 	{
 		return array(
-			'abbr'       => $this->getAbbr(),
-			'name'       => $this->getName(),
-			'color'      => $this->getColor(),
-			'seats'      => $this->getSeats(),
-			'overhead'   => $this->getOverhead(),
-			'votes'      => $this->getVotes(),
-			'percentage' => $this->getPercentage(),
+			'abbr'     => $this->getAbbr(),
+			'name'     => $this->getName(),
+			'color'    => $this->getColor(),
+			'seats'    => $this->getSeats(),
+			'overhead' => $this->getOverhead(),
 		);
 	}
 
@@ -132,25 +124,6 @@ class PartyResult
 	}
 
 	/**
-	 * @param number $percentage
-	 *
-	 * @return PartyResult
-	 */
-	public function setPercentage($percentage)
-	{
-		$this->percentage = $percentage;
-		return $this;
-	}
-
-	/**
-	 * @return number
-	 */
-	public function getPercentage()
-	{
-		return $this->percentage;
-	}
-
-	/**
 	 * @param int $seats
 	 *
 	 * @return PartyResult
@@ -167,25 +140,6 @@ class PartyResult
 	public function getSeats()
 	{
 		return $this->seats;
-	}
-
-	/**
-	 * @param int $votes
-	 *
-	 * @return PartyResult
-	 */
-	public function setVotes($votes)
-	{
-		$this->votes = $votes;
-		return $this;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getVotes()
-	{
-		return $this->votes;
 	}
 
 }
