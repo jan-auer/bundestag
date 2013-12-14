@@ -24,38 +24,6 @@ class DetailController extends Controller
 
 	}
 
-	public function listStatesAction($year)
-	{
-		$electionProvider = $this->get("btw_election_provider");
-		$stateProvider = $this->get("btw_state_provider");
-
-		$election = $electionProvider->forYear($year);
-		$states = array();
-		foreach ($stateProvider->getAllForElection($election) as $state) {
-			$states[] = array(
-				'id' => $state->getId(),
-				'name' => $state->getName()
-			);
-		}
-
-		return new Response(json_encode($states));
-
-	}
-
-	public function listConstituenciesAction($stateId)
-	{
-		$stateProvider = $this->get("btw_state_provider");
-		$state = $stateProvider->byId($stateId);
-		$constituencies = array();
-		foreach ($state->getConstituencies() as $constituency) {
-			$constituencies[] = array(
-				'id' => $constituency->getId(),
-				'name' => $constituency->getName()
-			);
-		}
-		return new Response(json_encode($constituencies));
-	}
-
 	public function electionResultsAction($year)
 	{
 		//INJECT SERVICES
