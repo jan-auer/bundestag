@@ -99,10 +99,12 @@
 			ng.forEach(constituencies, function (constituency) {
 				inc(country, 'electives', constituency.electives);
 				inc(country, 'voters', constituency.voters);
+				inc(country, 'votersPrev', constituency.votersPrev);
 
 				var state = this.getState(constituency.state);
 				inc(state, 'electives', constituency.electives);
 				inc(state, 'voters', constituency.voters);
+				inc(state, 'votersPrev', constituency.votersPrev);
 
 				var map = this.getConstituencies(state);
 				map[constituency.id] = constituency;
@@ -142,15 +144,21 @@
 
 			ng.forEach(results, function (result) {
 				var party = this.getParty(result.party);
-				inc(ensure(countryParties, result.party, { party : party }), 'votes', result.votes);
+				var countryVotes = ensure(countryParties, result.party, { party : party });
+				inc(countryVotes, 'votes', result.votes);
+				inc(countryVotes, 'votesPrev', result.votesPrev);
 
 				var state = this.getState(result.state);
 				var stateParties = ensure(state, 'parties', {});
-				inc(ensure(stateParties, result.party, { party : party }), 'votes', result.votes);
+				var stateVotes = ensure(stateParties, result.party, { party : party });
+				inc(stateVotes, 'votes', result.votes);
+				inc(stateVotes, 'votesPrev', result.votesPrev);
 
 				var constituency = this.getConstituency(state, result.constituency);
 				var constituencyParties = ensure(constituency, 'parties', {});
-				inc(ensure(constituencyParties, result.party, { party : party }), 'votes', result.votes);
+				var constituencyVotes = ensure(constituencyParties, result.party, { party : party });
+				inc(constituencyVotes, 'votes', result.votes);
+				inc(constituencyVotes, 'votesPrev', result.votesPrev);
 			}, this);
 		};
 
