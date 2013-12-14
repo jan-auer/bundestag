@@ -63,7 +63,8 @@
                             <td>{{ result.party.name }}</td>
                             <td class="text-right">
                                 {{ result.votes | number }}
-                                (<b>{{ (result.votes / context.voters * 100) | number:2 }}%</b>)
+                                (<b>{{ (result.votes / context.voters * 100) | number:2 }}%</b><span class="text-muted" data-ng-show="context.votersPrev > -1">
+                                    {{ ((result.votes / context.voters - result.votesPrev / context.votersPrev) * 100) | number:2 }}%</span>)
                             </td>
                             <td class="text-right">
                                 <b>{{ result.seats || '—' }}</b>
