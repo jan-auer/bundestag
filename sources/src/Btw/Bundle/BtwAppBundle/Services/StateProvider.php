@@ -1,51 +1,53 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: schaefep
- * Date: 07.12.13
- * Time: 18:36
- */
 
 namespace Btw\Bundle\BtwAppBundle\Services;
 
-
-use Btw\Bundle\BtwAppBundle\Model\LocationDetailsModel;
-use Btw\Bundle\PersistenceBundle\Entity\State;
 use Btw\Bundle\PersistenceBundle\Entity\Election;
+use Btw\Bundle\PersistenceBundle\Entity\State;
 use Doctrine\ORM\EntityManager;
-
+use Doctrine\ORM\EntityRepository;
 
 class StateProvider
+	extends AbstractProvider
 {
 
-	/** @var  EntityManager */
-	protected $em;
+	/** @var  EntityRepository */
+	private $repository;
 
-	/**
-	 * @param EntityManager $entityManager
-	 */
 	function __construct(EntityManager $entityManager)
 	{
-		$this->em = $entityManager;
+		parent::__construct($entityManager);
 	}
 
 	/**
-	 * @param $election Election
-	 * @return array
-	 */
-	public function getAllForElection(Election $election)
-	{
-		$statesRepository = $this->em->getRepository('BtwPersistenceBundle:State');
-		$states = $statesRepository->findBy(array('election' => $election), array('name' => 'ASC'));
-		return $states;
-	}
-
-	/**
-	 * @param $id state id
+	 * @param int $id
+	 *
 	 * @return State
 	 */
 	public function byId($id)
 	{
-		return $this->em->find('BtwPersistenceBundle:State', $id);
+		return $this->getMyRepository()->find($id);
 	}
-} 
+
+	/**
+	 * @param $election Election
+	 *
+	 * @return State[]
+	 */
+	public function getAllForElection(Election $election)
+	{
+		return $this->getMyRepository()->findBy(array('election' => $election), array('name' => 'ASC'));
+	}
+
+	/**
+	 * @return EntityRepository
+	 */
+	private function getMyRepository()
+	{
+		if ($this->repository == null) {
+			$this->repository = $this->getRepository('State');
+		}
+		return $this->repository;
+	}
+
+}
