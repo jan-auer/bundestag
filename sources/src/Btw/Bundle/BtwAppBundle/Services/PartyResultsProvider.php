@@ -43,7 +43,7 @@ class PartyResultsProvider
 	 *
 	 * @return VotesResult[]
 	 */
-	public function getVotesForElection(Election $election, Election $previousElection)
+	public function getVotesForElection(Election $election, $previousElection)
 	{
 		$query = $this->prepareQuery("
 			SELECT state_id AS state, constituency_id AS constituency, party_id AS party, absoluteVotes :: INT AS votes, oldAbsoluteVotes :: INT AS votes_prev
@@ -51,11 +51,11 @@ class PartyResultsProvider
 			  JOIN constituency c USING (constituency_id)
 			  JOIN state s USING (state_id)
 			  JOIN party p USING (party_id)
-			  JOIN constituency_votes_history h ON (h.constituency_name = c.name AND p.abbreviation = h.party_abbreviation)
+			  LEFT JOIN constituency_votes_history h ON (h.constituency_name = c.name AND p.abbreviation = h.party_abbreviation)
 			WHERE date_part('Y', newDate) = :new AND date_part('Y', oldDate) = :old");
 
-		$query->bindValue('new', $election->getId());
-		$query->bindValue('old', $previousElection->getId());
+		$query->bindValue('new', date('Y', $election->getDate()->getTimestamp()));
+		$query->bindValue('old', is_null($previousElection) ? 0 : date('Y', $previousElection->getDate()->getTimestamp()));
 		return $this->executeQuery($query, function ($result) {
 			return VotesResult::fromArray($result);
 		});
