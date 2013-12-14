@@ -36,6 +36,9 @@
 		return {
 			link : function (scope, element, attrs) {
 				element.tooltip({ title : attrs.bsTooltip });
+				attrs.$observe('bsTooltip', function (tooltip) {
+					element.tooltip('destroy').tooltip({ title : tooltip });
+				});
 			}
 		};
 	});
