@@ -31,6 +31,8 @@ class ConstituencyProvider
 	 * @param Election $prevElection
 	 *
 	 * @return ConstituencyDetail[]
+	 *
+	 * @TODO: Fix this query. It returns nothing when no previous election is specified
 	 */
 	public function getAllDetailsForElection($election, $prevElection)
 	{
@@ -56,11 +58,11 @@ class ConstituencyProvider
 				  JOIN constituency_turnout ct USING (constituency_id)
 				  JOIN constituency cprev USING (name)
 				  LEFT JOIN constituency_turnout ctprev ON (cprev.constituency_id = ctprev.constituency_id)
-				WHERE c.election_id = :electionId AND cprev.election_id = :prevElectionId
+			WHERE c.election_id = :current AND cprev.election_id = :previous
 			");
 
-			$query->bindValue('electionId', $election->getId());
-			$query->bindValue('prevElectionId', $prevElection->getId());
+			$query->bindValue('current', $election->getId());
+			$query->bindValue('previous', $prevElection->getId());
 			return $this->executeQuery($query, function ($result) {
 				return ConstituencyDetail::fromArray($result);
 			});

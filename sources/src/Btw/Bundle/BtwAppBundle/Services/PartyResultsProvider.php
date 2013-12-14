@@ -42,6 +42,10 @@ class PartyResultsProvider
 	 * @param Election $previousElection
 	 *
 	 * @return VotesResult[]
+	 *
+	 * @TODO: Fix this query. Might be the same problem like in the ConstituencyProvider. It returns nothing
+	 *      when no previous election is specified.
+	 * @see ConstituencyProvider::getAllDetailsForElection
 	 */
 	public function getVotesForElection(Election $election, $previousElection)
 	{
