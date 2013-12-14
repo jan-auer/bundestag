@@ -1,43 +1,53 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: schaefep
- * Date: 13.12.13
- * Time: 15:18
- */
 
 namespace Btw\Bundle\BtwAppBundle\Services;
 
-
 use Btw\Bundle\PersistenceBundle\Entity\Election;
+use Btw\Bundle\PersistenceBundle\Entity\Party;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 
-class PartyProvider {
+class PartyProvider
+	extends AbstractProvider
+{
 
-	/** @var  EntityManager */
-	protected $em;
+	/** @var  EntityRepository */
+	private $repository;
 
-	/**
-	 * @param EntityManager $entityManager
-	 */
 	function __construct(EntityManager $entityManager)
 	{
-		$this->em = $entityManager;
+		parent::__construct($entityManager);
 	}
 
+	/**
+	 * @param $id
+	 *
+	 * @return Party
+	 */
 	public function byId($id)
 	{
-		return $this->em->find('BtwPersistenceBundle:Party', $id);
+		return $this->getMyRepository()->find($id);
 	}
 
 	/**
 	 * @param Election $election
-	 * @return array
+	 *
+	 * @return Party[]
 	 */
 	public function getAllForElection(Election $election)
 	{
-		$partiesRepository = $this->em->getRepository('BtwPersistenceBundle:Party');
-		$parties = $partiesRepository->findBy(array('election' => $election));
-		return $parties;
+		return $this->getMyRepository()->findBy(array('election' => $election));
 	}
-} 
+
+	/**
+	 * @return EntityRepository
+	 */
+	private function getMyRepository()
+	{
+		if ($this->repository == null) {
+			$this->repository = $this->getRepository('Party');
+		}
+		return $this->repository;
+	}
+
+}
