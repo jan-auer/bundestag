@@ -43,8 +43,6 @@ class PartyResultsProvider
 	 *
 	 * @return VotesResult[]
 	 *
-	 * @TODO: Fix this query. Might be the same problem like in the ConstituencyProvider. It returns nothing
-	 *      when no previous election is specified.
 	 * @see ConstituencyProvider::getAllDetailsForElection
 	 */
 	public function getVotesForElection(Election $election, $previousElection)
@@ -63,12 +61,13 @@ class PartyResultsProvider
 			SELECT state_id AS state, constituency_id AS constituency, party_id AS party, absoluteVotes :: INT AS votes, oldAbsoluteVotes :: INT AS votes_prev
 			FROM constituency_votes cv
 			  JOIN constituency c USING (constituency_id)
-			  JOIN state s USING (state_id)
-			  JOIN party p USING (party_id)
+			  JOIN state s USING (election_id, state_id)
+			  JOIN party p USING (election_id, party_id)
 			  LEFT JOIN constituency_votes_history h ON (h.constituency_name = c.name AND p.abbreviation = h.party_abbreviation)
-			WHERE date_part('Y', newDate) = :new AND date_part('Y', oldDate) = :old");
+			WHERE date_part('Y', newDate) = :new AND date_part('Y', oldDate) = :old AND election_id = :electionId");
 
 			$query->bindValue('old', date('Y', $previousElection->getDate()->getTimestamp()));
+			$query->bindValue('electionId', $election->getId());
 		}
 
 		$query->bindValue('new', date('Y', $election->getDate()->getTimestamp()));
