@@ -44,8 +44,7 @@ CREATE OR REPLACE VIEW constituency_votes_history (oldDate, newDate, constituenc
         SELECT date, c.name, p.abbreviation, absoluteVotes, totalVotes
         FROM constituency c JOIN constituency_votes USING (constituency_id)
           JOIN election USING (election_id)
-          JOIN party p
-          USING (party_id)
+          JOIN party p USING (party_id)
     )
     SELECT old.date, new.date, old.constituency_name, old.party_abbreviation, old.absoluteVotes, old.totalVotes, new.absoluteVotes, new.totalVotes
     FROM constituency_election old, constituency_election new
