@@ -50,7 +50,7 @@
                             <th></th>
                             <th>Partei</th>
                             <th>Stimmen</th>
-                            <th>Mandate</th>
+                            <th>Sitze</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -67,8 +67,7 @@
                                     {{ ((result.votes / context.voters - result.votesPrev / context.votersPrev) * 100) | number:2 }}%</span>)
                             </td>
                             <td class="text-right">
-                                <b>{{ result.seats || '—' }}</b>
-                                <span data-ng-show="result.seats >= 0" bs-tooltip="Überhangmandate">(+ {{ result.overhead }})</span>
+                                <b bs-tooltip="{{ result.overhead }}&nbsp;Überhangmandate">{{ result.seats || '—' }}</b>
                             </td>
                         </tr>
                     </tbody>
