@@ -34,20 +34,37 @@ class ConstituencyProvider
 	 */
 	public function getAllDetailsForElection($election, $prevElection)
 	{
-		$query = $this->prepareQuery("
-			SELECT c.constituency_id AS id, c.name, c.state_id AS state, c.electives, ct.voters, ctprev.voters AS voters_prev
-			FROM constituency c
-			  JOIN constituency_turnout ct USING (constituency_id)
-			  JOIN constituency cprev USING (name)
-			  LEFT JOIN constituency_turnout ctprev ON (cprev.constituency_id = ctprev.constituency_id)
-			WHERE c.election_id = :electionId AND cprev.election_id = :prevElectionId
-		");
+		if (is_null($prevElection))
+		{
+			$query = $this->prepareQuery("
+				SELECT c.constituency_id AS id, c.name, c.state_id AS state, c.electives, ct.voters, -1 AS voters_prev
+				FROM constituency c
+				  JOIN constituency_turnout ct USING (constituency_id)
+				WHERE c.election_id = :electionId
+			");
 
-		$query->bindValue('electionId', $election->getId());
-		$query->bindValue('prevElectionId', is_null($prevElection) ? 0 : $prevElection->getId());
-		return $this->executeQuery($query, function ($result) {
-			return ConstituencyDetail::fromArray($result);
-		});
+			$query->bindValue('electionId', $election->getId());
+			return $this->executeQuery($query, function ($result) {
+				return ConstituencyDetail::fromArray($result);
+			});
+		}
+		else
+		{
+			$query = $this->prepareQuery("
+				SELECT c.constituency_id AS id, c.name, c.state_id AS state, c.electives, ct.voters, ctprev.voters AS voters_prev
+				FROM constituency c
+				  JOIN constituency_turnout ct USING (constituency_id)
+				  JOIN constituency cprev USING (name)
+				  LEFT JOIN constituency_turnout ctprev ON (cprev.constituency_id = ctprev.constituency_id)
+				WHERE c.election_id = :electionId AND cprev.election_id = :prevElectionId
+			");
+
+			$query->bindValue('electionId', $election->getId());
+			$query->bindValue('prevElectionId', $prevElection->getId());
+			return $this->executeQuery($query, function ($result) {
+				return ConstituencyDetail::fromArray($result);
+			});
+		}
 	}
 
 }
