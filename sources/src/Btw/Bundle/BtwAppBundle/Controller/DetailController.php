@@ -117,7 +117,7 @@ class DetailController
 		$closest = array_map(function ($candidate) {
 			return array(
 				'name'         => $candidate->getName(),
-				'constituency' => $candidate->getConstituencyName(),
+				'constituency' => $candidate->getConstituency(),
 				'type'         => $candidate->getType()
 			);
 		}, $closestProvider->forParty($party));
