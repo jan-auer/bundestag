@@ -26,9 +26,9 @@ class ClosestCandidatesProvider
 			FROM top_close_constituency_candidates tccc
 			  JOIN candidate cand USING (candidate_id)
 			  JOIN constituency const USING (constituency_id)
-			WHERE tccc.party_id=:partyId AND tccc.ranking<=10");
+			WHERE tccc.party_id=:party AND tccc.ranking<=10");
 
-		$query->bindParam('partyId', $party->getId());
+		$query->bindParam('party', $party->getId());
 		return $this->executeQuery($query, function ($result) {
 			return ClosestCandidate::fromArray($result);
 		});
