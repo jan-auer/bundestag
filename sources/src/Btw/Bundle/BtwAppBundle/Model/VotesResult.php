@@ -29,7 +29,11 @@ class VotesResult
 		$model->setConstituency($data['constituency']);
 		$model->setParty($data['party']);
 		$model->setVotes($data['votes']);
-		$model->setVotesPrev($data['votes_prev']);
+		if (array_key_exists('votes_prev', $data)) {
+			$model->setVotesPrev($data['votes_prev']);
+		} else {
+			$model->setVotesPrev(0);
+		}
 		return $model;
 	}
 
@@ -39,11 +43,11 @@ class VotesResult
 	public function toArray()
 	{
 		return array(
-			'state'        => $this->getState(),
+			'state' => $this->getState(),
 			'constituency' => $this->getConstituency(),
-			'party'        => $this->getParty(),
-			'votes'        => $this->getVotes(),
-			'votesPrev'    => $this->getVotesPrev(),
+			'party' => $this->getParty(),
+			'votes' => $this->getVotes(),
+			'votesPrev' => $this->getVotesPrev(),
 		);
 	}
 
