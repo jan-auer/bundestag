@@ -24,7 +24,7 @@ class ClosestCandidate
 		$model->setName($data['name']);
 		$model->setConstituency($data['constituency']);
 		$model->setType($data['type']);
-		return model;
+		return $model;
 	}
 
 	/**
