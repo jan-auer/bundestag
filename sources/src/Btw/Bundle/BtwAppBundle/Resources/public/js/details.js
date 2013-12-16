@@ -60,4 +60,10 @@
 
 	}]);
 
+	Module.filter('signed', ['$filter', function ($filter) {
+		return function (num, digits) {
+			return (num > 0 ? '+' : '') + $filter('number')(num, digits);
+		}
+	}]);
+
 }(angular, BTW);

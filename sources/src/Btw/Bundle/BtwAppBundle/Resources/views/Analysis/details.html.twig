@@ -63,8 +63,8 @@
                             <td>{{ result.party.abbr }}</td>
                             <td class="text-right">
                                 {{ result.votes | number }}
-                                (<b>{{ (result.votes / context.voters * 100) | number:2 }}%</b><span class="text-muted" data-ng-show="context.votersPrev > -1">
-                                    {{ ((result.votes / context.voters - result.votesPrev / context.votersPrev) * 100) | number:2 }}%</span>)
+                                (<b>{{ (result.votes / context.voters * 100) | number:1 }}%</b><span class="text-muted" data-ng-show="context.votersPrev > -1">
+                                    {{ ((result.votes / context.voters - result.votesPrev / context.votersPrev) * 100) | signed:1 }}%</span>)
                             </td>
                             <td class="text-right">
                                 <b bs-tooltip="{{ result.overhead }}&nbsp;Überhangmandate">{{ result.seats || '—' }}</b>
