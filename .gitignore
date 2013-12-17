@@ -12,3 +12,9 @@ vendor/
 /misc/LineCounter/LineCounter/bin
 /misc/LineCounter/LineCounter/obj
 /misc/LineCounter/LineCounter/LineCounter.csproj.user
+/misc/Benchmarking/Btw.Benchmark/Btw.Benchmark.suo
+/misc/Benchmarking/Btw.Benchmark/Btw.Benchmark.CLI/bin
+/misc/Benchmarking/Btw.Benchmark/Btw.Benchmark.CLI/obj
+/misc/Benchmarking/Btw.Benchmark/Btw.Benchmark.CLI/Btw.Benchmark.CLI.csproj.user
+/misc/Benchmarking/Btw.Benchmark/Btw.Benchmark/bin
+/misc/Benchmarking/Btw.Benchmark/Btw.Benchmark/obj
