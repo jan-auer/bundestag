@@ -1,5 +1,7 @@
 !function (ng, Module) {
 
+	/** @const */ var OTHER = { id: 99999, name  : 'Sonstige', abbr  : 'Sonstige', color : '#aaa' };
+
 	function ensure(obj, key, proto) {
 		return obj[key] || (obj[key] = proto);
 	}
@@ -34,6 +36,7 @@
 			this.addVotes(data.votes);
 			this.addSeats(data.seats);
 			this.cleanParties();
+			this.addOtherParties();
 		};
 
 		// Global   -----------------------------------------------------------
@@ -65,6 +68,23 @@
 				if (party.votes) parties[id] = party;
 			});
 			this.parties = parties;
+		};
+
+		Election.prototype.addOtherParties = function addOtherParties() {
+			this.getParties()[OTHER.id] = OTHER;
+
+			var country = this.getCountry();
+			country.parties[OTHER.id] = { votes : (country.voters - country.votes), party : OTHER };
+
+			ng.forEach(this.getStates(), function (state) {
+				if (!state.id) return;
+				state.parties[OTHER.id] = { votes : (state.voters - state.votes), party : OTHER };
+
+				ng.forEach(this.getConstituencies(state), function (constituency) {
+					if (!constituency.id) return;
+					constituency.parties[OTHER.id] = { votes : (constituency.voters - constituency.votes), party : OTHER };
+				}, this);
+			}, this);
 		};
 
 		// States   -----------------------------------------------------------
@@ -145,18 +165,21 @@
 			ng.forEach(results, function (result) {
 				var party = this.getParty(result.party);
 				var countryVotes = ensure(countryParties, result.party, { party : party });
+				inc(country,  'votes', result.votes);
 				inc(countryVotes, 'votes', result.votes);
 				inc(countryVotes, 'votesPrev', result.votesPrev);
 
 				var state = this.getState(result.state);
 				var stateParties = ensure(state, 'parties', {});
 				var stateVotes = ensure(stateParties, result.party, { party : party });
+				inc(state,  'votes', result.votes);
 				inc(stateVotes, 'votes', result.votes);
 				inc(stateVotes, 'votesPrev', result.votesPrev);
 
 				var constituency = this.getConstituency(state, result.constituency);
 				var constituencyParties = ensure(constituency, 'parties', {});
 				var constituencyVotes = ensure(constituencyParties, result.party, { party : party });
+				inc(constituency,  'votes', result.votes);
 				inc(constituencyVotes, 'votes', result.votes);
 				inc(constituencyVotes, 'votesPrev', result.votesPrev);
 			}, this);
