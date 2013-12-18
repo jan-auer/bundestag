@@ -23,6 +23,9 @@ namespace Btw.Benchmark
         [OptionArray('r', "rates", Required = true, HelpText = "Rates mapping to specified URLs.")]
         public string[] Rates { get; set; }
 
+        [Option('f', "filepath", Required = false, DefaultValue = "", HelpText = "If set, the benchmarking result will be saved to a CSV specified herein.")]
+        public string File { get; set; }
+
         [HelpOption]
         public string GetUsage()
         {
