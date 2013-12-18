@@ -2,7 +2,17 @@
 -- See view party_state_seats in seat_distribution.sql
 -- ===================================================================
 -- Q2
--- See view elected_candidates in seat_distribution.sql
+CREATE OR REPLACE VIEW bundestag_candidates (candidate_id, directCandidate) AS (
+  SELECT candidate_id, 1
+  FROM elected_candidates
+  WHERE candidate_id IN (SELECT candidate_id
+                         FROM constituency_winners)
+  UNION ALL
+  SELECT candidate_id, 0
+  FROM elected_candidates
+  WHERE candidate_id NOT IN (SELECT candidate_id
+                             FROM constituency_winners)
+);
 -- ===================================================================
 -- Q3.1
 CREATE OR REPLACE VIEW constituency_turnout (constituency_id, turnout, voters, electives) AS (
