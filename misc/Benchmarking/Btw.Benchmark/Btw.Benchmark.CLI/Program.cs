@@ -11,7 +11,11 @@ namespace Btw.Benchmark
 
         static int TotalRunCount = 0;
 
-        static StringBuilder BenchmarkResultOutput = new StringBuilder();
+        static BenchmarkResultConsoleStringBuilder ConsoleBuilder = new BenchmarkResultConsoleStringBuilder();
+
+        static BenchmarkResultCsvStringBuilder CsvBuilder = new BenchmarkResultCsvStringBuilder(';');
+
+        static string CsvFilePath = String.Empty;
 
         static void Main(string[] args)
         {
@@ -19,6 +23,7 @@ namespace Btw.Benchmark
             var options = new Options();
             if (CommandLine.Parser.Default.ParseArguments(args, options))
             {
+                CsvFilePath = options.File;
                 var delayTimes = options.DelayTime.Select(time => Int32.Parse(time));
                 var terminalCount = options.TerminalCount.Select(terminal => Int32.Parse(terminal));
                 var runConfigs = delayTimes.Zip(terminalCount, (time, count) => new { time, count });
@@ -40,22 +45,33 @@ namespace Btw.Benchmark
             Console.ReadKey();
         }
 
-        static void benchmarkingRunFinished(object sender, BenchmarkResult result)
+        static void benchmarkingRunFinished(IBenchmarkable sender, BenchmarkResult result)
         {
-            var runDelayTime = Math.Round((sender as RunBenchmark).AverageDelayTime).ToString();
-            var runTerminalCount = (sender as RunBenchmark).TerminalCount;
+            ConsoleBuilder.AddResult(FinishedRunCount, sender as RunBenchmark, result);
+            if (CsvFilePath != String.Empty) CsvBuilder.AddResult(++FinishedRunCount, sender as RunBenchmark, result);
 
-            BenchmarkResultOutput.AppendLine();
-            BenchmarkResultOutput.AppendLine();
-            BenchmarkResultOutput.AppendLine("Run " + FinishedRunCount++ + " (n=" + runTerminalCount + ", t=" + runDelayTime + ") :");
-            BenchmarkResultOutput.AppendLine(result.PrintPretty());
-            Console.WriteLine("Finished " + FinishedRunCount + "/" + TotalRunCount);
-            if (FinishedRunCount == TotalRunCount)
+            Console.WriteLine("Finished " + FinishedRunCount + "/" + TotalRunCount + " ...");
+
+            if (FinishedRunCount >= TotalRunCount)
             {
-                Console.Write(BenchmarkResultOutput.ToString());
+                if (CsvFilePath != String.Empty)
+                {
+                    var csvContent = CsvBuilder.Build();
+                    var exporter = new CsvExporter();
+                    try
+                    {
+                        exporter.Save(csvContent, CsvFilePath);
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Saving CSV failed. Do you have the required access privileges?");
+                    }
+                }
+
+                Console.Write(ConsoleBuilder.Build());
                 Console.WriteLine();
                 Console.WriteLine();
-                Console.WriteLine("Press any key to exit");
+                Console.WriteLine("Press any key to exit.");
             }
         }
     }

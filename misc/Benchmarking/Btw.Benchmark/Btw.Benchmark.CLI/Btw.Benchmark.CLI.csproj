@@ -46,7 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\BenchmarkResultExtensions.cs" />
     <Compile Include="Helpers\CsvExporter.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Presentation\BenchmarkResultConsoleStringBuilder.cs" />
