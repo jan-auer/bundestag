@@ -47,7 +47,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\BenchmarkResultExtensions.cs" />
+    <Compile Include="Helpers\CsvExporter.cs" />
     <Compile Include="Options.cs" />
+    <Compile Include="Presentation\BenchmarkResultConsoleStringBuilder.cs" />
+    <Compile Include="Presentation\BenchmarkResultCsvStringBuilder.cs" />
+    <Compile Include="Presentation\BenchmarkResultStringBuilderBase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
