@@ -15,7 +15,8 @@ namespace Btw.Benchmark
             prettyBuilder.AppendLine(separator);
             prettyBuilder.AppendLine(header);
             prettyBuilder.AppendLine(separator);
-            foreach (var target in result.AggregatedTimes)
+            var targets = result.AggregatedTimes.OrderByDescending(time => time.Key.Url.AbsoluteUri);
+            foreach (var target in targets)
             {
                 var targetName = target.Key.Url.AbsoluteUri;
                 var targetResult = target.Value;
