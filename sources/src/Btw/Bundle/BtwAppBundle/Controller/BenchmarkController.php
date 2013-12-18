@@ -32,9 +32,42 @@ class BenchmarkController extends Controller
 	}
 
 
-	public function q3Action()
+	public function q3Action($constituencyId)
 	{
-		return new Response(json_encode(null));
+		$constituencyProvider = $this->get("btw_constituency_provider");
+		$constituency = $constituencyProvider->byId($constituencyId);
+
+		$benchmarkProvider = $this->get("btw_benchmark_provider");
+		$turnout = $benchmarkProvider->executeQuery31($constituencyId);
+		$winner = $benchmarkProvider->executeQuery32($constituencyId);
+		$results = $benchmarkProvider->executeQuery33($constituencyId);
+		$resultsHistory = $benchmarkProvider->executeQuery34($constituencyId);
+
+		$result = array(
+			'constituency' => array(
+				'name' => $constituency->getName(),
+				'number' => $constituency->getNumber(),
+				'state' => array(
+					'number' => $constituency->getState()->getNumber(),
+					'name' => $constituency->getState()->getName()
+				)
+			),
+			//Q3.1
+			'turnout' => $turnout['turnout'],
+			'voters' => $turnout['voters'],
+			'electives' => $turnout['electives'],
+			'winner' => array(
+				'name' => $winner['name'],
+				'party' => array(
+					'name'=>$winner['partyname'],
+					'abbreviation' => $winner['partyabbreviation']
+				)
+			),
+			'results'=>$results,
+			'resultsHistory'=>$resultsHistory
+
+		);
+		return new Response(json_encode($result));
 	}
 
 

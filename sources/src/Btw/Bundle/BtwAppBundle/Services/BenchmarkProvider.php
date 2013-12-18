@@ -36,11 +36,9 @@ class BenchmarkProvider extends AbstractProvider
 			");
 
 			$query->bindValue('electionId', $election->getId());
-			return array(
-				'bundestag' => $this->executeQuery($query, function ($result) {
-						return $result;
-					})
-			);
+			return $this->executeQuery($query, function ($result) {
+				return $result;
+			});
 		}
 
 		return null;
@@ -51,7 +49,7 @@ class BenchmarkProvider extends AbstractProvider
 		$election = $this->electionProvider->forYear($year);
 		if (!is_null($election)) {
 			$query = $this->prepareQuery("
-					SELECT c.name AS name, s.name as state, co.name AS constituency, p.name AS party, bc.directCandidate
+					SELECT c.name AS name, s.name AS state, co.name AS constituency, p.name AS party, bc.directCandidate
 				   	FROM bundestag_candidates bc
 			 	   	JOIN candidate c USING(candidate_id, party_id)
 			 	   	JOIN state s USING(state_id)
@@ -60,14 +58,70 @@ class BenchmarkProvider extends AbstractProvider
 					WHERE c.election_id = :electionId");
 
 			$query->bindValue('electionId', $election->getId());
-			return array(
-				'bundestag' => $this->executeQuery($query, function ($result) {
-						return $result;
-					})
-			);
+			return $this->executeQuery($query, function ($result) {
+				return $result;
+			});
 		}
 
 		return null;
 	}
 
-} 
+	public function executeQuery31($constituencyId)
+	{
+		$query = $this->prepareQuery("
+					SELECT ct.turnout, ct.voters, ct.electives
+				   	FROM constituency_turnout ct
+			 	   	JOIN constituency c USING(constituency_id)
+					WHERE constituency_id = :constituencyId");
+
+		$query->bindValue('constituencyId', $constituencyId);
+		return $this->executeQuery($query, function ($result) {
+			return $result;
+		})[0];
+	}
+
+	public function executeQuery32($constituencyId)
+	{
+		$query = $this->prepareQuery("
+					SELECT c.name, p.name AS partyName, p.abbreviation AS partyAbbreviation
+				   	FROM constituency_winners cw
+			 	   	JOIN candidate c USING(candidate_id)
+			 	   	JOIN party p USING(party_id)
+					WHERE constituency_id = :constituencyId");
+
+		$query->bindValue('constituencyId', $constituencyId);
+		return $this->executeQuery($query, function ($result) {
+			return $result;
+		})[0];
+	}
+
+	public function executeQuery33($constituencyId)
+	{
+		$query = $this->prepareQuery("
+					SELECT p.name AS partyName, p.abbreviation AS partyAbbreviation, cv.absolutevotes, cv.percentualvotes
+				   	FROM constituency_votes cv
+			 	   	JOIN party p USING(party_id)
+					WHERE constituency_id = :constituencyId");
+
+		$query->bindValue('constituencyId', $constituencyId);
+		return $this->executeQuery($query, function ($result) {
+			return $result;
+		});
+	}
+
+	public function executeQuery34($constituencyId)
+	{
+		$query = $this->prepareQuery("
+					SELECT cvh.olddate, cvh.newdate, cvh.party_abbreviation as partyAbbreviation, cvh.oldabsolutevotes, cvh.newabsolutevotes, cvh.oldtotalvotes, cvh.newtotalvotes
+				   	FROM constituency_votes_history cvh,
+				   	constituency c
+					WHERE c.name = cvh.constituency_name AND c.constituency_id = :constituencyId");
+
+		$query->bindValue('constituencyId', $constituencyId);
+		return $this->executeQuery($query, function ($result) {
+			return $result;
+		});
+	}
+
+
+}

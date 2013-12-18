@@ -44,3 +44,7 @@ btw_benchmark_q2:
     pattern: /benchmark/q2/{year}
     defaults: { _controller: BtwAppBundle:Benchmark:q2 }
 
+btw_benchmark_q3:
+    pattern: /benchmark/q3/{constituencyId}
+    defaults: { _controller: BtwAppBundle:Benchmark:q3 }
+
