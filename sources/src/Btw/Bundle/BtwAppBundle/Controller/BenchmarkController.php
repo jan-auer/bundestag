@@ -86,9 +86,12 @@ class BenchmarkController extends Controller
 		return new Response(json_encode($result));
 	}
 
-	public function q6Action()
+	public function q6Action($year)
 	{
-		return new Response(json_encode(null));
+		$benchmarkProvider = $this->get("btw_benchmark_provider");
+		$result = $benchmarkProvider->executeQuery6($year);
+		return new Response(json_encode($result));
 	}
+
 
 }

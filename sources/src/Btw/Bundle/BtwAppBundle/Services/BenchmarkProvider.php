@@ -166,4 +166,27 @@ class BenchmarkProvider extends AbstractProvider
 		return null;
 	}
 
+	public function executeQuery6($year)
+	{
+		$election = $this->electionProvider->forYear($year);
+		if (!is_null($election)) {
+			$query = $this->prepareQuery("
+				SELECT ca.name as candidateName, p.name as partyName, p.abbreviation as partyAbbreviation, p.color as partyColor, tcc.ranking, tcc.type
+				FROM top_close_constituency_candidates tcc
+				JOIN party p USING(party_id, election_id)
+				JOIN constituency c USING (constituency_id, election_id)
+				JOIN candidate ca USING (candidate_id, election_id)
+				WHERE p.election_id= :electionId AND ranking <=10
+				ORDER BY p.abbreviation, ranking ASC
+			");
+
+			$query->bindValue('electionId', $election->getId());
+			return $this->executeQuery($query, function ($result) {
+				return $result;
+			});
+		}
+
+		return null;
+	}
+
 }
