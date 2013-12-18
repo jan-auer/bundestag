@@ -52,7 +52,7 @@
     <Compile Include="Benchmarkable\RunBenchmark.cs" />
     <Compile Include="Benchmarkable\TerminalBenchmark.cs" />
     <Compile Include="Services\HttpRequestService.cs" />
-    <Compile Include="Services\Stopwatch.cs" />
+    <Compile Include="Services\StopwatchService.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -47,7 +47,7 @@ namespace Btw.Benchmark
             foreach (var target in callQueue)
             {
                 var delay = IntHelpers.GenerateRandomDeviationFor(DelayTime, 0.2d, 0.2d);
-                var watch = new Stopwatch();
+                var watch = new StopwatchService();
                 var httpService = new HttpRequestService();
                 var time = watch.Measure(() => httpService.Get(target.Uri));
                 if (_results.Times.ContainsKey(target))

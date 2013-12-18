@@ -2,7 +2,7 @@
 
 namespace Btw.Benchmark
 {
-    public class Stopwatch
+    public class StopwatchService
     {
         public double Measure(Action measurable)
         {
