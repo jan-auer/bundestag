@@ -26,10 +26,10 @@ namespace Btw.Benchmark
                 });
         }
 
-        void terminalFinished(object sender, BenchmarkResult partBuilder)
+        void terminalFinished(object sender, BenchmarkResult partResult)
         {
             var senderTerminal = sender as Terminal;
-            var terminalTimes = partBuilder.AggregatedTimes;
+            var terminalTimes = partResult.AggregatedTimes;
 
             foreach (var times in terminalTimes)
             {
