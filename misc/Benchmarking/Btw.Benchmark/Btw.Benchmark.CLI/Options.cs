@@ -17,7 +17,7 @@ namespace Btw.Benchmark
         [OptionArray('n', "count", Required=true, HelpText="Total terminal count per run. Please specify one terminal count per desired run.")]
         public string[] TerminalCount { get; set; }
 
-        [OptionArray('u', "urls", Required = true, HelpText = "URLs to call.")]
+        [OptionArray('u', "urls", Required = true, HelpText = "URLs to call. Any URL must contain the required protocol (i.e. 'http://...').")]
         public string[] Urls { get; set; }
 
         [OptionArray('r', "rates", Required = true, HelpText = "Rates mapping to specified URLs.")]
