@@ -145,4 +145,25 @@ class BenchmarkProvider extends AbstractProvider
 		return null;
 	}
 
+	public function executeQuery5($year)
+	{
+		$election = $this->electionProvider->forYear($year);
+		if (!is_null($election)) {
+			$query = $this->prepareQuery("
+				SELECT s.name as statename, p.name as partyname, p.abbreviation as partyabbreviation, p.color as partycolor, sps.overhead
+				FROM state_party_seats sps
+				JOIN state s USING(state_id)
+				JOIN party p USING(party_id, election_id)
+				WHERE p.election_id= :electionId
+			");
+
+			$query->bindValue('electionId', $election->getId());
+			return $this->executeQuery($query, function ($result) {
+				return $result;
+			});
+		}
+
+		return null;
+	}
+
 }

@@ -52,3 +52,7 @@ btw_benchmark_q4:
     pattern: /benchmark/q4/{year}
     defaults: { _controller: BtwAppBundle:Benchmark:q4 }
 
+btw_benchmark_q5:
+    pattern: /benchmark/q5/{year}
+    defaults: { _controller: BtwAppBundle:Benchmark:q5 }
+
