@@ -2,16 +2,17 @@
 -- See view party_state_seats in seat_distribution.sql
 -- ===================================================================
 -- Q2
-CREATE OR REPLACE VIEW bundestag_candidates (candidate_id, state_id, constituency_id, directCandidate) AS (
-  SELECT candidate_id, state_id, constituency_id, 1
+CREATE OR REPLACE VIEW bundestag_candidates (state_id, constituency_id, candidate_id, party_id, directCandidate) AS (
+  SELECT state_id, constituency_id, candidate_id, party_id, 1
   FROM elected_candidates ec
+    JOIN candidate USING (candidate_id)
     JOIN constituency_candidacy USING (candidate_id)
     JOIN constituency c USING(constituency_id)
     JOIN state USING (state_id)
   WHERE candidate_id IN (SELECT candidate_id
                          FROM constituency_winners)
   UNION ALL
-  SELECT candidate_id, sl.state_id, 0, 0
+  SELECT  sl.state_id, 0, candidate_id, party_id, 0
   FROM elected_candidates
     JOIN state_candidacy USING (candidate_id)
     JOIN state_list sl USING (state_list_id)
