@@ -20,7 +20,7 @@ namespace Btw.Benchmark
         {
             get
             {
-                return Times.ToDictionary(targetTimes => targetTimes.Key, targetTimes => targetTimes.Value.Sum());
+                return Times.ToDictionary(targetTimes => targetTimes.Key, targetTimes => targetTimes.Value.Sum() / targetTimes.Value.Count);
             }
         }
     }
