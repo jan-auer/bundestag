@@ -46,4 +46,28 @@ class BenchmarkProvider extends AbstractProvider
 		return null;
 	}
 
+	public function executeQuery2($year)
+	{
+		$election = $this->electionProvider->forYear($year);
+		if (!is_null($election)) {
+			$query = $this->prepareQuery("
+					SELECT c.name AS name, s.name as state, co.name AS constituency, p.name AS party, bc.directCandidate
+				   	FROM bundestag_candidates bc
+			 	   	JOIN candidate c USING(candidate_id, party_id)
+			 	   	JOIN state s USING(state_id)
+			 	   	LEFT JOIN party p USING(party_id)
+			 	   	LEFT JOIN constituency co USING(constituency_id)
+					WHERE c.election_id = :electionId");
+
+			$query->bindValue('electionId', $election->getId());
+			return array(
+				'bundestag' => $this->executeQuery($query, function ($result) {
+						return $result;
+					})
+			);
+		}
+
+		return null;
+	}
+
 } 
