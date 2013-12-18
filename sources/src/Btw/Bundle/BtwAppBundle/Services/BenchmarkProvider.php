@@ -123,5 +123,26 @@ class BenchmarkProvider extends AbstractProvider
 		});
 	}
 
+	public function executeQuery4($year)
+	{
+		$election = $this->electionProvider->forYear($year);
+		if (!is_null($election)) {
+			$query = $this->prepareQuery("
+				SELECT c.name as constituencyname, fp.name as firstPartyName, fp.abbreviation as firstPartyAbbreviation, fp.color as firstPartyColor, sp.name as secondPartyName, sp.abbreviation as secondPartyAbbreviation, sp.color as secondPartyColor
+				FROM constituency_winner_parties cwp
+				JOIN party fp ON fp.party_id = firstvotepartyid
+				JOIN party sp ON sp.party_id = firstvotepartyid
+				JOIN constituency c USING (constituency_id)
+				WHERE cwp.election_id= :electionId
+			");
+
+			$query->bindValue('electionId', $election->getId());
+			return $this->executeQuery($query, function ($result) {
+				return $result;
+			});
+		}
+
+		return null;
+	}
 
 }

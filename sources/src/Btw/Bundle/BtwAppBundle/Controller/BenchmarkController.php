@@ -71,9 +71,11 @@ class BenchmarkController extends Controller
 	}
 
 
-	public function q4Action()
+	public function q4Action($year)
 	{
-		return new Response(json_encode(null));
+		$benchmarkProvider = $this->get("btw_benchmark_provider");
+		$result = $benchmarkProvider->executeQuery4($year);
+		return new Response(json_encode($result));
 	}
 
 
