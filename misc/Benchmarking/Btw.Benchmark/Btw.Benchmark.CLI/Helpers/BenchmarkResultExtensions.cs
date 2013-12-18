@@ -9,8 +9,8 @@ namespace Btw.Benchmark
         public static string PrintPretty(this BenchmarkResult result)
         {
             var prettyBuilder = new StringBuilder();
-            var header = String.Format("| {0,42}  | {1,10} |", "URL", "Time (ms)");
-            var separator = Enumerable.Range(1, 60).Select(i => "-").Aggregate((c, d) => c + d);
+            var header = String.Format("| {0,42}  | {1,25} |", "URL", "Time (ms)");
+            var separator = Enumerable.Range(1, 75).Select(i => "-").Aggregate((c, d) => c + d);
 
             prettyBuilder.AppendLine(separator);
             prettyBuilder.AppendLine(header);
@@ -18,11 +18,14 @@ namespace Btw.Benchmark
             foreach (var target in result.AggregatedTimes)
             {
                 var targetName = target.Key.Url.AbsoluteUri;
+                var targetResult = target.Value;
+
                 var targetDisplayName = targetName.Length < 40 ?
                     targetName :
                     "..." + targetName.Substring(targetName.Length - 35);
-                var targetResult = target.Value;
-                var line = String.Format("| {0,42}  | {1,10} |", targetDisplayName, targetResult);
+                var targetDisplayResult = Math.Round(targetResult, 2);
+
+                var line = String.Format("| {0,42}  | {1,25} |", targetDisplayName, targetDisplayResult);
                 prettyBuilder.AppendLine(line);
             }
             prettyBuilder.AppendLine(separator);
