@@ -88,6 +88,9 @@ CREATE OR REPLACE VIEW constituency_winner_parties (election_id, constituency_id
       USING (election_id, constituency_id)
 );
 -- ===================================================================
+-- Q5
+-- See view state_party_seats in seat_distribution.sql
+-- ===================================================================
 -- Q6 USE RANKING FOR TOP X:  SELECT * FROM top_close_constituency_candidates WHERE ranking <=10;
 CREATE OR REPLACE VIEW close_constituency_winners (election_id, party_id, constituency_id, candidate_id, ranking) AS (
     WITH constituency_second_winners (constituency_id, candidate_id, count) AS (
