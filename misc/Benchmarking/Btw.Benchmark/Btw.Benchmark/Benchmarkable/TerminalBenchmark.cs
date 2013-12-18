@@ -15,18 +15,13 @@ namespace Btw.Benchmark
 
         public int DelayTime { get; private set; }
 
-        public IList<BenchmarkTarget> Targets { get; private set; }
+        public IEnumerable<BenchmarkTarget> Targets { get; private set; }
 
-        public TerminalBenchmark(int delayTime, IList<BenchmarkTarget> targets)
+        public TerminalBenchmark(int delayTime, IEnumerable<BenchmarkTarget> targets)
         {
             DelayTime = delayTime;
             Targets = targets;
             _results = new BenchmarkResult();
-        }
-
-        public TerminalBenchmark(int delayTime, IList<BenchmarkTarget> targets, BenchmarkingFinishedEventHandler benchmarkingFinishedEventHandler) : this (delayTime, targets)
-        {
-            BenchmarkingFinished = benchmarkingFinishedEventHandler;
         }
 
         public void StartBenchmarking()
@@ -34,7 +29,7 @@ namespace Btw.Benchmark
             Task.Factory.StartNew(run);
         }
 
-        IList<BenchmarkTarget> arrangeTargets()
+        IEnumerable<BenchmarkTarget> arrangeTargets()
         {
             var totalCallCount = Targets.Sum(target => target.Rate);
             var sequentialQueue = Targets.Select(target => Enumerable.Range(1, target.Rate).Select(i => target))
@@ -42,7 +37,7 @@ namespace Btw.Benchmark
                                          .ToList();
             var callQueue = sequentialQueue.Shuffle(100);
 
-            return callQueue as IList<BenchmarkTarget>;
+            return callQueue;
         }
 
         void run()
@@ -54,7 +49,7 @@ namespace Btw.Benchmark
                 var delay = IntHelpers.GenerateRandomDeviationFor(DelayTime, 0.2d, 0.2d);
                 var watch = new Stopwatch();
                 var httpService = new HttpRequestService();
-                var time = watch.Measure(() => httpService.Get(target.Url));
+                var time = watch.Measure(() => httpService.Get(target.Uri));
                 if (_results.Times.ContainsKey(target))
                 {
                     _results.Times[target].Add(time);

@@ -5,9 +5,9 @@ namespace Btw.Benchmark
 {
     public class BenchmarkResult
     {
-        Dictionary<BenchmarkTarget, List<double>> _times;
+        IDictionary<BenchmarkTarget, List<double>> _times;
 
-        public Dictionary<BenchmarkTarget, List<double>> Times
+        public IDictionary<BenchmarkTarget, List<double>> Times
         {
             get
             {
@@ -16,7 +16,7 @@ namespace Btw.Benchmark
             }
         }
 
-        public Dictionary<BenchmarkTarget, double> AggregatedTimes
+        public IDictionary<BenchmarkTarget, double> AggregatedTimes
         {
             get
             {

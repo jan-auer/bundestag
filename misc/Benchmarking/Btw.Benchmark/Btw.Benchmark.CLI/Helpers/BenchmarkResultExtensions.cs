@@ -15,10 +15,10 @@ namespace Btw.Benchmark
             prettyBuilder.AppendLine(separator);
             prettyBuilder.AppendLine(header);
             prettyBuilder.AppendLine(separator);
-            var targets = result.AggregatedTimes.OrderByDescending(time => time.Key.Url.AbsoluteUri);
+            var targets = result.AggregatedTimes.OrderByDescending(time => time.Key.Uri.AbsoluteUri);
             foreach (var target in targets)
             {
-                var targetName = target.Key.Url.AbsoluteUri;
+                var targetName = target.Key.Uri.AbsoluteUri;
                 var targetResult = target.Value;
 
                 var targetDisplayName = targetName.Length < 40 ?

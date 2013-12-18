@@ -9,17 +9,17 @@ namespace Btw.Benchmark
 
         int _terminalCount;
 
-        IList<string> _urls;
+        IEnumerable<string> _urls;
 
-        IList<int> _rates;
+        IEnumerable<int> _rates;
 
-        public RunBenchmarkBuilder ForUrls(IList<string> urls)
+        public RunBenchmarkBuilder ForUrls(IEnumerable<string> urls)
         {
             _urls = urls;
             return this;
         }
 
-        public RunBenchmarkBuilder WithCallRates(IList<int> rates)
+        public RunBenchmarkBuilder WithCallRates(IEnumerable<int> rates)
         {
             _rates = rates;
             return this;

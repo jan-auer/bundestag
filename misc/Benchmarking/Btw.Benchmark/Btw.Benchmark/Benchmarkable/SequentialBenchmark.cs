@@ -28,7 +28,7 @@ namespace Btw.Benchmark
             benchmarkable.StartBenchmarking();
         }
 
-        void benchmarkingFinished(object sender, BenchmarkResult result)
+        void benchmarkingFinished(IBenchmarkable sender, BenchmarkResult result)
         {
             BenchmarkingFinished.Invoke(sender, result);
             if (_benchmarkableEnumerator.MoveNext()) benchmarkSingle(_benchmarkableEnumerator.Current);

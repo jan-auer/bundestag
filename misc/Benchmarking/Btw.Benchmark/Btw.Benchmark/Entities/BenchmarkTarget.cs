@@ -4,18 +4,18 @@ namespace Btw.Benchmark
 {
     public class BenchmarkTarget
     {
-        public Uri Url { get; private set; }
+        public Uri Uri { get; private set; }
 
         public int Rate { get; private set; }
 
-        public BenchmarkTarget(Uri url, int rate)
+        public BenchmarkTarget(Uri uri, int rate)
         {
-            Url = url;
+            Uri = uri;
             Rate = rate;
         }
 
-        public BenchmarkTarget(string url, int rate)
-            : this(new Uri(url), rate)
+        public BenchmarkTarget(string uri, int rate)
+            : this(new Uri(uri), rate)
         { }
     }
 }

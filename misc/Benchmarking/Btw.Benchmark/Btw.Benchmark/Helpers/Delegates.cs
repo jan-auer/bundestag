@@ -1,2 +1,2 @@
 ﻿using Btw.Benchmark;
-public delegate void BenchmarkingFinishedEventHandler(object sender, BenchmarkResult result);
+public delegate void BenchmarkingFinishedEventHandler(IBenchmarkable sender, BenchmarkResult result);

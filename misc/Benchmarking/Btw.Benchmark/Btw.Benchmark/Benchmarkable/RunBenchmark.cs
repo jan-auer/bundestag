@@ -7,7 +7,7 @@ namespace Btw.Benchmark
     {
         public event BenchmarkingFinishedEventHandler BenchmarkingFinished;
 
-        Dictionary<TerminalBenchmark, bool> _terminals;
+        IDictionary<TerminalBenchmark, bool> _terminals;
 
         BenchmarkResult _result;
 
@@ -27,7 +27,7 @@ namespace Btw.Benchmark
             }
         }
 
-        public RunBenchmark(IList<TerminalBenchmark> terminals)
+        public RunBenchmark(IEnumerable<TerminalBenchmark> terminals)
         {
             _terminals = terminals.ToDictionary(terminal => terminal, _ => false);
             _result = new BenchmarkResult();
