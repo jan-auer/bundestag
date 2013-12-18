@@ -5,33 +5,31 @@ using System.Threading.Tasks;
 using System;
 using System.Threading;
 
-
-
 namespace Btw.Benchmark
 {
-    public class Terminal
+    public class TerminalBenchmark : IBenchmarkable
     {
+        public event BenchmarkingFinishedEventHandler BenchmarkingFinished;
+
         BenchmarkResult _results;
 
         public int DelayTime { get; private set; }
 
         public IList<BenchmarkTarget> Targets { get; private set; }
 
-        public event BenchmarkingFinishedEventHandler OnBenchmarkingFinished;
-
-        public Terminal(int delayTime, IList<BenchmarkTarget> targets)
+        public TerminalBenchmark(int delayTime, IList<BenchmarkTarget> targets)
         {
             DelayTime = delayTime;
             Targets = targets;
             _results = new BenchmarkResult();
         }
 
-        public Terminal(int delayTime, IList<BenchmarkTarget> targets, BenchmarkingFinishedEventHandler benchmarkingFinishedEventHandler) : this (delayTime, targets)
+        public TerminalBenchmark(int delayTime, IList<BenchmarkTarget> targets, BenchmarkingFinishedEventHandler benchmarkingFinishedEventHandler) : this (delayTime, targets)
         {
-            OnBenchmarkingFinished = benchmarkingFinishedEventHandler;
+            BenchmarkingFinished = benchmarkingFinishedEventHandler;
         }
 
-        public void Start()
+        public void StartBenchmarking()
         {
             Task.Factory.StartNew(run);
         }
@@ -68,7 +66,7 @@ namespace Btw.Benchmark
                 Thread.Sleep(delay);
             }
 
-            OnBenchmarkingFinished.Invoke(this, _results);
+            BenchmarkingFinished.Invoke(this, _results);
         }
     }
 }

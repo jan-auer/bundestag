@@ -11,11 +11,11 @@ namespace Btw.Benchmark
         [ParserState]
         public IParserState LastParserState { get; set; }
 
-        [Option('t', "time", Required = true, HelpText = "Approximate delay time between calls.")]
-        public string DelayTime { get; set; }
+        [OptionArray('t', "time", Required = true, HelpText = "Approximate delay time between calls.")]
+        public string[] DelayTime { get; set; }
 
-        [Option('n', "count", Required=true, HelpText="Total terminal count.")]
-        public string TerminalCount { get; set; }
+        [OptionArray('n', "count", Required=true, HelpText="Total terminal count.")]
+        public string[] TerminalCount { get; set; }
 
         [OptionArray('u', "urls", Required = true, HelpText = "URLs to call.")]
         public string[] Urls { get; set; }

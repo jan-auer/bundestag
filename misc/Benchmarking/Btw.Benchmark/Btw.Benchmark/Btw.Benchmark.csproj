@@ -40,17 +40,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Benchmarkable\IBenchmarkable.cs" />
     <Compile Include="Entities\BenchmarkResult.cs" />
     <Compile Include="Entities\BenchmarkTarget.cs" />
     <Compile Include="Helpers\Delegates.cs" />
     <Compile Include="Helpers\ListExtensions.cs" />
     <Compile Include="Helpers\IntHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\BenchmarkRunner.cs" />
-    <Compile Include="Entities\Terminal.cs" />
+    <Compile Include="Benchmarkable\SequentialBenchmark.cs" />
+    <Compile Include="Benchmarkable\RunBenchmarkBuilder.cs" />
+    <Compile Include="Benchmarkable\RunBenchmark.cs" />
+    <Compile Include="Benchmarkable\TerminalBenchmark.cs" />
     <Compile Include="Services\HttpRequestService.cs" />
     <Compile Include="Services\Stopwatch.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,40 +1,62 @@
 ﻿using CommandLine;
 using System;
 using System.Linq;
+using System.Text;
 
 namespace Btw.Benchmark
 {
     class Program
     {
+        static int FinishedRunCount = 0;
+
+        static int TotalRunCount = 0;
+
+        static StringBuilder BenchmarkResultOutput = new StringBuilder();
+
         static void Main(string[] args)
         {
             Console.WriteLine("Initializing ...");
             var options = new Options();
             if (CommandLine.Parser.Default.ParseArguments(args, options))
             {
-                var delayTime = Int32.Parse(options.DelayTime);
-                var terminalCount = Int32.Parse(options.TerminalCount);
+                var delayTimes = options.DelayTime.Select(time => Int32.Parse(time));
+                var terminalCount = options.TerminalCount.Select(terminal => Int32.Parse(terminal));
+                var runConfigs = delayTimes.Zip(terminalCount, (time, count) => new { time, count });
+                var runCount = runConfigs.Count();
                 var urls = options.Urls;
                 var rates = options.Rates.ToList().ConvertAll(rate => Int32.Parse(rate));
-                var targets = urls.Zip(rates, (url, rate) => new BenchmarkTarget(url, rate))
-                    .ToList();
-                var terminals = Enumerable.Range(0, terminalCount)
-                    .Select(i => new Terminal(delayTime, targets))
-                    .ToList();
-                var runner = new BenchmarkRunner(terminals);
-                runner.AllTerminalsFinished += terminalsFinished;
+                var runs = runConfigs.Select(config => (new RunBenchmarkBuilder())
+                    .WithDelayTime(config.time)
+                    .HavingTerminalCount(config.count)
+                    .ForUrls(urls)
+                    .WithCallRates(rates)
+                    .Build());
+                var sequence = new SequentialBenchmark(runs);
+                sequence.BenchmarkingFinished += new BenchmarkingFinishedEventHandler(benchmarkingRunFinished);
+                TotalRunCount = runs.Count();
                 Console.WriteLine("Measuring ...");
-                runner.StartTerminals();
+                sequence.StartBenchmarking();
             }
             Console.ReadKey();
         }
 
-        static void terminalsFinished(object sender, BenchmarkResult result)
+        static void benchmarkingRunFinished(object sender, BenchmarkResult result)
         {
-            Console.WriteLine("Finished.");
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.Write(result.PrintPretty());
+            var runDelayTime = Math.Round((sender as RunBenchmark).AverageDelayTime).ToString();
+            var runTerminalCount = (sender as RunBenchmark).TerminalCount;
+
+            BenchmarkResultOutput.AppendLine();
+            BenchmarkResultOutput.AppendLine();
+            BenchmarkResultOutput.AppendLine("Run " + FinishedRunCount++ + " (n=" + runTerminalCount + ", t=" + runDelayTime + ") :");
+            BenchmarkResultOutput.AppendLine(result.PrintPretty());
+            Console.WriteLine("Finished " + FinishedRunCount + "/" + TotalRunCount);
+            if (FinishedRunCount == TotalRunCount)
+            {
+                Console.Write(BenchmarkResultOutput.ToString());
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("Press any key to exit");
+            }
         }
     }
 }
