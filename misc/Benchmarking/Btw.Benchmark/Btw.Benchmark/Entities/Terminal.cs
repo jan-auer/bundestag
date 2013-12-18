@@ -39,11 +39,12 @@ namespace Btw.Benchmark
         IList<BenchmarkTarget> arrangeTargets()
         {
             var totalCallCount = Targets.Sum(target => target.Rate);
-            var sequentialQueue = Targets.Select(target => Enumerable.Range(0, target.Rate).Select(i => target.Url.AbsolutePath))
-                                         .Aggregate((l, r) => l.Union(r));
-            var callQueue = Targets.Shuffle(100);
+            var sequentialQueue = Targets.Select(target => Enumerable.Range(1, target.Rate).Select(i => target))
+                                         .Aggregate((l, r) => l.Concat(r))
+                                         .ToList();
+            var callQueue = sequentialQueue.Shuffle(100);
 
-            return callQueue;
+            return callQueue as IList<BenchmarkTarget>;
         }
 
         void run()
