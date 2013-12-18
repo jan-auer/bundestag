@@ -47,8 +47,8 @@ namespace Btw.Benchmark
 
         static void benchmarkingRunFinished(IBenchmarkable sender, BenchmarkResult result)
         {
-            ConsoleBuilder.AddResult(FinishedRunCount, sender as RunBenchmark, result);
-            if (CsvFilePath != String.Empty) CsvBuilder.AddResult(++FinishedRunCount, sender as RunBenchmark, result);
+            ConsoleBuilder.AddResult(++FinishedRunCount, sender as RunBenchmark, result);
+            if (CsvFilePath != String.Empty) CsvBuilder.AddResult(FinishedRunCount, sender as RunBenchmark, result);
 
             Console.WriteLine("Finished " + FinishedRunCount + "/" + TotalRunCount + " ...");
 
