@@ -68,7 +68,7 @@ CREATE OR REPLACE VIEW constituency_votes_history (oldDate, newDate, constituenc
 );
 -- ===================================================================
 -- Q4
-CREATE OR REPLACE VIEW constituency_winner_partoes (election_id, constituency_id, firstVotePartyId, secondVotePartyId) AS (
+CREATE OR REPLACE VIEW constituency_winner_parties (election_id, constituency_id, firstVotePartyId, secondVotePartyId) AS (
     WITH constituency_winners_second_votes (election_id, constituency_id, party_id) AS (
         SELECT election_id, constituency_id, party_id
         FROM aggregated_second_result r1
