@@ -33,3 +33,30 @@ btw_app_closest:
 btw_app_elector:
     pattern: /elect/{year}
     defaults: { _controller: BtwAppBundle:Elector:index }
+
+
+###### Benchmark ######
+btw_benchmark_q1:
+    pattern: /benchmark/q1/{year}
+    defaults: { _controller: BtwAppBundle:Benchmark:q1 }
+
+btw_benchmark_q2:
+    pattern: /benchmark/q2/{year}
+    defaults: { _controller: BtwAppBundle:Benchmark:q2 }
+
+btw_benchmark_q3:
+    pattern: /benchmark/q3/{constituencyId}
+    defaults: { _controller: BtwAppBundle:Benchmark:q3 }
+
+btw_benchmark_q4:
+    pattern: /benchmark/q4/{year}
+    defaults: { _controller: BtwAppBundle:Benchmark:q4 }
+
+btw_benchmark_q5:
+    pattern: /benchmark/q5/{year}
+    defaults: { _controller: BtwAppBundle:Benchmark:q5 }
+
+btw_benchmark_q6:
+    pattern: /benchmark/q6/{year}
+    defaults: { _controller: BtwAppBundle:Benchmark:q6 }
+

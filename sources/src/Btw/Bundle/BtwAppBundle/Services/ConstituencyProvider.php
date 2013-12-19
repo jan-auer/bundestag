@@ -32,7 +32,6 @@ class ConstituencyProvider
 	 *
 	 * @return ConstituencyDetail[]
 	 *
-	 * @TODO: Fix this query. It returns nothing when no previous election is specified
 	 */
 	public function getAllDetailsForElection($election, $prevElection)
 	{

@@ -2,7 +2,23 @@
 -- See view party_state_seats in seat_distribution.sql
 -- ===================================================================
 -- Q2
--- See view elected_candidates in seat_distribution.sql
+CREATE OR REPLACE VIEW bundestag_candidates (state_id, constituency_id, candidate_id, party_id, directCandidate) AS (
+  SELECT state_id, constituency_id, candidate_id, party_id, 1
+  FROM elected_candidates ec
+    JOIN candidate USING (candidate_id)
+    JOIN constituency_candidacy USING (candidate_id)
+    JOIN constituency c USING(constituency_id)
+    JOIN state USING (state_id)
+  WHERE candidate_id IN (SELECT candidate_id
+                         FROM constituency_winners)
+  UNION ALL
+  SELECT  sl.state_id, 0, candidate_id, party_id, 0
+  FROM elected_candidates
+    JOIN state_candidacy USING (candidate_id)
+    JOIN state_list sl USING (state_list_id)
+  WHERE candidate_id NOT IN (SELECT candidate_id
+                             FROM constituency_winners)
+);
 -- ===================================================================
 -- Q3.1
 CREATE OR REPLACE VIEW constituency_turnout (constituency_id, turnout, voters, electives) AS (
@@ -29,12 +45,11 @@ CREATE OR REPLACE VIEW constituency_turnout (constituency_id, turnout, voters, e
 
 -- Q3.3
 CREATE OR REPLACE VIEW constituency_votes (party_id, constituency_id, absoluteVotes, percentualVotes, totalVotes) AS (
-  SELECT party_id, constituency_id, SUM(votes), SUM(votes) / total.totalvotes :: REAL, total.totalvotes
-  FROM constituency_party_votes
-    NATURAL JOIN state_list
-    JOIN (SELECT constituency_id, sum(count) AS totalvotes
-     FROM aggregated_second_result
-     GROUP BY constituency_id) total USING (constituency_id)
+  SELECT cpv.party_id, cpv.constituency_id, SUM(votes), SUM(votes) / total.totalvotes :: REAL, total.totalvotes
+  FROM constituency_party_votes cpv
+    JOIN (SELECT constituency_id, sum(votes) AS totalvotes
+          FROM constituency_party_votes
+          GROUP BY constituency_id) total USING (constituency_id)
   GROUP BY party_id, constituency_id, total.totalvotes
 );
 
@@ -53,23 +68,28 @@ CREATE OR REPLACE VIEW constituency_votes_history (oldDate, newDate, constituenc
 );
 -- ===================================================================
 -- Q4
-WITH constituency_winners_second_votes (election_id, constituency_id, party_id) AS (
-    SELECT election_id, constituency_id, party_id
-    FROM aggregated_second_result r1
-      JOIN state_list USING (state_list_id)
-      JOIN party USING (party_id)
-    WHERE NOT EXISTS(SELECT *
-                     FROM aggregated_second_result r2
-                     WHERE r1.constituency_id = r2.constituency_id AND r1.count < r2.count)
-), constituency_winners_first_votes (election_id, constituency_id, party_id) AS (
-    SELECT election_id, constituency_id, party_id
-    FROM constituency_winners
-      NATURAL JOIN candidate
-)
+CREATE OR REPLACE VIEW constituency_winner_parties (election_id, constituency_id, firstVotePartyId, secondVotePartyId) AS (
+    WITH constituency_winners_second_votes (election_id, constituency_id, party_id) AS (
+        SELECT election_id, constituency_id, party_id
+        FROM aggregated_second_result r1
+          JOIN state_list USING (state_list_id)
+          JOIN party USING (party_id)
+        WHERE NOT EXISTS(SELECT *
+                         FROM aggregated_second_result r2
+                         WHERE r1.constituency_id = r2.constituency_id AND r1.count < r2.count)
+    ), constituency_winners_first_votes (election_id, constituency_id, party_id) AS (
+        SELECT election_id, constituency_id, party_id
+        FROM constituency_winners
+          NATURAL JOIN candidate
+    )
 
-SELECT election_id, constituency_id, fv.party_id AS firstVotePartyId, sv.party_id AS secondVotePartyId
-FROM constituency_winners_first_votes fv JOIN constituency_winners_second_votes sv
-  USING (election_id, constituency_id);
+    SELECT election_id, constituency_id, fv.party_id, sv.party_id
+    FROM constituency_winners_first_votes fv JOIN constituency_winners_second_votes sv
+      USING (election_id, constituency_id)
+);
+-- ===================================================================
+-- Q5
+-- See view state_party_seats in seat_distribution.sql
 -- ===================================================================
 -- Q6 USE RANKING FOR TOP X:  SELECT * FROM top_close_constituency_candidates WHERE ranking <=10;
 CREATE OR REPLACE VIEW close_constituency_winners (election_id, party_id, constituency_id, candidate_id, ranking) AS (

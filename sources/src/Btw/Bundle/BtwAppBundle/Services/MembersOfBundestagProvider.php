@@ -24,35 +24,17 @@ class MembersOfBundestagProvider
 	 */
 	public function getAllForElection(Election $election)
 	{
-		$query = $this->prepareQuery("
-			SELECT c.candidate_id AS candidate, c.name AS name, state_id AS state, constituency_id AS constituency, c.party_id AS party
-			FROM candidate c
-			  JOIN constituency_winners cw USING(candidate_id)
-			  JOIN constituency USING (constituency_id)
-			  JOIN state USING (state_id)
-			WHERE c.election_id= :election");
-		$query->bindValue('election', $election->getId());
-		$direct = $this->executeQuery($query, function ($result) {
+		$query = $this->prepareQuery("SELECT c.candidate_id AS candidate, c.name AS name, bc.state_id AS state, bc.constituency_id AS constituency, bc.party_id AS party, bc.directCandidate
+										   FROM bundestag_candidates bc
+										    JOIN Candidate c USING(candidate_id)
+										   WHERE c.election_id = :electionId");
+		$query->bindValue('electionId', $election->getId());
+
+		$members = $this->executeQuery($query, function ($result) {
 			return MemberOfBundestag::fromArray($result);
 		});
 
-		$query = $this->prepareQuery("SELECT c.candidate_id AS candidate, c.name AS name, sl.state_id AS state, 0 AS constituency, c.party_id AS party
-										   FROM Candidate c
-										    JOIN elected_candidates USING(candidate_id)
-										    JOIN state_candidacy USING (candidate_id)
-										    JOIN state_list sl USING (state_list_id)
-										   WHERE c.election_id = :election AND c.candidate_id NOT IN
-										   		(SELECT candidate_id
-										         FROM Candidate
-										          JOIN constituency_winners USING (candidate_id)
-										         WHERE election_id=:election)");
-		$query->bindValue('election', $election->getId());
-
-		$indirect = $this->executeQuery($query, function ($result) {
-			return MemberOfBundestag::fromArray($result);
-		});
-
-		return array_merge($direct, $indirect);
+		return $members;
 	}
 
 	/**
