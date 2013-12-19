@@ -37,6 +37,9 @@ class BenchmarkController extends Controller
 		$constituencyProvider = $this->get("btw_constituency_provider");
 		$constituency = $constituencyProvider->byId($constituencyId);
 
+		if(is_null($constituency)) {
+			return new Response(json_encode(null));
+		}
 		$benchmarkProvider = $this->get("btw_benchmark_provider");
 		$turnout = $benchmarkProvider->executeQuery31($constituencyId);
 		$winner = $benchmarkProvider->executeQuery32($constituencyId);

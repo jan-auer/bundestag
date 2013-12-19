@@ -75,9 +75,14 @@ class BenchmarkProvider extends AbstractProvider
 					WHERE constituency_id = :constituencyId");
 
 		$query->bindValue('constituencyId', $constituencyId);
-		return $this->executeQuery($query, function ($result) {
+		$result = $this->executeQuery($query, function ($result) {
 			return $result;
-		})[0];
+		});
+
+		if(is_array($result) && count($result)>0) {
+			return $result[0];
+		}
+		return null;
 	}
 
 	public function executeQuery32($constituencyId)
@@ -90,9 +95,14 @@ class BenchmarkProvider extends AbstractProvider
 					WHERE constituency_id = :constituencyId");
 
 		$query->bindValue('constituencyId', $constituencyId);
-		return $this->executeQuery($query, function ($result) {
+		$result = $this->executeQuery($query, function ($result) {
 			return $result;
-		})[0];
+		});
+		if(is_array($result) && count($result)>0) {
+			return $result[0];
+		}
+		return null;
+
 	}
 
 	public function executeQuery33($constituencyId)
