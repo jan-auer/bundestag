@@ -57,7 +57,7 @@ namespace Btw.Benchmark
                 if (CsvFilePath != String.Empty)
                 {
                     var csvContent = CsvBuilder.Build();
-                    var exporter = new CsvExporter();
+                    var exporter = new FileHelper();
                     try
                     {
                         exporter.Save(csvContent, CsvFilePath);
