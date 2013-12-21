@@ -144,3 +144,18 @@ CREATE OR REPLACE VIEW top_close_constituency_candidates (election_id, party_id,
     WHERE (party_id) NOT IN (SELECT party_id
                                             FROM close_constituency_winners)
 );
+-- ===================================================================
+-- Q7 - Some manual stuff required like rerunning the seat_distribution.sql and analysis.sql for restoring views which were deleted by cascading
+/*DROP MATERIALIZED VIEW aggregated_first_result CASCADE;
+DROP MATERIALIZED VIEW aggregated_second_result CASCADE;
+CREATE VIEW aggregated_first_result (candidate_id, count) AS (
+  SELECT candidate_id, COUNT(*) AS count
+  FROM first_result
+  GROUP BY candidate_id
+);
+CREATE VIEW aggregated_second_result (state_list_id, constituency_id, count) AS (
+  SELECT state_list_id, constituency_id, COUNT(*) AS count
+  FROM second_result
+  GROUP BY state_list_id, constituency_id
+);*/
+--RERUN OF analysis.sql and seat_distribution.sql required (because of cascading)!!
