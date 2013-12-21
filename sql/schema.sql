@@ -12,6 +12,7 @@ CREATE TABLE voter
   birthday    DATE    NOT NULL,
   election_id INTEGER NOT NULL REFERENCES election (election_id) ON DELETE CASCADE
 );
+CREATE INDEX voter_election_id ON voter USING HASH (election_id);
 
 CREATE TABLE state
 (
@@ -21,6 +22,7 @@ CREATE TABLE state
   population  INTEGER NOT NULL,
   election_id INTEGER NOT NULL REFERENCES election (election_id) ON DELETE CASCADE
 );
+CREATE INDEX state_election_id ON state USING HASH (election_id);
 
 CREATE TABLE party
 (
@@ -30,6 +32,7 @@ CREATE TABLE party
   color        TEXT,
   election_id  INTEGER NOT NULL REFERENCES election (election_id) ON DELETE CASCADE
 );
+CREATE INDEX party_election_id ON party USING HASH (election_id);
 
 CREATE TABLE state_list
 (
@@ -37,6 +40,8 @@ CREATE TABLE state_list
   state_id      INTEGER NOT NULL REFERENCES state (state_id) ON DELETE CASCADE,
   party_id      INTEGER NOT NULL REFERENCES party (party_id) ON DELETE CASCADE
 );
+CREATE INDEX state_list_state_id ON state_list USING HASH (state_id);
+CREATE INDEX state_list_party_id ON state_list USING HASH (party_id);
 
 CREATE TABLE candidate
 (
@@ -46,6 +51,9 @@ CREATE TABLE candidate
   party_id     INTEGER REFERENCES party (party_id),
   election_id  INTEGER NOT NULL REFERENCES election (election_id) ON DELETE CASCADE
 );
+CREATE INDEX candidate_party_id ON candidate USING HASH (party_id);
+CREATE INDEX candidate_election_id ON candidate USING HASH (election_id);
+
 
 CREATE TABLE state_candidacy
 (
@@ -53,6 +61,8 @@ CREATE TABLE state_candidacy
   state_list_id INTEGER NOT NULL REFERENCES state_list (state_list_id) ON DELETE CASCADE,
   position      INTEGER NOT NULL
 );
+CREATE INDEX state_candidate_state_list_id ON state_candidacy USING HASH (state_list_id);
+
 
 CREATE TABLE constituency
 (
@@ -63,12 +73,18 @@ CREATE TABLE constituency
   state_id        INTEGER NOT NULL REFERENCES state (state_id) ON DELETE CASCADE,
   election_id     INTEGER NOT NULL REFERENCES election (election_id) ON DELETE CASCADE
 );
+CREATE INDEX constituency_state_id ON constituency USING HASH (state_id);
+CREATE INDEX constituency_election_id ON constituency USING HASH (election_id);
+
 
 CREATE TABLE constituency_candidacy
 (
   candidate_id    INTEGER PRIMARY KEY REFERENCES candidate (candidate_id) ON DELETE CASCADE,
   constituency_id INTEGER NOT NULL REFERENCES constituency (constituency_id) ON DELETE CASCADE
 );
+CREATE INDEX constituency_candidacy_candidate_id ON constituency_candidacy USING HASH (candidate_id);
+CREATE INDEX constituency_candidacy_constituency_id ON constituency_candidacy USING HASH (constituency_id);
+
 
 CREATE TABLE first_result
 (
@@ -89,6 +105,9 @@ CREATE TABLE aggregated_first_result
   candidate_id               INTEGER NOT NULL REFERENCES constituency_candidacy (candidate_id),
   count                      INTEGER
 );
+--makes queries slower?
+--CREATE INDEX aggregated_first_result_candidate_id ON aggregated_first_result USING HASH (candidate_id);
+
 
 CREATE TABLE aggregated_second_result
 (
@@ -97,3 +116,7 @@ CREATE TABLE aggregated_second_result
   constituency_id             INTEGER NOT NULL REFERENCES constituency (constituency_id),
   count                       INTEGER
 );
+--makes queries slower?
+--CREATE INDEX aggregated_second_result_state_list_id ON aggregated_second_result USING HASH (state_list_id);
+--CREATE INDEX aggregated_second_result_constituency_id ON aggregated_second_result USING HASH (constituency_id);
+
