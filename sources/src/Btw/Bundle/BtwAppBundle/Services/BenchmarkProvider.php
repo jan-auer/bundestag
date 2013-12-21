@@ -125,7 +125,8 @@ class BenchmarkProvider extends AbstractProvider
 					SELECT cvh.olddate, cvh.newdate, cvh.party_abbreviation as partyAbbreviation, cvh.oldabsolutevotes, cvh.newabsolutevotes, cvh.oldtotalvotes, cvh.newtotalvotes
 				   	FROM constituency_votes_history cvh,
 				   	constituency c
-					WHERE c.name = cvh.constituency_name AND c.constituency_id = :constituencyId");
+				   	JOIN election e USING(election_id)
+					WHERE c.name = cvh.constituency_name AND c.constituency_id = :constituencyId AND cvh.newdate = e.date");
 
 		$query->bindValue('constituencyId', $constituencyId);
 		return $this->executeQuery($query, function ($result) {
