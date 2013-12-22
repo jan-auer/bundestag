@@ -18,6 +18,8 @@ namespace Btw.Benchmark
             var runDelayTime = Math.Round(origin.AverageDelayTime).ToString();
             var runTerminalCount = origin.TerminalCount;
             var targets = result.AggregatedTimes.OrderByDescending(time => time.Key.Uri.AbsoluteUri);
+            var total = result.TotalTime;
+            var totalDisplayResult = Math.Round(total, 2);
 
             ResultBuilder.AppendLine("Run " + number++ + " (n=" + runTerminalCount + ", t=" + runDelayTime + ") :");
             foreach (var target in targets)
@@ -25,6 +27,9 @@ namespace Btw.Benchmark
                 var targetDisplayResult = Math.Round(target.Value, 2);
                 ResultBuilder.AppendLine(target.Key.Uri.AbsoluteUri + _delimiter + targetDisplayResult);
             }
+
+            ResultBuilder.AppendLine("Total: " + totalDisplayResult);
+            ResultBuilder.AppendLine();
         }
     }
 }

@@ -21,7 +21,9 @@ namespace Btw.Benchmark
         string printPretty(BenchmarkResult result)
         {
             var prettyBuilder = new StringBuilder();
-            var header = String.Format("| {0,42}  | {1,25} |", "URL", "Time (ms)");
+            var rowFormat = "| {0,42}  | {1,25} |";
+            var footerFormat = "  {0,42}    {1,25}  ";
+            var header = String.Format(rowFormat, "URL", "Time (ms)");
             var separator = Enumerable.Range(1, 75).Select(i => "-").Aggregate((c, d) => c + d);
 
             prettyBuilder.AppendLine(separator);
@@ -38,10 +40,13 @@ namespace Btw.Benchmark
                     "..." + targetName.Substring(targetName.Length - 35);
                 var targetDisplayResult = Math.Round(targetResult, 2);
 
-                var line = String.Format("| {0,42}  | {1,25} |", targetDisplayName, targetDisplayResult);
+                var line = String.Format(rowFormat, targetDisplayName, targetDisplayResult);
                 prettyBuilder.AppendLine(line);
             }
+            var totalDisplayResult = Math.Round(result.TotalTime, 2);
+            var totalLine = String.Format(footerFormat, "Total:", totalDisplayResult);
             prettyBuilder.AppendLine(separator);
+            prettyBuilder.AppendLine(totalLine);
             prettyBuilder.AppendLine();
             prettyBuilder.AppendLine();
 
