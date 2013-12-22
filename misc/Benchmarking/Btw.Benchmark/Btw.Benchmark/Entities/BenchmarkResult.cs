@@ -23,5 +23,14 @@ namespace Btw.Benchmark
                 return Times.ToDictionary(targetTimes => targetTimes.Key, targetTimes => targetTimes.Value.Sum() / targetTimes.Value.Count);
             }
         }
+
+        public double TotalTime
+        {
+            get
+            {
+                var flattenedTimes = Times.Select(times => times.Value).Aggregate((llist, rlist) => llist.Union(rlist).ToList());
+                return flattenedTimes.Sum() / flattenedTimes.Count;
+            }
+        }
     }
 }
