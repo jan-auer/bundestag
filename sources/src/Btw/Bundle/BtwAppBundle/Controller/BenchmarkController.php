@@ -41,10 +41,8 @@ class BenchmarkController extends Controller
 			return new Response(json_encode(null));
 		}
 		$benchmarkProvider = $this->get("btw_benchmark_provider");
-		$turnout = $benchmarkProvider->executeQuery31($constituencyId);
-		$winner = $benchmarkProvider->executeQuery32($constituencyId);
-		$results = $benchmarkProvider->executeQuery33($constituencyId);
-		$resultsHistory = $benchmarkProvider->executeQuery34($constituencyId);
+		$turnoutWinner = $benchmarkProvider->executeQuery31_2($constituencyId);
+		$results = $benchmarkProvider->executeQuery33_4($constituencyId);
 
 		$result = array(
 			'constituency' => array(
@@ -56,18 +54,17 @@ class BenchmarkController extends Controller
 				)
 			),
 			//Q3.1
-			'turnout' => $turnout['turnout'],
-			'voters' => $turnout['voters'],
-			'electives' => $turnout['electives'],
+			'turnout' => $turnoutWinner['turnout'],
+			'voters' => $turnoutWinner['voters'],
+			'electives' => $turnoutWinner['electives'],
 			'winner' => array(
-				'name' => $winner['name'],
+				'name' => $turnoutWinner['constituencywinner'],
 				'party' => array(
-					'name'=>$winner['partyname'],
-					'abbreviation' => $winner['partyabbreviation']
+					'name'=>$turnoutWinner['winnerpartyname'],
+					'abbreviation' => $turnoutWinner['winnerpartyabbreviation']
 				)
 			),
 			'results'=>$results,
-			'resultsHistory'=>$resultsHistory
 
 		);
 		return new Response(json_encode($result));
