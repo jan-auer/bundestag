@@ -1,0 +1,36 @@
+Run 1 (n=10, t=500) :
+http://localhost/app_dev.php/benchmark/q6/2013;1651,7
+http://localhost/app_dev.php/benchmark/q5/2013;1856,64
+http://localhost/app_dev.php/benchmark/q4/2013;1544,65
+http://localhost/app_dev.php/benchmark/q3/3;1857,91
+http://localhost/app_dev.php/benchmark/q2/2013;7416,66
+http://localhost/app_dev.php/benchmark/q1/2013;4205,09
+Total: 3088,78
+
+Run 2 (n=10, t=1000) :
+http://localhost/app_dev.php/benchmark/q6/2013;1478,79
+http://localhost/app_dev.php/benchmark/q5/2013;1594,87
+http://localhost/app_dev.php/benchmark/q4/2013;1463,73
+http://localhost/app_dev.php/benchmark/q3/3;1516,21
+http://localhost/app_dev.php/benchmark/q2/2013;6921
+http://localhost/app_dev.php/benchmark/q1/2013;3780,02
+Total: 2792,44
+
+Run 3 (n=20, t=1000) :
+http://localhost/app_dev.php/benchmark/q6/2013;4067,44
+http://localhost/app_dev.php/benchmark/q5/2013;4744,74
+http://localhost/app_dev.php/benchmark/q4/2013;3989,43
+http://localhost/app_dev.php/benchmark/q3/3;4573,35
+http://localhost/app_dev.php/benchmark/q2/2013;10861,22
+http://localhost/app_dev.php/benchmark/q1/2013;7045,54
+Total: 5880,29
+
+Run 4 (n=20, t=500) :
+http://localhost/app_dev.php/benchmark/q6/2013;4222,7
+http://localhost/app_dev.php/benchmark/q5/2013;4822,42
+http://localhost/app_dev.php/benchmark/q4/2013;4601,45
+http://localhost/app_dev.php/benchmark/q3/3;4483,23
+http://localhost/app_dev.php/benchmark/q2/2013;10742,98
+http://localhost/app_dev.php/benchmark/q1/2013;7525,19
+Total: 6066,33
+
