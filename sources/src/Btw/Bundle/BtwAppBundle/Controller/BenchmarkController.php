@@ -34,43 +34,40 @@ class BenchmarkController extends Controller
 
 	public function q3Action($constituencyId)
 	{
-		$constituencyProvider = $this->get("btw_constituency_provider");
-		$constituency = $constituencyProvider->byId($constituencyId);
-
-		if(is_null($constituency)) {
-			return new Response(json_encode(null));
-		}
 		$benchmarkProvider = $this->get("btw_benchmark_provider");
-		$turnout = $benchmarkProvider->executeQuery31($constituencyId);
-		$winner = $benchmarkProvider->executeQuery32($constituencyId);
-		$results = $benchmarkProvider->executeQuery33($constituencyId);
-		$resultsHistory = $benchmarkProvider->executeQuery34($constituencyId);
+		$turnoutWinner = $benchmarkProvider->executeQuery31_2($constituencyId);
+		$resultsHistory = $benchmarkProvider->executeQuery33_4($constituencyId);
 
-		$result = array(
-			'constituency' => array(
-				'name' => $constituency->getName(),
-				'number' => $constituency->getNumber(),
-				'state' => array(
-					'number' => $constituency->getState()->getNumber(),
-					'name' => $constituency->getState()->getName()
+		$result = array();
+		if(is_array($turnoutWinner)) {
+			$result = array(
+				'constituency' => array(
+					'name' => $turnoutWinner['constituencyname'],
+					'number' => $turnoutWinner['constituencynumber'],
+				),
+				'turnout' => $turnoutWinner['turnout'],
+				'voters' => $turnoutWinner['voters'],
+				'electives' => $turnoutWinner['electives'],
+				'winner' => array(
+					'name' => $turnoutWinner['constituencywinner'],
+					'party' => array(
+						'name' => $turnoutWinner['winnerpartyname'],
+						'abbreviation' => $turnoutWinner['winnerpartyabbreviation']
+					)
 				)
-			),
-			//Q3.1
-			'turnout' => $turnout['turnout'],
-			'voters' => $turnout['voters'],
-			'electives' => $turnout['electives'],
-			'winner' => array(
-				'name' => $winner['name'],
-				'party' => array(
-					'name'=>$winner['partyname'],
-					'abbreviation' => $winner['partyabbreviation']
-				)
-			),
-			'results'=>$results,
-			'resultsHistory'=>$resultsHistory
+			);
 
-		);
-		return new Response(json_encode($result));
+		}
+
+		if(is_array($resultsHistory)) {
+			$result['results']=$resultsHistory;
+		}
+
+		if(count($result)==0) {
+			return new Response(json_encode(null));
+		} else {
+			return new Response(json_encode($result));
+		}
 	}
 
 
