@@ -68,7 +68,7 @@ class BenchmarkProvider extends AbstractProvider
 
 	public function executeQuery31_2($constituencyId)
 	{
-		$query = $this->prepareQuery("SELECT ct.turnout, ct.voters, ct.electives, ca.name AS constituencyWinner, p.name AS winnerPartyName, p.abbreviation AS winnerPartyAbbreviation
+		$query = $this->prepareQuery("SELECT c.name as constituencyname, c.number as constituencynumber, ct.turnout, ct.voters, ct.electives, ca.name AS constituencyWinner, p.name AS winnerPartyName, p.abbreviation AS winnerPartyAbbreviation
 											FROM constituency_turnout ct
 											JOIN constituency_winners cw  USING(constituency_id)
 											JOIN constituency c USING(constituency_id)
@@ -98,9 +98,15 @@ class BenchmarkProvider extends AbstractProvider
 											WHERE constituency_id = :constituencyId");
 
 		$query->bindValue('constituencyId', $constituencyId);
-		return $this->executeQuery($query, function ($result) {
+
+		$result = $this->executeQuery($query, function ($result) {
 			return $result;
 		});
+
+		if (is_array($result) && count($result) > 0) {
+			return $result;
+		}
+		return null;
 	}
 
 	public function executeQuery4($year)
