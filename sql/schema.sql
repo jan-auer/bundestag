@@ -11,6 +11,7 @@ CREATE TABLE voter
   identityNumber        INTEGER    NOT NULL,
   hash        TEXT NOT NULL,
   constituency_id INTEGER NOT NULL REFERENCES constituency (constituency_id) ON DELETE CASCADE,
+  voted boolean,
   election_id INTEGER NOT NULL REFERENCES election (election_id) ON DELETE CASCADE
 );
 

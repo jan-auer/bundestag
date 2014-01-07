@@ -57,6 +57,12 @@ class Voter
 	private $constituency;
 
 	/**
+	 * @var boolean
+	 * @ORM\Column(name="voted", type="boolean")
+	 */
+	private $voted;
+
+	/**
 	 * @param Election $election
 	 *
 	 * @return Voter
