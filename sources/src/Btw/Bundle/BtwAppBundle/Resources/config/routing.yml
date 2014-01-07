@@ -30,10 +30,18 @@ btw_app_closest:
       options:
           expose : true
 
-btw_app_elector:
-    pattern: /elect/{year}
-    defaults: { _controller: BtwAppBundle:Elector:index }
+###### Voting ######
+btw_app_vote:
+    pattern: /vote
+    defaults: { _controller: BtwAppBundle:Voter:index }
 
+btw_app_vote_ballot:
+    pattern: /vote/ballot
+    defaults: { _controller: BtwAppBundle:Voter:ballot }
+
+btw_app_vote_submit:
+    pattern: /vote/submit
+    defaults: { _controller: BtwAppBundle:Voter:submit }
 
 ###### Benchmark ######
 btw_benchmark_q1:
