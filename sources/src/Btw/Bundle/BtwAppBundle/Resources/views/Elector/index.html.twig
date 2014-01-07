@@ -1,1 +1,19 @@
-This is the login page for an election in year {{ year }}
+{% extends "BtwAppBundle::layout.html.twig" %}
+
+{% block title %}Bundestagswahl {{ year }}{% endblock %}
+
+{% block content %}
+
+    <p class="lead">
+        Willkommen beim elektronischen Stimmzettel zur Wahl {{ year }}. <br />
+        Bitte geben Sie zunächst Ihren persönlichen Wahlschlüssel ein.
+    </p>
+
+    {{ form(form) }}
+
+    <p>
+        Sollten Sie noch keinen Wahlschlüssel erhalten haben, wenden Sie sich bitte an die überaus geduldigen,
+        zuvorkommenden und auch freundlichen Wahlhelfer in Ihrem Wahllokal.
+    </p>
+
+{% endblock %}
