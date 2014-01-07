@@ -9,10 +9,23 @@
 namespace Btw\Bundle\BtwAppBundle\Services;
 
 
+use Btw\Bundle\PersistenceBundle\Entity\Candidate;
+
 class CandidateProvider {
 
-	public function forConstituency(Election $election, Constituency $constituency)
+	/**
+	 * @param Election $election
+	 * @param Constituency $constituency
+	 *
+	 * @return Candidate[]
+	 */
+	public function forConstituency(Constituency $constituency)
 	{
-		// TODO: implement
+		$constituencyId = $constituency->getId();
+		$candidate = $this->em->getRepository('Btw\Bundle\PersistenceBundle\Entity\Candidate')->findBy(array('constituency_id' => $constituencyId));
+		if (is_array($candidate) && count($candidate)) {
+			return $candidate[0];
+		}
+		return null;
 	}
 } 
