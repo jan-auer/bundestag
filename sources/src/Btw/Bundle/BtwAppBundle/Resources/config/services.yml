@@ -8,6 +8,7 @@ parameters:
      btw_closest_candidates_provider.class: Btw\Bundle\BtwAppBundle\Services\ClosestCandidatesProvider
      btw_voter_provider.class: Btw\Bundle\BtwAppBundle\Services\VoterProvider
      btw_candidate_provider.class: Btw\Bundle\BtwAppBundle\Services\CandidateProvider
+     btw_state_list_provider.class: Btw\Bundle\BtwAppBundle\Services\StateListProvider
 
      btw_benchmark_provider.class: Btw\Bundle\BtwAppBundle\Services\BenchmarkProvider
 
@@ -51,6 +52,12 @@ services:
                           arguments:
                                              entityManager: "@doctrine.orm.entity_manager"
                                              electionProvider: "@btw_election_provider"
+
+     btw_state_list_provider:
+                               class: "%btw_state_list_provider.class%"
+                               arguments:
+                                                  entityManager: "@doctrine.orm.entity_manager"
+                                                  electionProvider: "@btw_election_provider"
 
      btw_benchmark_provider:
                           class: "%btw_benchmark_provider.class%"
