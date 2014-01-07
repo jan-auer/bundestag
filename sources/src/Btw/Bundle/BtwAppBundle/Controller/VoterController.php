@@ -6,12 +6,15 @@ use Btw\Bundle\BtwAppBundle\Form\Type\ElectorLoginFormType;
 use Btw\Bundle\BtwAppBundle\Services\CandidateProvider;
 use Btw\Bundle\BtwAppBundle\Services\ConstituencyProvider;
 use Btw\Bundle\BtwAppBundle\Services\ElectionProvider;
-use Btw\Bundle\BtwAppBundle\Services\PartyProvider;
+use Btw\Bundle\BtwAppBundle\Services\StateListProvider;
 use Btw\Bundle\BtwAppBundle\Services\VoterProvider;
+use Btw\Bundle\PersistenceBundle\Entity\Candidate;
 use Btw\Bundle\PersistenceBundle\Entity\Constituency;
 use Btw\Bundle\PersistenceBundle\Entity\Election;
+use Btw\Bundle\PersistenceBundle\Entity\StateList;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 
@@ -36,8 +39,8 @@ class VoterController extends Controller
 		$electionProvider = $this->get('btw_election_provider');
 		/** @var VoterProvider $voterProvider */
 		$voterProvider = $this->get('btw_voter_provider');
-		/** @var PartyProvider $partyProvider */
-		$partyProvider = $this->get('btw_party_provider');
+		/** @var StateListProvider $stateListProvider */
+		$stateListProvider = $this->get('btw_state_list_provider');
 		/** @var ConstituencyProvider $constituencyProvider */
 		$constituencyProvider = $this->get('btw_constituency_provider');
 		/** @var CandidateProvider $candidateProvider */
@@ -50,15 +53,15 @@ class VoterController extends Controller
 		$voter = $voterProvider->byHash($hash);
 
 		if (is_null($voter)) {
-			// TODO: Error -> Not yet registered or expired
-			return 0;
+			// Error: Not yet registered or expired
+			return new Response(0);
 		}
 
 		$canVote = !$voter->getVoted();
 
 		if (!$canVote) {
-			// TODO: Error -> Already voted
-			return 0;
+			// Error: Already voted
+			return new Response(1);
 		}
 
 		// Data retrieval
@@ -73,14 +76,28 @@ class VoterController extends Controller
 		$constituency = $constituencyProvider->byId($constituencyId);
 
 		//  First vote
-		$candidates = $candidateProvider->forConstituency($election, $constituency);
+		$candidates = array_map(function ($candidate) {
+			/** @var Candidate $candidate */
+			return array('name' => $candidate->getName(),
+						 'party_abbr' => $candidate->getParty()->getAbbreviation(),
+						 'party_name' => $candidate->getParty()->getName(),
+						 'party_color' => $candidate->getParty()->getColor());
+		}, $candidateProvider->forConstituency($constituency));
 
 		//  Second vote
-		/** @var Party[] $parties */
-		$parties = $partyProvider->getAllForElection($election);
+		$state = $constituency->getState();
+		$parties = array_map(function ($stateListEntry) {
+			/** @var StateList $stateListEntry */
+			return array('party_abbr' => $stateListEntry->getParty()->getAbbreviation(),
+						 'party_name' => $stateListEntry->getParty()->getName(),
+						 'party_color' => $stateListEntry->getParty()->getColor());
+		}, $stateListProvider->forState($state));
 
+		// RESULT
+		$result = array('candidates' => $candidates,
+						'parties' => $parties);
 
-		return $this->render('BtwAppBundle:Elector:ballot.html.twig');
+		return $this->render('BtwAppBundle:Elector:ballot.html.twig', $result);
 	}
 
 	public function submitAction(Request $request)
