@@ -51,7 +51,7 @@ class Voter
 	 *
 	 * @ORM\ManyToOne(targetEntity="Constituency")
 	 * @ORM\JoinColumns({
-	 *   @ORM\JoinColumn(name="constituency_id", referencedColumnName="consitutency_id")
+	 *   @ORM\JoinColumn(name="constituency_id", referencedColumnName="constituency_id")
 	 * })
 	 */
 	private $constituency;
