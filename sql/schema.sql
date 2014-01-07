@@ -8,12 +8,13 @@ CREATE TABLE election
 CREATE TABLE voter
 (
   voter_id    SERIAL PRIMARY KEY,
-  identityNumber        INTEGER    NOT NULL,
-  hash        TEXT NOT NULL,
+  identityNumber        INTEGER NOT NULL,
+  hash        TEXT NOT NULL UNIQUE,
   constituency_id INTEGER NOT NULL REFERENCES constituency (constituency_id) ON DELETE CASCADE,
   voted boolean,
   election_id INTEGER NOT NULL REFERENCES election (election_id) ON DELETE CASCADE
 );
+ALTER TABLE voter ADD CONSTRAINT voter_identity_election UNIQUE(identityNumber, election_id);
 
 CREATE INDEX voter_election_id ON voter USING HASH (election_id);
 
