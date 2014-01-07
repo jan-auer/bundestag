@@ -36,15 +36,25 @@ class Voter
      */
     private $hash;
 
-    /**
-     * @var Election
-     *
-     * @ORM\ManyToOne(targetEntity="Election")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="election_id", referencedColumnName="election_id")
-     * })
-     */
-    private $election;
+	/**
+	 * @var Election
+	 *
+	 * @ORM\ManyToOne(targetEntity="Election")
+	 * @ORM\JoinColumns({
+	 *   @ORM\JoinColumn(name="election_id", referencedColumnName="election_id")
+	 * })
+	 */
+	private $election;
+
+	/**
+	 * @var Constituency
+	 *
+	 * @ORM\ManyToOne(targetEntity="Constituency")
+	 * @ORM\JoinColumns({
+	 *   @ORM\JoinColumn(name="constituency_id", referencedColumnName="consitutency_id")
+	 * })
+	 */
+	private $constituency;
 
 	/**
 	 * @param Election $election
@@ -86,10 +96,12 @@ class Voter
 
 	/**
 	 * @param String $hash
+	 * @return Voter
 	 */
 	public function setHash($hash)
 	{
 		$this->hash = $hash;
+		return $this;
 	}
 
 	/**
@@ -102,10 +114,12 @@ class Voter
 
 	/**
 	 * @param int $identityNumber
+	 * @return Voter
 	 */
 	public function setIdentityNumber($identityNumber)
 	{
 		$this->identityNumber = $identityNumber;
+		return $this;
 	}
 
 	/**
@@ -115,6 +129,25 @@ class Voter
 	{
 		return $this->identityNumber;
 	}
+
+	/**
+	 * @param \Btw\Bundle\PersistenceBundle\Entity\Constituency $constituency
+	 * @return Voter
+	 */
+	public function setConstituency($constituency)
+	{
+		$this->constituency = $constituency;
+		return $this;
+	}
+
+	/**
+	 * @return \Btw\Bundle\PersistenceBundle\Entity\Constituency
+	 */
+	public function getConstituency()
+	{
+		return $this->constituency;
+	}
+
 
 
 }
