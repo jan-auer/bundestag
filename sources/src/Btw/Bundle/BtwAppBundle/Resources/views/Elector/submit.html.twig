@@ -1,1 +1,14 @@
-Thanks for ur contribution to a better country
+{% extends "BtwAppBundle::layout.html.twig" %}
+
+{% block title %}Bundestagswahl{% endblock %}
+
+{% block content %}
+
+{% if successfull %}
+    Vielen Dank für Ihre Unterstützung für ein besseres Deutschland!
+{% else %}
+    Sorry, da ist wohl etwas schief gegangen.<br/>
+    Bitte wenden Sie sich an einen Administrator oder Wahlleiter.
+{% endif %}
+
+{% endblock %}

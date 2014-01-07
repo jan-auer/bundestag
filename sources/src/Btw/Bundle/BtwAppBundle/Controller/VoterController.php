@@ -11,6 +11,9 @@ use Btw\Bundle\BtwAppBundle\Services\VoterProvider;
 use Btw\Bundle\PersistenceBundle\Entity\Constituency;
 use Btw\Bundle\PersistenceBundle\Entity\Election;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+
 
 class VoterController extends Controller
 {
@@ -46,16 +49,14 @@ class VoterController extends Controller
 		// Get and validate user
 		$voter = $voterProvider->byHash($hash);
 
-		if(is_null($voter))
-		{
+		if (is_null($voter)) {
 			// TODO: Error -> Not yet registered or expired
 			return 0;
 		}
 
 		$canVote = !$voter->getVoted();
 
-		if(!$canVote)
-		{
+		if (!$canVote) {
 			// TODO: Error -> Already voted
 			return 0;
 		}
@@ -82,9 +83,25 @@ class VoterController extends Controller
 		return $this->render('BtwAppBundle:Elector:ballot.html.twig');
 	}
 
-
 	public function submitAction(Request $request)
 	{
-		return $this->render('BtwAppBundle:Elector:submit.html.twig');
+		/** @var VoterProvider $voterProvider */
+		$voterProvider = $this->get('btw_voter_provider');
+
+		$session = new Session();
+		$hash = $session->get('hash');
+
+		$candidateId = $request->get('candidateId');
+		$stateListId = $request->get('stateListId');
+
+		$successfull = $voterProvider->vote($hash, $candidateId, $stateListId);
+
+		if ($successfull) {
+			$session->remove('hash');
+		}
+
+		return $this->render('BtwAppBundle:Elector:submit.html.twig', array(
+			'successfull' => $successfull
+		));
 	}
 } 

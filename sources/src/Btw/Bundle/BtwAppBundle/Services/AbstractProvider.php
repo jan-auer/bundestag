@@ -44,6 +44,16 @@ class AbstractProvider
 	}
 
 	/**
+	 * @param Statement $query
+	 *
+	 * @return boolean
+	 */
+	protected function executeUpdateQuery(Statement $query)
+	{
+		return $query->execute();
+	}
+
+	/**
 	 * @return EntityManager
 	 */
 	protected function getEntityManager()
@@ -61,4 +71,33 @@ class AbstractProvider
 		return $this->em->getRepository('BtwPersistenceBundle:' . $entityName);
 	}
 
+	/**
+	 * Begins a new transaction
+	 */
+	protected function beginTransaction()
+	{
+		$this->em->beginTransaction();
+	}
+
+	/**
+	 * Commits the current running transaction.
+	 * @throws Exception In case of failed commit
+	 */
+	protected function commit()
+	{
+		try {
+			$this->em->commit();
+		} catch (Exception $e) {
+			$this->rollback();
+			throw $e;
+		}
+	}
+
+	/**
+	 * Aborts the current running transaction.
+	 */
+	protected function rollback()
+	{
+		$this->em->rollback();
+	}
 }
