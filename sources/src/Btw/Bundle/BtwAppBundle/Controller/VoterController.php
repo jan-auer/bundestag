@@ -20,11 +20,11 @@ class VoterController extends Controller {
 
 	public function ballotAction(Request $request)
 	{
-		return $this->render('BtwAppBundle:Elector:index.html.twig');
+		return $this->render('BtwAppBundle:Elector:ballot.html.twig');
 	}
 
 	public function submitAction(Request $request)
 	{
-
+		return $this->render('BtwAppBundle:Elector:submit.html.twig');
 	}
 } 
