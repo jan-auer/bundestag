@@ -23,47 +23,44 @@ class Voter
     private $id;
 
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="name", type="text", nullable=false)
+     * @ORM\Column(name="identityNumber", type="integer", nullable=false)
      */
-    private $name;
+    private $identityNumber;
 
     /**
-     * @var \DateTime
+     * @var String
      *
-     * @ORM\Column(name="birthday", type="date", nullable=false)
+     * @ORM\Column(name="hash", type="string", nullable=false)
      */
-    private $birthday;
-
-    /**
-     * @var Election
-     *
-     * @ORM\ManyToOne(targetEntity="Election")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="election_id", referencedColumnName="election_id")
-     * })
-     */
-    private $election;
+    private $hash;
 
 	/**
-	 * @param \DateTime $birthday
+	 * @var Election
 	 *
-	 * @return Voter
+	 * @ORM\ManyToOne(targetEntity="Election")
+	 * @ORM\JoinColumns({
+	 *   @ORM\JoinColumn(name="election_id", referencedColumnName="election_id")
+	 * })
 	 */
-	public function setBirthday(\DateTime $birthday)
-	{
-		$this->birthday = $birthday;
-		return $this;
-	}
+	private $election;
 
 	/**
-	 * @return \DateTime
+	 * @var Constituency
+	 *
+	 * @ORM\ManyToOne(targetEntity="Constituency")
+	 * @ORM\JoinColumns({
+	 *   @ORM\JoinColumn(name="constituency_id", referencedColumnName="consitutency_id")
+	 * })
 	 */
-	public function getBirthday()
-	{
-		return $this->birthday;
-	}
+	private $constituency;
+
+	/**
+	 * @var boolean
+	 * @ORM\Column(name="voted", type="boolean")
+	 */
+	private $voted;
 
 	/**
 	 * @param Election $election
@@ -104,22 +101,59 @@ class Voter
 	}
 
 	/**
-	 * @param string $name
-	 *
+	 * @param String $hash
 	 * @return Voter
 	 */
-	public function setName($name)
+	public function setHash($hash)
 	{
-		$this->name = $name;
+		$this->hash = $hash;
 		return $this;
 	}
 
 	/**
-	 * @return string
+	 * @return String
 	 */
-	public function getName()
+	public function getHash()
 	{
-		return $this->name;
+		return $this->hash;
 	}
+
+	/**
+	 * @param int $identityNumber
+	 * @return Voter
+	 */
+	public function setIdentityNumber($identityNumber)
+	{
+		$this->identityNumber = $identityNumber;
+		return $this;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getIdentityNumber()
+	{
+		return $this->identityNumber;
+	}
+
+	/**
+	 * @param \Btw\Bundle\PersistenceBundle\Entity\Constituency $constituency
+	 * @return Voter
+	 */
+	public function setConstituency($constituency)
+	{
+		$this->constituency = $constituency;
+		return $this;
+	}
+
+	/**
+	 * @return \Btw\Bundle\PersistenceBundle\Entity\Constituency
+	 */
+	public function getConstituency()
+	{
+		return $this->constituency;
+	}
+
+
 
 }
