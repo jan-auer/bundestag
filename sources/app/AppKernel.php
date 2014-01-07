@@ -17,6 +17,7 @@ class AppKernel extends Kernel
 
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+	        new Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle(),
 
 	        new Btw\Bundle\PersistenceBundle\BtwPersistenceBundle(),
 	        new Btw\Bundle\ImporterBundle\BtwImporterBundle(),
