@@ -154,6 +154,12 @@ class Voter
 		return $this->constituency;
 	}
 
-
+	/**
+	 * @return boolean
+	 */
+	public function getVoted()
+	{
+		return $this->voted;
+	}
 
 }
