@@ -55,9 +55,9 @@ class ConstituencyProvider
 				SELECT c.constituency_id AS id, c.name, c.state_id AS state, c.electives, ct.voters, ctprev.voters AS voters_prev
 				FROM constituency c
 				  JOIN constituency_turnout ct USING (constituency_id)
-				  JOIN constituency cprev USING (name)
+				  LEFT JOIN constituency cprev ON (c.name = cprev.name AND cprev.election_id = :previous)
 				  LEFT JOIN constituency_turnout ctprev ON (cprev.constituency_id = ctprev.constituency_id)
-			WHERE c.election_id = :current AND cprev.election_id = :previous
+			WHERE c.election_id = :current
 			");
 
 			$query->bindValue('current', $election->getId());
