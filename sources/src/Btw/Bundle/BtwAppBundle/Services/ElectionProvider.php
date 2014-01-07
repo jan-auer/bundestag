@@ -18,6 +18,11 @@ class ElectionProvider
 		parent::__construct($entityManager);
 	}
 
+	public function byId($id)
+	{
+		return $this->getMyRepository()->find($id);
+	}
+
 	/**
 	 * @return Election[]
 	 */
