@@ -6,6 +6,8 @@ parameters:
      btw_party_results_provider.class: Btw\Bundle\BtwAppBundle\Services\PartyResultsProvider
      btw_party_provider.class: Btw\Bundle\BtwAppBundle\Services\PartyProvider
      btw_closest_candidates_provider.class: Btw\Bundle\BtwAppBundle\Services\ClosestCandidatesProvider
+     btw_voter_provider.class: Btw\Bundle\BtwAppBundle\Services\VoterProvider
+     btw_candidate_provider.class: Btw\Bundle\BtwAppBundle\Services\CandidateProvider
 
      btw_benchmark_provider.class: Btw\Bundle\BtwAppBundle\Services\BenchmarkProvider
 
@@ -38,6 +40,17 @@ services:
                           class: "%btw_closest_candidates_provider.class%"
                           arguments:
                                              entityManager: "@doctrine.orm.entity_manager"
+
+     btw_voter_provider:
+                          class: "%btw_voter_provider.class%"
+                          arguments:
+                                             entityManager: "@doctrine.orm.entity_manager"
+                                             electionProvider: "@btw_election_provider"
+     btw_candidate_provider:
+                          class: "%btw_candidate_provider.class%"
+                          arguments:
+                                             entityManager: "@doctrine.orm.entity_manager"
+                                             electionProvider: "@btw_election_provider"
 
      btw_benchmark_provider:
                           class: "%btw_benchmark_provider.class%"
