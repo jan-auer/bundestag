@@ -13,6 +13,11 @@ class VoterProvider
 	extends AbstractProvider
 {
 
+	/**
+	 * @param $hash
+	 *
+	 * @return Voter
+	 */
 	public function byHash($hash)
 	{
 		$voter = $this->em->getRepository('Btw\Bundle\PersistenceBundle\Entity\Voter')->findBy(array('hash' => $hash));
