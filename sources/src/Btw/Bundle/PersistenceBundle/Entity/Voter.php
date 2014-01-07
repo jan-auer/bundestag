@@ -23,18 +23,18 @@ class Voter
     private $id;
 
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="name", type="text", nullable=false)
+     * @ORM\Column(name="identityNumber", type="integer", nullable=false)
      */
-    private $name;
+    private $identityNumber;
 
     /**
-     * @var \DateTime
+     * @var String
      *
-     * @ORM\Column(name="birthday", type="date", nullable=false)
+     * @ORM\Column(name="hash", type="string", nullable=false)
      */
-    private $birthday;
+    private $hash;
 
     /**
      * @var Election
@@ -45,25 +45,6 @@ class Voter
      * })
      */
     private $election;
-
-	/**
-	 * @param \DateTime $birthday
-	 *
-	 * @return Voter
-	 */
-	public function setBirthday(\DateTime $birthday)
-	{
-		$this->birthday = $birthday;
-		return $this;
-	}
-
-	/**
-	 * @return \DateTime
-	 */
-	public function getBirthday()
-	{
-		return $this->birthday;
-	}
 
 	/**
 	 * @param Election $election
@@ -104,22 +85,36 @@ class Voter
 	}
 
 	/**
-	 * @param string $name
-	 *
-	 * @return Voter
+	 * @param String $hash
 	 */
-	public function setName($name)
+	public function setHash($hash)
 	{
-		$this->name = $name;
-		return $this;
+		$this->hash = $hash;
 	}
 
 	/**
-	 * @return string
+	 * @return String
 	 */
-	public function getName()
+	public function getHash()
 	{
-		return $this->name;
+		return $this->hash;
 	}
+
+	/**
+	 * @param int $identityNumber
+	 */
+	public function setIdentityNumber($identityNumber)
+	{
+		$this->identityNumber = $identityNumber;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getIdentityNumber()
+	{
+		return $this->identityNumber;
+	}
+
 
 }

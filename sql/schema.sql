@@ -8,10 +8,11 @@ CREATE TABLE election
 CREATE TABLE voter
 (
   voter_id    SERIAL PRIMARY KEY,
-  name        TEXT    NOT NULL,
-  birthday    DATE    NOT NULL,
+  identityNumber        INTEGER    NOT NULL,
+  hash        TEXT NOT NULL,
   election_id INTEGER NOT NULL REFERENCES election (election_id) ON DELETE CASCADE
 );
+
 CREATE INDEX voter_election_id ON voter USING HASH (election_id);
 
 CREATE TABLE state
