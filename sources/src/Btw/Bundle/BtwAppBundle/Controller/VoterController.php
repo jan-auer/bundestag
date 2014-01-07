@@ -1,14 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: schaefep
- * Date: 06.12.13
- * Time: 11:57
- */
 
 namespace Btw\Bundle\BtwAppBundle\Controller;
 
-
+use Btw\Bundle\BtwAppBundle\Form\Type\ElectorLoginFormType;
 use Btw\Bundle\BtwAppBundle\Services\CandidateProvider;
 use Btw\Bundle\BtwAppBundle\Services\ConstituencyProvider;
 use Btw\Bundle\BtwAppBundle\Services\ElectionProvider;
@@ -18,11 +12,18 @@ use Btw\Bundle\PersistenceBundle\Entity\Constituency;
 use Btw\Bundle\PersistenceBundle\Entity\Election;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class VoterController extends Controller {
+class VoterController extends Controller
+{
 
 	public function indexAction()
 	{
-		return $this->render('BtwAppBundle:Elector:index.html.twig');
+		$year = date('Y');
+		$form = $this->createForm(new ElectorLoginFormType());
+
+		return $this->render('BtwAppBundle:Elector:index.html.twig', array(
+			'form' => $form->createView(),
+			'year' => $year,
+		));
 	}
 
 	public function ballotAction(Request $request)
@@ -80,6 +81,7 @@ class VoterController extends Controller {
 
 		return $this->render('BtwAppBundle:Elector:ballot.html.twig');
 	}
+
 
 	public function submitAction(Request $request)
 	{

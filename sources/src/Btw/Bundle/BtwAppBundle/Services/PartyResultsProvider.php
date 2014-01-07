@@ -64,7 +64,8 @@ class PartyResultsProvider
 			  JOIN state s USING (election_id, state_id)
 			  JOIN party p USING (election_id, party_id)
 			  LEFT JOIN constituency_votes_history h ON (h.constituency_name = c.name AND p.abbreviation = h.party_abbreviation)
-			WHERE date_part('Y', newDate) = :new AND date_part('Y', oldDate) = :old AND election_id = :electionId");
+			WHERE ( (date_part('Y', newDate) = :new AND date_part('Y', oldDate) = :old) OR (newDate IS NULL AND oldDate IS NULL) )
+			 AND election_id = :electionId");
 
 			$query->bindValue('old', date('Y', $previousElection->getDate()->getTimestamp()));
 			$query->bindValue('electionId', $election->getId());
