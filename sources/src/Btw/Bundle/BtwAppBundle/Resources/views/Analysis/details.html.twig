@@ -63,7 +63,7 @@
                             <td>{{ result.party.abbr }}</td>
                             <td class="text-right">
                                 {{ result.votes | number }}
-                                (<b>{{ (result.votes / context.voters * 100) | number:1 }}%</b><span class="text-muted" data-ng-show="context.votersPrev > -1">
+                                (<b>{{ (result.votes / context.voters * 100) | number:1 }}%</b><span class="text-muted" data-ng-show="context.votersPrev">
                                     {{ ((result.votes / context.voters - result.votesPrev / context.votersPrev) * 100) | signed:1 }}%</span>)
                             </td>
                             <td class="text-right">
