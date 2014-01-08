@@ -9,8 +9,9 @@
 namespace Btw\Bundle\BtwAppBundle\Services;
 
 use Btw\Bundle\PersistenceBundle\Entity\StateList;
+use Btw\Bundle\PersistenceBundle\Entity\State;
 
-class StateListProvider
+class StateListProvider extends AbstractProvider
 {
 
 	/**
@@ -20,8 +21,7 @@ class StateListProvider
 	 */
 	public function forState(State $state)
 	{
-		$stateId = $state->getId();
-		$stateList = $this->em->getRepository('Btw\Bundle\PersistenceBundle\Entity\StateList')->findBy(array('state_id' => $stateId));
+		$stateList = $this->getRepository('StateList')->findBy(array('state' => $state));
 		return $stateList;
 	}
 } 

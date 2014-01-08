@@ -9,19 +9,15 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class ElectorLoginFormType extends AbstractType
 {
 
-	public function getButtonValue()
-	{
-		return 'btw_app_vote_ballot';
-	}
-
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder
 			->add('hash', 'text', array(
-				'label' => 'Wahlschlüssel:',
+				'label_render' => false,
 			))
 			->add('submit', 'submit', array(
 				'label' => 'Stimmzettel öffnen',
+				'attr'  => array('class' => 'btn-default')
 			));
 	}
 
