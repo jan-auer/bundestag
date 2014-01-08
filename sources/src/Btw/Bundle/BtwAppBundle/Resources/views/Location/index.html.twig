@@ -18,6 +18,15 @@
         </div>
     </div>
 
+    <script type="text/javascript">
+        $('#BTW_Elector_Register_constituency')
+                .val([])
+                .change(function () {
+                    var selected = $(this).find(':selected').val();
+                    window.location = Routing.generate('btw_app_location_create', { constituencyId : selected });
+                });
+    </script>
+
     <div class="visible-md visible-lg" style="height: 100px"></div>
 
 {% endblock %}

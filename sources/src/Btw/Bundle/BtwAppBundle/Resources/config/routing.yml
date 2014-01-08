@@ -49,8 +49,10 @@ btw_app_location:
     defaults: { _controller: BtwAppBundle:Location:index }
 
 btw_app_location_create:
-    pattern: /location/createVoter
+    pattern: /location/{constituencyId}/createVoter
     defaults: { _controller: BtwAppBundle:Location:createVoter }
+    options:
+        expose: true
 
 ###### Benchmark ######
 btw_benchmark_q1:
