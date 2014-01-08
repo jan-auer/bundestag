@@ -22,7 +22,9 @@
                     <tr>
                         <td class="text-left" style="width: 30px">{{ loop.index0 + 1 }}</td>
                         <td class="text-left">{{ candidate.name }} ({{ candidate.party_abbr }})</td>
-                        <td class="text-center" style="width: 50px"><input type="radio" name="candidate_id" /></td>
+                        <td class="text-center" style="width: 50px">
+                            <input type="radio" name="candidate_id" value="{{ candidate.id }}" />
+                        </td>
                     </tr>
                 {% endfor %}
             </table>
@@ -40,7 +42,9 @@
             <table class="table table-striped table-hover table-bordered">
                 {% for party in parties %}
                     <tr>
-                        <td class="text-center" style="width: 50px"><input type="radio" name="state_list_id" /></td>
+                        <td class="text-center" style="width: 50px">
+                            <input type="radio" name="state_list_id" value="{{ party.id }}" />
+                        </td>
                         <td class="text-left">{{ party.name }} ({{ party.abbr }})</td>
                         <td class="text-right" style="width: 30px">{{ loop.index0 + 1 }}</td>
                     </tr>

@@ -68,6 +68,7 @@ class VoterController extends Controller
 			/** @var Candidate $candidate */
 			$party = $candidate->getParty();
 			return array(
+				'id'          => $candidate->getId(),
 				'name'        => $candidate->getName(),
 				'party_abbr'  => $party->getAbbreviation(),
 				'party_name'  => $party->getName(),
@@ -80,6 +81,7 @@ class VoterController extends Controller
 			/** @var StateList $stateListEntry */
 			$party = $stateListEntry->getParty();
 			return array(
+				'id'    => $party->getId(),
 				'abbr'  => $party->getAbbreviation(),
 				'name'  => $party->getName(),
 				'color' => $party->getColor()
@@ -107,13 +109,13 @@ class VoterController extends Controller
 		$this->getSession()->set('stateListId', $stateListId);
 
 		$message = sprintf('<b>1. Stimme:</b> %s <br /> <b>2. Stimme:</b> %s',
-			$candidateId ?: 'LEER',
-			$stateListId ?: 'LEER');
+			$candidateId ? : 'LEER',
+			$stateListId ? : 'LEER');
 
 		return $this->render('BtwAppBundle:Elector:preview.html.twig', array(
 			'message'   => $message,
 			'submitUrl' => $this->generateUrl('btw_app_vote_submit'),
-			'backUrl' => $this->generateUrl('btw_app_vote_ballot'),
+			'backUrl'   => $this->generateUrl('btw_app_vote_ballot'),
 		));
 	}
 
