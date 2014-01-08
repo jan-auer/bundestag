@@ -14,6 +14,9 @@ class LocationRegisterFormType extends AbstractType
 		$builder
 			->add('identityNumber', 'text', array(
 				'label' => 'Personalausweisnummer',
+				'attr' => array(
+					'autocomplete' => "off",
+				),
 			))
 			->add('submit', 'submit', array(
 				'label' => 'Wähler anlegen',
@@ -25,8 +28,8 @@ class LocationRegisterFormType extends AbstractType
 	{
 		$resolver->setDefaults(array(
 			'render_fieldset' => false,
-			'show_legend'     => false,
-			'horizontal'      => true,
+			'show_legend' => false,
+			'horizontal' => true,
 		));
 	}
 

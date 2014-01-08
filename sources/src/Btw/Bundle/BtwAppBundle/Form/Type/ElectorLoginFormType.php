@@ -14,6 +14,9 @@ class ElectorLoginFormType extends AbstractType
 		$builder
 			->add('hash', 'text', array(
 				'label_render' => false,
+				'attr'         => array(
+					'autocomplete' => "off",
+				),
 			))
 			->add('submit', 'submit', array(
 				'label' => 'Stimmzettel öffnen',
