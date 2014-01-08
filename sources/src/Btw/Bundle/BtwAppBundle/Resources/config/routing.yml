@@ -39,13 +39,24 @@ btw_app_vote_ballot:
     pattern: /vote/ballot
     defaults: { _controller: BtwAppBundle:Voter:ballot }
 
+btw_app_vote_preview:
+    pattern: /vote/preview
+    defaults: { _controller: BtwAppBundle:Voter:preview }
+
 btw_app_vote_submit:
     pattern: /vote/submit
     defaults: { _controller: BtwAppBundle:Voter:submit }
 
-btw_app_vote_create:
-    pattern: /vote/create
-    defaults: { _controller: BtwAppBundle:Voter:createVoter }
+###### Location ######
+btw_app_location:
+    pattern: /location
+    defaults: { _controller: BtwAppBundle:Location:index }
+
+btw_app_location_create:
+    pattern: /location/{constituencyId}/createVoter
+    defaults: { _controller: BtwAppBundle:Location:createVoter }
+    options:
+        expose: true
 
 ###### Benchmark ######
 btw_benchmark_q1:

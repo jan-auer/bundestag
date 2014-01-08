@@ -16,7 +16,6 @@ class CandidateProvider extends AbstractProvider
 {
 
 	/**
-	 * @param Election $election
 	 * @param Constituency $constituency
 	 *
 	 * @return Candidate[]
@@ -32,4 +31,5 @@ class CandidateProvider extends AbstractProvider
 		}
 		return $candidates;
 	}
-} 
+
+}

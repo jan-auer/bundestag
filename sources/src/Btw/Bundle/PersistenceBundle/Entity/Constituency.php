@@ -74,6 +74,14 @@ class Constituency
 	private $election;
 
 	/**
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return sprintf('%s: %s', $this->getNumber(), $this->getName());
+	}
+
+	/**
 	 * Constructor
 	 */
 	public function __construct()
@@ -213,11 +221,5 @@ class Constituency
 	{
 		return $this->election;
 	}
-
-	function __toString()
-	{
-		return $this->getName();
-	}
-
 
 }

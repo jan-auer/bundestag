@@ -61,6 +61,21 @@ class ElectionProvider
 		return null;
 	}
 
+	public function getLatest() {
+		$qb = $this->createQueryBulder();
+		$qb->select('e')
+			->from('Btw\Bundle\PersistenceBundle\Entity\Election', 'e')
+			->orderBy('e.date', 'DESC')
+			->setMaxResults(1);
+
+		$query = $qb->getQuery();
+		$result = $query->getResult();
+		if(is_array($result)) {
+			return $result[0];
+		}
+		return null;
+	}
+
 	/**
 	 * @param Election $election
 	 *

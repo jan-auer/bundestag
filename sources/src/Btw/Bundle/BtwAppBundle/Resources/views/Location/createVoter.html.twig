@@ -1,0 +1,21 @@
+{% extends "BtwAppBundle::layout.html.twig" %}
+
+{% block title %}Wahllokal-Login{% endblock %}
+
+{% block content %}
+
+    <div class="visible-md visible-lg" style="height: 100px"></div>
+
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <h1>Wähler freischalten</h1>
+
+            <p class="lead">Im Wahlkreis {{ constituency.getName() }}</p>
+
+            {{ form(form) }}
+        </div>
+    </div>
+
+    <div class="visible-md visible-lg" style="height: 100px"></div>
+
+{% endblock %}
