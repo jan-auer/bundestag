@@ -39,6 +39,10 @@ btw_app_vote_ballot:
     pattern: /vote/ballot
     defaults: { _controller: BtwAppBundle:Voter:ballot }
 
+btw_app_vote_preview:
+    pattern: /vote/preview
+    defaults: { _controller: BtwAppBundle:Voter:preview }
+
 btw_app_vote_submit:
     pattern: /vote/submit
     defaults: { _controller: BtwAppBundle:Voter:submit }

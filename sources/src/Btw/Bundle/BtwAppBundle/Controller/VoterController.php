@@ -13,7 +13,6 @@ use Btw\Bundle\PersistenceBundle\Entity\StateList;
 use Btw\Bundle\PersistenceBundle\Entity\Voter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class VoterController extends Controller
@@ -32,11 +31,6 @@ class VoterController extends Controller
 	/** @var Session */
 	private $session;
 
-	/**
-	 * @param Request $request
-	 *
-	 * @return Response
-	 */
 	public function indexAction(Request $request)
 	{
 		$voter = new Voter();
@@ -61,13 +55,7 @@ class VoterController extends Controller
 		));
 	}
 
-	/**
-	 * @param Request $request
-	 *
-	 * @return Response
-	 * @throws \Exception
-	 */
-	public function ballotAction(Request $request)
+	public function ballotAction()
 	{
 		$hash = $this->getSession()->get('hash');
 
@@ -99,24 +87,42 @@ class VoterController extends Controller
 		}, $this->getStateListProvider()->forState($state));
 
 		return $this->render('BtwAppBundle:Elector:ballot.html.twig', array(
-				'candidates' => $candidates,
-				'parties'    => $parties)
-		);
+			'submitUrl'  => $this->generateUrl('btw_app_vote_preview'),
+			'candidates' => $candidates,
+			'parties'    => $parties,
+		));
 	}
 
-	/**
-	 * Expects POST body with variables candidateId, stateListId
-	 *
-	 * @param Request $request
-	 *
-	 * @return Response
-	 */
-	public function submitAction(Request $request)
+	public function previewAction(Request $request)
 	{
-		$hash = $this->getSession()->get('hash');
+		$hash  = $this->getSession()->get('hash');
+		$voter = $this->getVoterProvider()->byHash($hash);
+		if (empty($voter) || $voter->getVoted())
+			throw new \Exception('YOU SHALL NOT VOTE!');
 
 		$candidateId = $request->get('candidate_id');
 		$stateListId = $request->get('state_list_id');
+
+		$this->getSession()->set('candidateId', $candidateId);
+		$this->getSession()->set('stateListId', $stateListId);
+
+		$message = sprintf('<b>1. Stimme:</b> %s <br /> <b>2. Stimme:</b> %s',
+			$candidateId ?: 'LEER',
+			$stateListId ?: 'LEER');
+
+		return $this->render('BtwAppBundle:Elector:preview.html.twig', array(
+			'message'   => $message,
+			'submitUrl' => $this->generateUrl('btw_app_vote_submit'),
+			'backUrl' => $this->generateUrl('btw_app_vote_ballot'),
+		));
+	}
+
+	public function submitAction()
+	{
+		$hash = $this->getSession()->get('hash');
+
+		$candidateId = $this->getSession()->get('candidateId');
+		$stateListId = $this->getSession()->get('stateListId');
 
 		if ($candidateId && $stateListId) {
 			$success = $this->getVoterProvider()->vote($hash, $candidateId, $stateListId);
@@ -127,9 +133,9 @@ class VoterController extends Controller
 			$success = false;
 		}
 
-		return $this->render('BtwAppBundle:Elector:submit.html.twig', array(
-			'success' => $success,
-		));
+		// TODO: Add a flash message for $success.
+
+		return $this->redirect($this->generateUrl('btw_app_vote'));
 	}
 
 	/**

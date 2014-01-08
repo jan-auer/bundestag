@@ -1,0 +1,27 @@
+{% extends "BtwAppBundle::layout.html.twig" %}
+
+{% block title %}Stimmzettel{% endblock %}
+
+{% block content %}
+
+    <form action="{{ submitUrl }}" method="post" class="row">
+
+        <div class="col-md-8 col-md-offset-2">
+            <h1>Ihre Wahl</h1>
+
+            <p>
+                Bitte überprüfen Sie die Angaben auf Ihrem Stimmzettel unterhalb. Beachten Sie, dass
+                Sie Ihre Wahl nicht mehr ändern können, nachdem Sie die Stimme abgeben.
+            </p>
+
+            <p class="well lead" style="background: white">
+                {{ message | raw }}
+            </p>
+
+            <button class="btn btn-primary pull-right" type="submit">Stimme jetzt abgeben »</button>
+            <a href="{{ backUrl }}">« Ändern</a>
+        </div>
+
+    </form>
+
+{% endblock %}
