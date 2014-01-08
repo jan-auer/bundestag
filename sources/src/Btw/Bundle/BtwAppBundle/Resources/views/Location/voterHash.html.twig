@@ -1,0 +1,30 @@
+{% extends "BtwAppBundle::layout.html.twig" %}
+
+{% block title %}Wahllokal-Login{% endblock %}
+
+{% block content %}
+
+    <div class="flash-error alert alert-success text-center hidden-print">
+        Der Wähler wurde erfolgreich angelegt. <a href="javascript:window.print()">Jetzt Drucken</a>
+    </div>
+
+    <div class="visible-md visible-lg" style="height: 18px"></div>
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h1>Ihr Wahlschlüssel</h1>
+
+            <p>Bitte geben Sie folgenden Schlüssel vor der Wahl an, um Ihren Stimmzettel aufzurufen:</p>
+
+            <div class="well lead text-center" style="background: white">
+                {{ hash }}
+            </div>
+        </div>
+    </div>
+
+    <div class="text-right hidden-print" style="margin-top: 15px;">
+        <a href="{{ path('btw_app_location_create', {'constituencyId': app.session.get('constituencyId')}) }}">Weiteren Wähler anlegen &rarr;</a>
+    </div>
+    <div class="visible-md visible-lg" style="height: 100px"></div>
+
+{% endblock %}
