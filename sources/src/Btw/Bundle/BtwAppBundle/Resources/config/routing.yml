@@ -58,6 +58,12 @@ btw_app_location_create:
     options:
         expose: true
 
+btw_app_location_voter_hash:
+    pattern: /location/voterHash
+    defaults: { _controller: BtwAppBundle:Location:voterHash }
+    options:
+        expose: true
+
 ###### Benchmark ######
 btw_benchmark_q1:
     pattern: /benchmark/q1/{year}

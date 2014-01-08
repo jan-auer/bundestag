@@ -50,12 +50,12 @@ class VoterProvider
 		$query->bindValue('electionId', $constituency->getElection()->getId());
 
 		try {
-			$voter = $this->executeUpdateQuery($query);
+			$this->executeUpdateQuery($query);
 			$this->commit();
-			return true;
+			return $hash;
 		} catch (DBALException $e) {
 			$this->rollback();
-			return false;
+			return null;
 		}
 	}
 

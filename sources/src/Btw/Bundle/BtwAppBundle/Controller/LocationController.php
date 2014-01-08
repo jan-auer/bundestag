@@ -20,7 +20,7 @@ class LocationController extends Controller
 		$electionProvider = $this->get('btw_election_provider');
 		$latestElection = $electionProvider->getLatest();
 
-		$form = $this->createForm(new LocationLoginFormType(), array('election'=>$latestElection));
+		$form = $this->createForm(new LocationLoginFormType(), array('election' => $latestElection));
 
 		return $this->render('BtwAppBundle:Location:index.html.twig', array(
 			'form' => $form->createView(),
@@ -54,13 +54,11 @@ class LocationController extends Controller
 		if ($form->isValid()) {
 			$identityNumber = $createdVoter->getIdentityNumber();
 			// Insert
-			$successful = $voterProvider->createVoter($identityNumber, $constituency);
+			$hash = $voterProvider->createVoter($identityNumber, $constituency);
 
-			if ($successful) {
-				$this->get('session')->getFlashBag()->add(
-					'notice',
-					'Der Wähler wurde erfolgreich angelegt.'
-				);
+			if ($hash) {
+				$this->get('session')->set('hash', $hash);
+				return $this->redirect($this->generateUrl('btw_app_location_voter_hash'));
 			} else {
 				$this->get('session')->getFlashBag()->add(
 					'error',
@@ -73,6 +71,14 @@ class LocationController extends Controller
 		return $this->render('BtwAppBundle:Location:createVoter.html.twig', array(
 			'constituency' => $constituency,
 			'form' => $form->createView()
+		));
+	}
+
+	public function voterHashAction()
+	{
+		$hash = $this->get('session')->get('hash');
+		return $this->render('BtwAppBundle:Location:voterHash.html.twig', array(
+			'hash' => $hash
 		));
 	}
 
