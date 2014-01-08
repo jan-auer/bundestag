@@ -34,8 +34,8 @@ class VoterController extends Controller
 	public function indexAction(Request $request)
 	{
 		$voter = new Voter();
-		$year  = date('Y');
-		$form  = $this->createForm(new ElectorLoginFormType(), $voter);
+		$year = date('Y');
+		$form = $this->createForm(new ElectorLoginFormType(), $voter);
 
 		$form->handleRequest($request);
 
@@ -47,7 +47,7 @@ class VoterController extends Controller
 			$session->set('hash', $voter->getHash());
 
 			return $this->redirect($this->generateUrl('btw_app_vote_ballot'));
-		} else {
+		} else if (!is_null($voter)) {
 			$this->flashMessage('error', 'Fehlerhafter Wahlschlüssel, bitte überprüfen Sie Ihre Eingabe.');
 		}
 
@@ -66,7 +66,7 @@ class VoterController extends Controller
 			throw new \Exception('YOU SHALL NOT VOTE!');
 
 		$constituency = $voter->getConstituency();
-		$candidates   = array_map(function ($candidate) {
+		$candidates = array_map(function ($candidate) {
 			/** @var Candidate $candidate */
 			$party = $candidate->getParty();
 			return array(
@@ -78,28 +78,28 @@ class VoterController extends Controller
 			);
 		}, $this->getCandidateProvider()->forConstituency($constituency));
 
-		$state   = $constituency->getState();
+		$state = $constituency->getState();
 		$parties = array_map(function ($stateListEntry) {
 			/** @var StateList $stateListEntry */
 			$party = $stateListEntry->getParty();
 			return array(
-				'id'    => $stateListEntry->getId(),
-				'abbr'  => $party->getAbbreviation(),
-				'name'  => $party->getName(),
+				'id' => $stateListEntry->getId(),
+				'abbr' => $party->getAbbreviation(),
+				'name' => $party->getName(),
 				'color' => $party->getColor()
 			);
 		}, $this->getStateListProvider()->forState($state));
 
 		return $this->render('BtwAppBundle:Elector:ballot.html.twig', array(
-			'submitUrl'  => $this->generateUrl('btw_app_vote_preview'),
+			'submitUrl' => $this->generateUrl('btw_app_vote_preview'),
 			'candidates' => $candidates,
-			'parties'    => $parties,
+			'parties' => $parties,
 		));
 	}
 
 	public function previewAction(Request $request)
 	{
-		$hash  = $this->getSession()->get('hash');
+		$hash = $this->getSession()->get('hash');
 		$voter = $this->getVoterProvider()->byHash($hash);
 
 		if (empty($voter) || $voter->getVoted())
@@ -116,12 +116,12 @@ class VoterController extends Controller
 
 		$message = sprintf('<b>1. Stimme:</b> %s <br /> <b>2. Stimme:</b> %s',
 			$candidate->getName() ? : 'LEER',
-			$party->getName()." (".$party->getAbbreviation().")" ? : 'LEER');
+			$party->getName() . " (" . $party->getAbbreviation() . ")" ? : 'LEER');
 
 		return $this->render('BtwAppBundle:Elector:preview.html.twig', array(
-			'message'   => $message,
+			'message' => $message,
 			'submitUrl' => $this->generateUrl('btw_app_vote_submit'),
-			'backUrl'   => $this->generateUrl('btw_app_vote_ballot'),
+			'backUrl' => $this->generateUrl('btw_app_vote_ballot'),
 		));
 	}
 
