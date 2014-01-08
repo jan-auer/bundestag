@@ -57,8 +57,8 @@
                     {{ flashMessage }}
                 </div>
             {% endfor %}
-            {% for flashMessage in app.session.flashbag.get('notice') %}
-                <div class="flash-notice alert alert-info">
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="flash-success alert alert-info">
                     {{ flashMessage }}
                 </div>
             {% endfor %}
