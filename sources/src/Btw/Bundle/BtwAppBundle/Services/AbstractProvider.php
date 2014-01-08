@@ -101,4 +101,11 @@ class AbstractProvider
 	{
 		$this->em->rollback();
 	}
+
+	/**
+	 * @return \Doctrine\ORM\QueryBuilder
+	 */
+	protected function createQueryBulder() {
+		return $this->em->createQueryBuilder();
+	}
 }

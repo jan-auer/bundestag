@@ -17,7 +17,10 @@ class LocationController extends Controller
 
 	public function indexAction()
 	{
-		$form = $this->createForm(new LocationLoginFormType());
+		$electionProvider = $this->get('btw_election_provider');
+		$latestElection = $electionProvider->getLatest();
+
+		$form = $this->createForm(new LocationLoginFormType(), array('election'=>$latestElection));
 
 		return $this->render('BtwAppBundle:Location:index.html.twig', array(
 			'form' => $form->createView(),

@@ -9,17 +9,23 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class LocationLoginFormType extends AbstractType
 {
+	private $election;
 
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
+		$this->election = $options['data']['election'];
 		$builder
 			->add('constituency', 'entity', array(
-				'label_render'  => false,
-				'class'         => 'Btw\Bundle\PersistenceBundle\Entity\Constituency',
+				'label_render' => false,
+				'class' => 'Btw\Bundle\PersistenceBundle\Entity\Constituency',
 				'query_builder' => function (EntityRepository $repo) {
-						return $repo
+						$qb = $repo
 							->createQueryBuilder('c')
+							->where('c.election = :election')
 							->orderBy('c.number');
+
+						$qb->setParameter('election', $this->election);
+						return $qb;
 					},
 			));
 	}
@@ -28,7 +34,7 @@ class LocationLoginFormType extends AbstractType
 	{
 		$resolver->setDefaults(array(
 			'render_fieldset' => false,
-			'show_legend'     => false,
+			'show_legend' => false,
 		));
 	}
 
