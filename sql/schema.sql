@@ -8,7 +8,7 @@ CREATE TABLE election
 CREATE TABLE voter
 (
   voter_id    SERIAL PRIMARY KEY,
-  identityNumber        INTEGER NOT NULL,
+  identityNumber        TEXT NOT NULL,
   hash        TEXT NOT NULL UNIQUE,
   constituency_id INTEGER NOT NULL REFERENCES constituency (constituency_id) ON DELETE CASCADE,
   voted boolean,
