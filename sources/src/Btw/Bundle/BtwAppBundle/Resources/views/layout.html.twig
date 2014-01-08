@@ -53,12 +53,12 @@
 
         <div class="container">
             {% for flashMessage in app.session.flashbag.get('error') %}
-                <div class="flash-error">
+                <div class="flash-error alert alert-danger" style="text-align: center;">
                     {{ flashMessage }}
                 </div>
             {% endfor %}
             {% for flashMessage in app.session.flashbag.get('notice') %}
-                <div class="flash-notice">
+                <div class="flash-notice alert alert-info">
                     {{ flashMessage }}
                 </div>
             {% endfor %}
