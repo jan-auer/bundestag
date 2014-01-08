@@ -119,7 +119,7 @@ class Voter
 	}
 
 	/**
-	 * @param int $identityNumber
+	 * @param $identityNumber
 	 * @return Voter
 	 */
 	public function setIdentityNumber($identityNumber)
@@ -129,7 +129,7 @@ class Voter
 	}
 
 	/**
-	 * @return int
+	 * @return
 	 */
 	public function getIdentityNumber()
 	{
