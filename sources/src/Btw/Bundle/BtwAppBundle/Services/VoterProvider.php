@@ -9,6 +9,7 @@
 namespace Btw\Bundle\BtwAppBundle\Services;
 
 use Btw\Bundle\PersistenceBundle\Entity\Constituency;
+use Btw\Bundle\PersistenceBundle\Entity\Voter;
 use Doctrine\DBAL\DBALException;
 use PDOException;
 
@@ -96,4 +97,4 @@ class VoterProvider
 		}
 
 	}
-} 
+}

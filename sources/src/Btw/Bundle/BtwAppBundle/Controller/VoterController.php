@@ -9,8 +9,6 @@ use Btw\Bundle\BtwAppBundle\Services\ElectionProvider;
 use Btw\Bundle\BtwAppBundle\Services\StateListProvider;
 use Btw\Bundle\BtwAppBundle\Services\VoterProvider;
 use Btw\Bundle\PersistenceBundle\Entity\Candidate;
-use Btw\Bundle\PersistenceBundle\Entity\Constituency;
-use Btw\Bundle\PersistenceBundle\Entity\Election;
 use Btw\Bundle\PersistenceBundle\Entity\StateList;
 use Btw\Bundle\PersistenceBundle\Entity\Voter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -21,6 +19,19 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class VoterController extends Controller
 {
 
+	/** @var ElectionProvider */
+	private $electionProvider;
+	/** @var VoterProvider */
+	private $voterProvider;
+	/** @var StateListProvider */
+	private $stateListProvider;
+	/** @var ConstituencyProvider */
+	private $constituencyProvider;
+	/** @var CandidateProvider */
+	private $candidateProvider;
+	/** @var Session */
+	private $session;
+
 	/**
 	 * @param Request $request
 	 *
@@ -30,16 +41,12 @@ class VoterController extends Controller
 	{
 		$voter = new Voter();
 		$year  = date('Y');
-		$form  = $this->createForm(new ElectorLoginFormType(), $voter, array(
-			'action' => $this->generateUrl('btw_app_vote_ballot'),
-		));
+		$form  = $this->createForm(new ElectorLoginFormType(), $voter);
 
 		$form->handleRequest($request);
 
-		/** @var VoterProvider $voterProvider */
-		$voterProvider = $this->get('btw_voter_provider');
 		/** @var Voter $voter */
-		$voter = $voterProvider->byHash($voter->getHash());
+		$voter = $this->getVoterProvider()->byHash($voter->getHash());
 
 		if ($form->isValid() && !is_null($voter) && !$voter->getVoted()) {
 			$session = new Session();
@@ -55,79 +62,46 @@ class VoterController extends Controller
 	}
 
 	/**
-	 * Expects POST body with variable hash
-	 *
 	 * @param Request $request
 	 *
 	 * @return Response
+	 * @throws \Exception
 	 */
 	public function ballotAction(Request $request)
 	{
-		// INJECT SERVICES
-		/** @var ElectionProvider $electionProvider */
-		$electionProvider = $this->get('btw_election_provider');
-		/** @var VoterProvider $voterProvider */
-		$voterProvider = $this->get('btw_voter_provider');
-		/** @var StateListProvider $stateListProvider */
-		$stateListProvider = $this->get('btw_state_list_provider');
-		/** @var ConstituencyProvider $constituencyProvider */
-		$constituencyProvider = $this->get('btw_constituency_provider');
-		/** @var CandidateProvider $candidateProvider */
-		$candidateProvider = $this->get('btw_candidate_provider');
+		$hash = $this->getSession()->get('hash');
 
-		// Extract from session
-		$session = new Session();
-		$hash    = $session->get('hash');
+		$voter = $this->getVoterProvider()->byHash($hash);
+		if (empty($voter) || $voter->getVoted())
+			throw new \Exception('YOU SHALL NOT VOTE!');
 
-		// Get and validate user
-		$voter = $voterProvider->byHash($hash);
-
-		if (is_null($voter)) {
-			// Error: Not yet registered or expired
-			return new Response(1);
-		}
-
-		$canVote = !$voter->getVoted();
-
-		if (!$canVote) {
-			// Error: Already voted
-			return new Response(2);
-		}
-
-		// Data retrieval
-		//  General
-
-		$electionId     = $voter->getElection()->getId();
-		$constituencyId = $voter->getConstituency()->getId();
-
-		/** @var Election $parties */
-		$election = $electionProvider->byId($electionId);
-		/** @var Constituency $constituency */
-		$constituency = $constituencyProvider->byId($constituencyId);
-
-		//  First vote
-		$candidates = array_map(function ($candidate) {
+		$constituency = $voter->getConstituency();
+		$candidates   = array_map(function ($candidate) {
 			/** @var Candidate $candidate */
-			return array('name'        => $candidate->getName(),
-			             'party_abbr'  => $candidate->getParty()->getAbbreviation(),
-			             'party_name'  => $candidate->getParty()->getName(),
-			             'party_color' => $candidate->getParty()->getColor());
-		}, $candidateProvider->forConstituency($constituency));
+			$party = $candidate->getParty();
+			return array(
+				'name'        => $candidate->getName(),
+				'party_abbr'  => $party->getAbbreviation(),
+				'party_name'  => $party->getName(),
+				'party_color' => $party->getColor()
+			);
+		}, $this->getCandidateProvider()->forConstituency($constituency));
 
-		//  Second vote
 		$state   = $constituency->getState();
 		$parties = array_map(function ($stateListEntry) {
 			/** @var StateList $stateListEntry */
-			return array('party_abbr'  => $stateListEntry->getParty()->getAbbreviation(),
-			             'party_name'  => $stateListEntry->getParty()->getName(),
-			             'party_color' => $stateListEntry->getParty()->getColor());
-		}, $stateListProvider->forState($state));
+			$party = $stateListEntry->getParty();
+			return array(
+				'abbr'  => $party->getAbbreviation(),
+				'name'  => $party->getName(),
+				'color' => $party->getColor()
+			);
+		}, $this->getStateListProvider()->forState($state));
 
-		// RESULT
-		$result = array('candidates' => $candidates,
-		                'parties'    => $parties);
-
-		return $this->render('BtwAppBundle:Elector:ballot.html.twig', $result);
+		return $this->render('BtwAppBundle:Elector:ballot.html.twig', array(
+				'candidates' => $candidates,
+				'parties'    => $parties)
+		);
 	}
 
 	/**
@@ -139,29 +113,83 @@ class VoterController extends Controller
 	 */
 	public function submitAction(Request $request)
 	{
-		/** @var VoterProvider $voterProvider */
-		$voterProvider = $this->get('btw_voter_provider');
+		$hash = $this->getSession()->get('hash');
 
-		$session = new Session();
-		$hash    = $session->get('hash');
+		$candidateId = $request->get('candidate_id');
+		$stateListId = $request->get('state_list_id');
 
-		$candidateId = $request->get('candidateId');
-		$stateListId = $request->get('stateListId');
-
-		if (is_null($candidateId) || is_null($stateListId)) {
-			$successfull = false;
-		} else {
-			$successfull = $voterProvider->vote($hash, $candidateId, $stateListId);
-
-			if ($successfull) {
-				$session->remove('hash');
+		if ($candidateId && $stateListId) {
+			$success = $this->getVoterProvider()->vote($hash, $candidateId, $stateListId);
+			if ($success) {
+				$this->getSession()->remove('hash');
 			}
-
+		} else {
+			$success = false;
 		}
 
 		return $this->render('BtwAppBundle:Elector:submit.html.twig', array(
-			'successfull' => $successfull
+			'success' => $success,
 		));
+	}
+
+	/**
+	 * @return CandidateProvider
+	 */
+	public function getCandidateProvider()
+	{
+		if ($this->candidateProvider == null)
+			$this->candidateProvider = $this->get('btw_candidate_provider');
+		return $this->candidateProvider;
+	}
+
+	/**
+	 * @return ConstituencyProvider
+	 */
+	public function getConstituencyProvider()
+	{
+		if ($this->constituencyProvider == null)
+			$this->constituencyProvider = $this->get('btw_constituency_provider');
+		return $this->constituencyProvider;
+	}
+
+	/**
+	 * @return ElectionProvider
+	 */
+	public function getElectionProvider()
+	{
+		if ($this->electionProvider == null)
+			$this->electionProvider = $this->get('btw_election_provider');
+		return $this->electionProvider;
+	}
+
+	/**
+	 * @return StateListProvider
+	 */
+	public function getStateListProvider()
+	{
+		if ($this->stateListProvider == null)
+			$this->stateListProvider = $this->get('btw_state_list_provider');
+		return $this->stateListProvider;
+	}
+
+	/**
+	 * @return VoterProvider
+	 */
+	public function getVoterProvider()
+	{
+		if ($this->voterProvider == null)
+			$this->voterProvider = $this->get('btw_voter_provider');
+		return $this->voterProvider;
+	}
+
+	/**
+	 * @return \Symfony\Component\HttpFoundation\Session\Session
+	 */
+	public function getSession()
+	{
+		if ($this->session == null)
+			$this->session = $this->get('session');
+		return $this->session;
 	}
 
 }
