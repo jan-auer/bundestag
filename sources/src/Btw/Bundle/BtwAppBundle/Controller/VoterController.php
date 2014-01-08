@@ -72,9 +72,9 @@ class VoterController extends Controller
 			return array(
 				'id'          => $candidate->getId(),
 				'name'        => $candidate->getName(),
-				'party_abbr'  => $party->getAbbreviation(),
-				'party_name'  => $party->getName(),
-				'party_color' => $party->getColor()
+				'party_abbr'  => $party ? $party->getAbbreviation() : "Parteilos",
+				'party_name'  => $party ? $party->getName() : "Parteilos",
+				'party_color' => $party ? $party->getColor() : "",
 			);
 		}, $this->getCandidateProvider()->forConstituency($constituency));
 
