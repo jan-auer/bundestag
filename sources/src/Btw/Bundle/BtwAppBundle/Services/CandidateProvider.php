@@ -15,6 +15,18 @@ use Btw\Bundle\PersistenceBundle\Entity\Constituency;
 class CandidateProvider extends AbstractProvider
 {
 
+	/** @var  EntityRepository */
+	private $repository;
+
+	/**
+	 * @param $id
+	 * @return Candidate
+	 */
+	public function byId($id)
+	{
+		return $this->getMyRepository()->find($id);
+	}
+
 	/**
 	 * @param Constituency $constituency
 	 *
@@ -32,4 +44,14 @@ class CandidateProvider extends AbstractProvider
 		return $candidates;
 	}
 
+	/**
+	 * @return EntityRepository
+	 */
+	private function getMyRepository()
+	{
+		if ($this->repository == null) {
+			$this->repository = $this->getRepository('Candidate');
+		}
+		return $this->repository;
+	}
 }
