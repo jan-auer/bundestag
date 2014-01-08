@@ -81,7 +81,7 @@ class VoterController extends Controller
 			/** @var StateList $stateListEntry */
 			$party = $stateListEntry->getParty();
 			return array(
-				'id'    => $party->getId(),
+				'id'    => $stateListEntry->getId(),
 				'abbr'  => $party->getAbbreviation(),
 				'name'  => $party->getName(),
 				'color' => $party->getColor()
@@ -99,6 +99,7 @@ class VoterController extends Controller
 	{
 		$hash  = $this->getSession()->get('hash');
 		$voter = $this->getVoterProvider()->byHash($hash);
+
 		if (empty($voter) || $voter->getVoted())
 			throw new \Exception('YOU SHALL NOT VOTE!');
 
@@ -108,9 +109,12 @@ class VoterController extends Controller
 		$this->getSession()->set('candidateId', $candidateId);
 		$this->getSession()->set('stateListId', $stateListId);
 
+		$candidate = $this->getCandidateProvider()->byId($candidateId);
+		$party = $this->getStateListProvider()->byId($stateListId)->getParty();
+
 		$message = sprintf('<b>1. Stimme:</b> %s <br /> <b>2. Stimme:</b> %s',
-			$candidateId ? : 'LEER',
-			$stateListId ? : 'LEER');
+			$candidate->getName() ? : 'LEER',
+			$party->getName()." (".$party->getAbbreviation().")" ? : 'LEER');
 
 		return $this->render('BtwAppBundle:Elector:preview.html.twig', array(
 			'message'   => $message,
