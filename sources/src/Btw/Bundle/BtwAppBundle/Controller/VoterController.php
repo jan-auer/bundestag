@@ -48,10 +48,7 @@ class VoterController extends Controller
 
 			return $this->redirect($this->generateUrl('btw_app_vote_ballot'));
 		} else {
-			$this->getSession()->getFlashBag()->add(
-				'error',
-				'Fehlerhafter Wahlschlüssel, bitte überprüfen Sie Ihre Eingabe.'
-			);
+			$this->flashMessage('error', 'Fehlerhafter Wahlschlüssel, bitte überprüfen Sie Ihre Eingabe.');
 		}
 
 		return $this->render('BtwAppBundle:Elector:index.html.twig', array(
@@ -134,14 +131,20 @@ class VoterController extends Controller
 		if ($candidateId && $stateListId) {
 			if ($this->getVoterProvider()->vote($hash, $candidateId, $stateListId)) {
 				$this->getSession()->remove('hash');
-				$this->getSession()->getFlashBag()->add(
-					'success',
-					'Ihre Stimme wurde für die Wahl berücksichtigt.'
-				);
+				$this->flashMessage('success', 'Ihre Stimme wurde für die Wahl berücksichtigt.');
 			}
 		}
 
 		return $this->redirect($this->generateUrl('btw_app_vote'));
+	}
+
+	/**
+	 * @param string $type
+	 * @param string $message
+	 */
+	public function flashMessage($type, $message)
+	{
+		$this->getSession()->getFlashBag()->add($type, $message);
 	}
 
 	/**
