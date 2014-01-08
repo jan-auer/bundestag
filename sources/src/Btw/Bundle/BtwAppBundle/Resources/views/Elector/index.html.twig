@@ -4,16 +4,22 @@
 
 {% block content %}
 
-    <p class="lead">
-        Willkommen beim elektronischen Stimmzettel zur Wahl {{ year }}. <br />
-        Bitte geben Sie zunächst Ihren persönlichen Wahlschlüssel ein.
-    </p>
+    <div class="visible-md visible-lg" style="height: 100px"></div>
 
-    {{ form(form) }}
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <h1>Elektronische Wahl {{ year }}</h1>
 
-    <p>
-        Sollten Sie noch keinen Wahlschlüssel erhalten haben, wenden Sie sich bitte an die überaus geduldigen,
-        zuvorkommenden und auch freundlichen Wahlhelfer in Ihrem Wahllokal.
-    </p>
+            <p class="lead">
+                Willkommen beim elektronischen Stimmzettel zur Wahl {{ year }}.
+                Bitte geben Sie zunächst Ihren persönlichen Wahlschlüssel ein,
+                den Sie bei der Anmeldung erhalten haben:
+            </p>
+
+            {{ form(form) }}
+        </div>
+    </div>
+
+    <div class="visible-md visible-lg" style="height: 100px"></div>
 
 {% endblock %}

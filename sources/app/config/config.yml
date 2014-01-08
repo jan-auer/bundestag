@@ -66,4 +66,7 @@ swiftmailer:
     spool:     { type: memory }
 
 mopa_bootstrap:
-    form: ~
+    form:
+        horizontal: false
+        horizontal_label_class: col-sm-2 control-label
+        horizontal_input_wrapper_class: col-sm-10
