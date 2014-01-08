@@ -115,7 +115,7 @@ class VoterController extends Controller
 		$party = $this->getStateListProvider()->byId($stateListId)->getParty();
 
 		$message = sprintf('<b>1. Stimme:</b> %s <br /> <b>2. Stimme:</b> %s',
-			$candidate->getName() ? : 'LEER',
+			$candidate->getName()." (".$candidate->getParty()->getAbbreviation().")" ? : 'LEER',
 			$party->getName()." (".$party->getAbbreviation().")" ? : 'LEER');
 
 		return $this->render('BtwAppBundle:Elector:preview.html.twig', array(
