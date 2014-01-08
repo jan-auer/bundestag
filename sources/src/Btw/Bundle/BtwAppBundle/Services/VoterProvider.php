@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: schaefep
- * Date: 07.01.14
- * Time: 16:31
- */
 
 namespace Btw\Bundle\BtwAppBundle\Services;
 
@@ -31,9 +25,10 @@ class VoterProvider
 	}
 
 	/**
-	 * @param  $identityNumber
+	 * @param int          $identityNumber
 	 * @param Constituency $constituency
-	 * @return bool
+	 *
+	 * @return String
 	 */
 	public function createVoter($identityNumber, Constituency $constituency)
 	{

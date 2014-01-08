@@ -4,25 +4,26 @@
 
 {% block content %}
 
-    <div class="flash-error alert alert-success" style="text-align: center;">
-        Der Wähler wurde erfolgreich angelegt!
+    <div class="flash-error alert alert-success text-center hidden-print">
+        Der Wähler wurde erfolgreich angelegt. <a href="javascript:window.print()">Jetzt Drucken</a>
     </div>
 
     <div class="visible-md visible-lg" style="height: 18px"></div>
 
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <h1>Wahlschlüssel</h1>
+        <div class="col-md-8 col-md-offset-2">
+            <h1>Ihr Wahlschlüssel</h1>
 
-<p>Bitte drucken Sie diese Seite für den Wähler aus.</p>
-            <div class="panel" style="border-color: #cccccc; text-align: center; padding: 15px; font-weight: bold; font-size: 25px; margin-top: 20px;">
+            <p>Bitte geben Sie folgenden Schlüssel vor der Wahl an, um Ihren Stimmzettel aufzurufen:</p>
+
+            <div class="well lead text-center" style="background: white">
                 {{ hash }}
             </div>
         </div>
     </div>
 
-    <div style="text-align: right; margin-top: 15px;">
-        <a href="{{ path('btw_app_location_create', {'constituencyId': app.session.get('constituencyId')}) }}">&rarr; Neuen Wähler anlegen</a>
+    <div class="text-right hidden-print" style="margin-top: 15px;">
+        <a href="{{ path('btw_app_location_create', {'constituencyId': app.session.get('constituencyId')}) }}">Weiteren Wähler anlegen &rarr;</a>
     </div>
     <div class="visible-md visible-lg" style="height: 100px"></div>
 
