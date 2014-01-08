@@ -11,7 +11,6 @@ namespace Btw\Bundle\BtwAppBundle\Services;
 use Btw\Bundle\PersistenceBundle\Entity\Constituency;
 use Btw\Bundle\PersistenceBundle\Entity\Voter;
 use Doctrine\DBAL\DBALException;
-use PDOException;
 
 class VoterProvider
 	extends AbstractProvider
@@ -73,14 +72,17 @@ class VoterProvider
 		} else {
 			$this->beginTransaction();
 
-			$firstVoteQuery = $this->prepareQuery("INSERT INTO first_result (candidate_id) VALUES (:candidateId)");
-			$firstVoteQuery->bindValue('candidateId', $candidateId);
-			$firstVote = $this->executeUpdateQuery($firstVoteQuery);
-
-			$secondVoteQuery = $this->prepareQuery("INSERT INTO second_result (state_list_id, constituency_id) VALUES (:stateListId, :constituencyId)");
-			$secondVoteQuery->bindValue('stateListId', $stateListId);
-			$secondVoteQuery->bindValue('constituencyId', $voter->getConstituency()->getId());
-			$secondVote = $this->executeUpdateQuery($secondVoteQuery);
+			if (!is_null($candidateId)) {
+				$firstVoteQuery = $this->prepareQuery("INSERT INTO first_result (candidate_id) VALUES (:candidateId)");
+				$firstVoteQuery->bindValue('candidateId', $candidateId);
+				$firstVote = $this->executeUpdateQuery($firstVoteQuery);
+			}
+			if (!is_null($stateListId)) {
+				$secondVoteQuery = $this->prepareQuery("INSERT INTO second_result (state_list_id, constituency_id) VALUES (:stateListId, :constituencyId)");
+				$secondVoteQuery->bindValue('stateListId', $stateListId);
+				$secondVoteQuery->bindValue('constituencyId', $voter->getConstituency()->getId());
+				$secondVote = $this->executeUpdateQuery($secondVoteQuery);
+			}
 
 			$votedQuery = $this->prepareQuery("UPDATE voter SET voted = TRUE WHERE hash = :hash");
 			$votedQuery->bindValue('hash', $voterHash);
@@ -90,7 +92,7 @@ class VoterProvider
 				try {
 					$this->commit();
 					return true;
-				} catch (\Exception $e) {
+				} catch (DBALException $e) {
 					return false;
 				}
 			}
