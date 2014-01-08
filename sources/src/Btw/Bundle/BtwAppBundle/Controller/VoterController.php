@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Btw\Bundle\PersistenceBundle\Entity\Voter;
 
 
 class VoterController extends Controller
@@ -24,10 +25,25 @@ class VoterController extends Controller
 	/**
 	 * @return Response
 	 */
-	public function indexAction()
+	public function indexAction(Request $request)
 	{
+		$voter = new Voter();
 		$year = date('Y');
-		$form = $this->createForm(new ElectorLoginFormType());
+		$form = $this->createForm(new ElectorLoginFormType(), $voter);
+
+
+		$form->handleRequest($request);
+
+		$voterProvider = $this->get('btw_voter_provider');
+		$voter = $voterProvider->byHash($voter->getHash());
+
+		if ($form->isValid() && !is_null($voter) && !$voter->getVoted()) {
+			$session = new Session();
+			$session->set('hash', $voter->getHash());
+
+			return $this->redirect($this->generateUrl('btw_app_vote_ballot'));
+		}
+
 
 		return $this->render('BtwAppBundle:Elector:index.html.twig', array(
 			'form' => $form->createView(),
@@ -53,8 +69,9 @@ class VoterController extends Controller
 		/** @var CandidateProvider $candidateProvider */
 		$candidateProvider = $this->get('btw_candidate_provider');
 
-		// Extract POST body
-		$hash = $request->request->get('hash');
+		// Extract from session
+		$session = new Session();
+		$hash = $session->get('hash');
 
 		// Get and validate user
 		$voter = $voterProvider->byHash($hash);
@@ -74,8 +91,8 @@ class VoterController extends Controller
 		// Data retrieval
 		//  General
 
-		$electionId = $voter->getElectionId();
-		$constituencyId = $voter->getConstituencyId();
+		$electionId = $voter->getElection()->getId();
+		$constituencyId = $voter->getConstituency()->getId();
 
 		/** @var Election $parties */
 		$election = $electionProvider->byId($electionId);
@@ -86,9 +103,9 @@ class VoterController extends Controller
 		$candidates = array_map(function ($candidate) {
 			/** @var Candidate $candidate */
 			return array('name' => $candidate->getName(),
-						 'party_abbr' => $candidate->getParty()->getAbbreviation(),
-						 'party_name' => $candidate->getParty()->getName(),
-						 'party_color' => $candidate->getParty()->getColor());
+				'party_abbr' => $candidate->getParty()->getAbbreviation(),
+				'party_name' => $candidate->getParty()->getName(),
+				'party_color' => $candidate->getParty()->getColor());
 		}, $candidateProvider->forConstituency($constituency));
 
 		//  Second vote
@@ -96,13 +113,13 @@ class VoterController extends Controller
 		$parties = array_map(function ($stateListEntry) {
 			/** @var StateList $stateListEntry */
 			return array('party_abbr' => $stateListEntry->getParty()->getAbbreviation(),
-						 'party_name' => $stateListEntry->getParty()->getName(),
-						 'party_color' => $stateListEntry->getParty()->getColor());
+				'party_name' => $stateListEntry->getParty()->getName(),
+				'party_color' => $stateListEntry->getParty()->getColor());
 		}, $stateListProvider->forState($state));
 
 		// RESULT
 		$result = array('candidates' => $candidates,
-						'parties' => $parties);
+			'parties' => $parties);
 
 		return $this->render('BtwAppBundle:Elector:ballot.html.twig', $result);
 	}
@@ -122,10 +139,15 @@ class VoterController extends Controller
 		$candidateId = $request->get('candidateId');
 		$stateListId = $request->get('stateListId');
 
-		$successfull = $voterProvider->vote($hash, $candidateId, $stateListId);
+		if (is_null($candidateId) || is_null($stateListId)) {
+			$successfull = false;
+		} else {
+			$successfull = $voterProvider->vote($hash, $candidateId, $stateListId);
 
-		if ($successfull) {
-			$session->remove('hash');
+			if ($successfull) {
+				$session->remove('hash');
+			}
+
 		}
 
 		return $this->render('BtwAppBundle:Elector:submit.html.twig', array(
@@ -155,7 +177,7 @@ class VoterController extends Controller
 		$success = $voterProvider->createVoter($identityNumber, $constituency);
 
 		// Return result
-		if(!$success){
+		if (!$success) {
 			// Error: Insertion failed
 			return new Response(1);
 		}
