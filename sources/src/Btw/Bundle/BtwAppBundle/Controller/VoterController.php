@@ -47,6 +47,11 @@ class VoterController extends Controller
 			$session->set('hash', $voter->getHash());
 
 			return $this->redirect($this->generateUrl('btw_app_vote_ballot'));
+		} else {
+			$this->getSession()->getFlashBag()->add(
+				'error',
+				'Fehlerhafter Wahlschlüssel, bitte überprüfen Sie Ihre Eingabe.'
+			);
 		}
 
 		return $this->render('BtwAppBundle:Elector:index.html.twig', array(
