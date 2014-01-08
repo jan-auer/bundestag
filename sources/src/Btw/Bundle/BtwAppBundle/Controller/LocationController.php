@@ -7,6 +7,8 @@ use Btw\Bundle\BtwAppBundle\Form\Type\LocationLoginFormType;
 use Btw\Bundle\BtwAppBundle\Form\Type\LocationRegisterFormType;
 use Btw\Bundle\BtwAppBundle\Services\ConstituencyProvider;
 use Btw\Bundle\BtwAppBundle\Services\VoterProvider;
+use Btw\Bundle\PersistenceBundle\Entity\Voter;
+use PDOException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -29,7 +31,7 @@ class LocationController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function createVoterAction(Request $request)
+	public function createVoterAction(Request $request, $constituencyId)
 	{
 		// Inject Services
 		/** @var VoterProvider $voterProvider */
@@ -37,18 +39,37 @@ class LocationController extends Controller
 		/** @var ConstituencyProvider $constituencyProvider */
 		$constituencyProvider = $this->get('btw_constituency_provider');
 
-		// Extract POST body
-		$identityNumber = $request->get('identityNumber');
-		$constituencyId = $request->get('constituencyId');
+		$createdVoter = new Voter();
+		$form = $this->createForm(new LocationRegisterFormType(), $createdVoter);
 
+		$form->handleRequest($request);
+
+
+		$constituencyId = $request->get('constituencyId');
 		$constituency = $constituencyProvider->byId($constituencyId);
 
-		// Insert
-		$success = $voterProvider->createVoter($identityNumber, $constituency);
+		if ($form->isValid()) {
+			$identityNumber = $createdVoter->getIdentityNumber();
+			// Insert
+			$successful = $voterProvider->createVoter($identityNumber, $constituency);
 
-		$form = $this->createForm(new LocationRegisterFormType());
+			if ($successful) {
+				$this->get('session')->getFlashBag()->add(
+					'notice',
+					'Der Wähler wurde erfolgreich angelegt.'
+				);
+			} else {
+				$this->get('session')->getFlashBag()->add(
+					'error',
+					'Der Wähler konnte nicht angelegt werden.'
+				);
+			}
+		}
+
+
 		return $this->render('BtwAppBundle:Location:createVoter.html.twig', array(
-			'form' => $form->createView(),
+			'constituency' => $constituency,
+			'form' => $form->createView()
 		));
 	}
 

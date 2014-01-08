@@ -12,7 +12,7 @@ class LocationRegisterFormType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder
-			->add('identity', 'text', array(
+			->add('identityNumber', 'text', array(
 				'label' => 'Personalausweisnummer',
 			))
 			->add('submit', 'submit', array(

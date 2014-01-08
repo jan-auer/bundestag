@@ -3,6 +3,7 @@
 
 namespace Btw\Bundle\BtwAppBundle\Services;
 
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -87,7 +88,7 @@ class AbstractProvider
 	{
 		try {
 			$this->em->commit();
-		} catch (Exception $e) {
+		} catch (DBALException $e) {
 			$this->rollback();
 			throw $e;
 		}

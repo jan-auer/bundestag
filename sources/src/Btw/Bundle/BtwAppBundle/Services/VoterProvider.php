@@ -9,6 +9,8 @@
 namespace Btw\Bundle\BtwAppBundle\Services;
 
 use Btw\Bundle\PersistenceBundle\Entity\Constituency;
+use Doctrine\DBAL\DBALException;
+use PDOException;
 
 class VoterProvider
 	extends AbstractProvider
@@ -45,16 +47,14 @@ class VoterProvider
 		$query->bindValue('constituencyId', $constituency->getId());
 		$query->bindValue('voted', 'FALSE');
 		$query->bindValue('electionId', $constituency->getElection()->getId());
-		$voter = $this->executeUpdateQuery($query);
 
-		if($voter){
-			try{
-				$this->commit();
-				return true;
-			}
-			catch(Exception $e){
-				return false;
-			}
+		try {
+			$voter = $this->executeUpdateQuery($query);
+			$this->commit();
+			return true;
+		} catch (DBALException $e) {
+			$this->rollback();
+			return false;
 		}
 	}
 
@@ -81,7 +81,7 @@ class VoterProvider
 			$secondVoteQuery->bindValue('constituencyId', $voter->getConstituency()->getId());
 			$secondVote = $this->executeUpdateQuery($secondVoteQuery);
 
-			$votedQuery = $this->prepareQuery("UPDATE voter SET voted = true WHERE hash = :hash");
+			$votedQuery = $this->prepareQuery("UPDATE voter SET voted = TRUE WHERE hash = :hash");
 			$votedQuery->bindValue('hash', $voterHash);
 			$voted = $this->executeUpdateQuery($votedQuery);
 
@@ -89,7 +89,7 @@ class VoterProvider
 				try {
 					$this->commit();
 					return true;
-				} catch (Exception $e) {
+				} catch (\Exception $e) {
 					return false;
 				}
 			}
