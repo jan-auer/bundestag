@@ -47,7 +47,7 @@ class VoterController extends Controller
 			$session->set('hash', $voter->getHash());
 
 			return $this->redirect($this->generateUrl('btw_app_vote_ballot'));
-		} else if (is_null($voter) && !is_null($formVoter)) {
+		} else if (is_null($voter) && !is_null($formVoter->getHash())) {
 			$this->flashMessage('error', 'Fehlerhafter Wahlschlüssel, bitte überprüfen Sie Ihre Eingabe.');
 		}
 
