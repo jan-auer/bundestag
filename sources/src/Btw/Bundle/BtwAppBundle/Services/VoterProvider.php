@@ -29,23 +29,23 @@ class VoterProvider
 	}
 
 	/**
-	 * @param String $identityNumber
+	 * @param  $identityNumber
 	 * @param Constituency $constituency
 	 * @return bool
 	 */
-	public function createVoter(String $identityNumber, Constituency $constituency)
+	public function createVoter($identityNumber, Constituency $constituency)
 	{
 		$hash = md5($identityNumber);
 
 		$this->beginTransaction();
 
-		$query = $this->prepareQuery("INSERT INTO voter (identityNumber, hash, constituency_id, voted, election_id VALUES (:identityNumber, :hash, :constituencyId, :voted, :electionId))");
+		$query = $this->prepareQuery("INSERT INTO voter (identityNumber, hash, constituency_id, voted, election_id) VALUES (:identityNumber, :hash, :constituencyId, :voted, :electionId)");
 		$query->bindValue('identityNumber', $identityNumber);
 		$query->bindValue('hash', $hash);
-		$query->bindValue('constituency_id', $constituency->getId());
-		$query->bindValue('voted', false);
+		$query->bindValue('constituencyId', $constituency->getId());
+		$query->bindValue('voted', 'FALSE');
 		$query->bindValue('electionId', $constituency->getElection()->getId());
-		$voter = $query->executeUpdateQuery($query);
+		$voter = $this->executeUpdateQuery($query);
 
 		if($voter){
 			try{
