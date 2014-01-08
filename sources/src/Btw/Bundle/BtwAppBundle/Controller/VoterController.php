@@ -127,15 +127,14 @@ class VoterController extends Controller
 		$stateListId = $this->getSession()->get('stateListId');
 
 		if ($candidateId && $stateListId) {
-			$success = $this->getVoterProvider()->vote($hash, $candidateId, $stateListId);
-			if ($success) {
+			if ($this->getVoterProvider()->vote($hash, $candidateId, $stateListId)) {
 				$this->getSession()->remove('hash');
+				$this->getSession()->getFlashBag()->add(
+					'success',
+					'Ihre Stimme wurde für die Wahl berücksichtigt.'
+				);
 			}
-		} else {
-			$success = false;
 		}
-
-		// TODO: Add a flash message for $success.
 
 		return $this->redirect($this->generateUrl('btw_app_vote'));
 	}
