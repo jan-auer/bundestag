@@ -135,7 +135,7 @@ class VoterController extends Controller
 		if ($candidateId && $stateListId) {
 			if ($this->getVoterProvider()->vote($hash, $candidateId, $stateListId)) {
 				$this->getSession()->remove('hash');
-				$this->flashMessage('success', 'Ihre Stimme wurde für die Wahl berücksichtigt.');
+				$this->flashMessage('success', 'Ihre Stimme wurde erfolgreich abgegeben.');
 			}
 		}
 
