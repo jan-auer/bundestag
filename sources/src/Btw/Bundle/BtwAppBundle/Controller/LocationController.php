@@ -56,8 +56,10 @@ class LocationController extends Controller
 			// Insert
 			$hash = $voterProvider->createVoter($identityNumber, $constituency);
 
+			var_dump($hash);
 			if ($hash) {
 				$this->get('session')->set('hash', $hash);
+				$this->get('session')->set('constituencyId', $constituencyId);
 				return $this->redirect($this->generateUrl('btw_app_location_voter_hash'));
 			} else {
 				$this->get('session')->getFlashBag()->add(

@@ -21,6 +21,9 @@
         </div>
     </div>
 
+    <div style="text-align: right; margin-top: 15px;">
+        <a href="{{ path('btw_app_location_create', {'constituencyId': app.session.get('constituencyId')}) }}">&rarr; Neuen Wähler anlegen</a>
+    </div>
     <div class="visible-md visible-lg" style="height: 100px"></div>
 
 {% endblock %}
