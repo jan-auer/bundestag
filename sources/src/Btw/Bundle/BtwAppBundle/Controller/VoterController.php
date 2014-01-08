@@ -164,35 +164,4 @@ class VoterController extends Controller
 		));
 	}
 
-	/**
-	 * Expects POST body with variables identityNumber, constituencyId
-	 *
-	 * @param Request $request
-	 *
-	 * @return Response
-	 */
-	public function createVoterAction(Request $request)
-	{
-		// Inject Services
-		/** @var VoterProvider $voterProvider */
-		$voterProvider = $this->get('btw_voter_provider');
-		/** @var ConstituencyProvider $constituencyProvider */
-		$constituencyProvider = $this->get('btw_constituency_provider');
-
-		// Extract POST body
-		$identityNumber = $request->get('identityNumber');
-		$constituencyId = $request->get('constituencyId');
-
-		$constituency = $constituencyProvider->byId($constituencyId);
-
-		// Insert
-		$success = $voterProvider->createVoter($identityNumber, $constituency);
-
-		// Return result
-		if (!$success) {
-			// Error: Insertion failed
-			return new Response(1);
-		}
-		return new Response(0);
-	}
 }
