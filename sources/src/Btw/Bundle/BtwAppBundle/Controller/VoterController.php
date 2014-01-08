@@ -36,6 +36,8 @@ class VoterController extends Controller
 	}
 
 	/**
+	 * Expects POST body with variable hash
+	 *
 	 * @param Request $request
 	 * @return Response
 	 */
@@ -108,6 +110,8 @@ class VoterController extends Controller
 	}
 
 	/**
+	 * Expects POST body with variables candidateId, stateListId
+	 *
 	 * @param Request $request
 	 * @return Response
 	 */
@@ -134,6 +138,8 @@ class VoterController extends Controller
 	}
 
 	/**
+	 * Expects POST body with variables identityNumber, constituencyId
+	 *
 	 * @param Request $request
 	 * @return Response
 	 */
