@@ -1,6 +1,6 @@
 {% extends "BtwAppBundle::layout.html.twig" %}
 
-{% block title %}Wahllokal-Wähler freischalten{% endblock %}
+{% block title %}Wahllokal-Login{% endblock %}
 
 {% block content %}
 
@@ -8,9 +8,7 @@
 
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <h1>Wähler freischalten</h1>
-
-            <p class="lead">Im Wahlkreis {{ constituency.getName() }}</p>
+            <h1>Wähler freischalten: {{ constituency.getName() }}</h1>
 
             {{ form(form) }}
         </div>
