@@ -33,21 +33,21 @@ class VoterController extends Controller
 
 	public function indexAction(Request $request)
 	{
-		$voter = new Voter();
+		$formVoter = new Voter();
 		$year = date('Y');
-		$form = $this->createForm(new ElectorLoginFormType(), $voter);
+		$form = $this->createForm(new ElectorLoginFormType(), $formVoter );
 
 		$form->handleRequest($request);
 
 		/** @var Voter $voter */
-		$voter = $this->getVoterProvider()->byHash($voter->getHash());
+		$voter = $this->getVoterProvider()->byHash($formVoter ->getHash());
 
 		if ($form->isValid() && !is_null($voter) && !$voter->getVoted()) {
 			$session = new Session();
 			$session->set('hash', $voter->getHash());
 
 			return $this->redirect($this->generateUrl('btw_app_vote_ballot'));
-		} else if (!is_null($voter)) {
+		} else if (is_null($voter) && !is_null($formVoter)) {
 			$this->flashMessage('error', 'Fehlerhafter Wahlschlüssel, bitte überprüfen Sie Ihre Eingabe.');
 		}
 
