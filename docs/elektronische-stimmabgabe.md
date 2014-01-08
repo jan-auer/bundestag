@@ -8,13 +8,16 @@ Zur anschaulicheren Darstellung werden im Folgenden ein Wähler Hans sowie eine 
 ### 1. Öffnung des Wahlbüros
 
 Zu Beginn ihres Arbeitstages startet Anke ihren PC, auf welchem sie zunächst einen gängingen Webbrowser startet und in selbigem die WIS-URL "/location" aufruft.
+
+![Wahlkreiswahl I](screenshots/screenshot_5.png)
+
 In selbigem wählt sie zunächst den für sie gültigen Wahlkreis aus.
 
-(SCREEN /location ohne alles)
+![Wahlkreiswahl I](screenshots/screenshot_6.png)
 
 Durch Wahl eines Wahlkreises gelangt sie anschließend auf eine Site zur Registrierung eines Wählers für die elektronische Stimmabgabe.
 
-(SCREEN /location nach eingabe einer personr)
+![Wählerfreischaltung I](screenshots/screenshot_7.png)
 
 ##### Technisch
 
@@ -25,11 +28,13 @@ Der initial ausgewählte Wahlkreis wird für alle anschließenden Wähler-Regist
 Hans betritt das Wahlbüro und übergibt, wie bereits beim herkömmlichen Wahlgang ohne elektronische Stimmabgabe, der Wahlhelferin Anke seinen Personalausweis.
 Anke kontrolliert die Personalien des (potentiellen) Wählers anhand ihrer Wählerliste (was ebenfalls dem herkömmlichen Prozess entspricht) und stellt deren Korrektheit fest. Im Anschluss ließt Anke Hans' Personalausweisnummer und trägt diese in ihre bereits geöffnete Eingabemaske ein (vgl. Schritt 1).
 
-(SCREEN /location/{id} mit eingegebener Pers.Nr)
+![Wählerfreischaltung II](screenshots/screenshot_8.png)
 
-Daraufhin wird Anke vom WIS ein Wahlschlüssel angezeigt, welche sie Hans mitteilt.
+Daraufhin wird Anke vom WIS angeboten, den generierten Wahlschlüssel auszudrucken.
 
-(SCREEN /location/{id} nach Hash-Generierung)
+![Erfolgreiche Wählerfreischaltung](screenshots/screenshot_9.png)
+
+Anke druckt den Wahlschlüssel und händigt ihn Hans aus.
 
 ##### Technisch
 
@@ -46,24 +51,22 @@ Das hier exemplarisch gewählte Verfahren, nämlich die Verschlüsselung der Per
 Hans begibt sich zunächst in eine Wahlkabine, in welcher er einen laufenden PC mitsamt Tastatur und Maus vorfindet, auf welchem die WIS-Site "/vote" angezeigt wird. Er stellt fest, dass das Verlassen dieser Site bzw. des Browsers nicht möglich ist.
 Die Hans angezeigt Site fordert ihn dazu auf, den erhaltenen Wahlschlüssel einzugeben. Hans gibt seinen persönlichen Wahlschlüssel ein und bestätigt.
 
-(SCREEN /vote mit eingegebenem Hash)
+![Wähler-Login](screenshots/screenshot_11.png)
 
 Hans wird nun eine optisch dem herkömmlichen Wahlzettel nachempfundene Site angezeigt, auf welcher er seine Erst- sowie Zweitstimme angibt.
 
-(SCREEN /ballot ohne alles)
+![Wahlzettel](screenshots/screenshot_12.png)
 
 Hans bestätigt seine Wahl durch Drücken eines Buttons mit der Beschriftung "Stimme jetzt abgeben", woraufhin WIS ihm eine Übersicht über seine abgegebene Erst- sowie Zweitstimme anzeigt. 
 
-(SCREEN Sicht zur Validierung der Stimmabgabe)
+![Überprüfung der Stimmabgabe](screenshots/screenshot_13.png)
 
 Hans kontrolliert seine Stimmabgabe und bestätigt diese im Anschluss endgültig durch Klick auf einen "Bestätigen"-Button.
 Daraufhin teilt WIS Hans mit, dass dessen Stimme erfolgreich abgegeben wurde.
 
-(SCREEN Rückmeldung erfolgreiche Stimmabgabe)
+![Bestätigung der Stimmabgabe](screenshots/screenshot_14.png)
 
 Hans stellt nach kurzer Zeit fest, dass die soeben noch angezeigte Erfolgsmeldung verschwunden ist und nun wieder die initiale Sicht zur Eingabe eines Wahlschlüssels angezeigt wird.
-
-(SCREEN /vote ohne alles)
 
 Hans verabschiedet sich von Anke und verlässt das Wahllokal. 
 
