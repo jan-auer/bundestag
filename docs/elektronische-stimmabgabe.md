@@ -3,25 +3,25 @@
 ## Prozess
 
 Dieser Abschnitt beschreibt den typischen Wahlprozess unter Anwendung der elektronischen Stimmabgabe, sowohl hinsichtlich organisatorischen als auch technischen Aspekten.
-Zur anschaulicheren Darstellung werden im Folgenden ein Wähler Hans sowie eine Wahlhelferin Anke betrachtet.
+Zur anschaulichen Darstellung werden im Folgenden ein Wähler Hans sowie eine Wahlhelferin Anke betrachtet.
 
 ### 1. Öffnung des Wahlbüros
 
-Zu Beginn ihres Arbeitstages startet Anke ihren PC, auf welchem sie zunächst einen gängingen Webbrowser startet und in selbigem die WIS-URL "/location" aufruft.
+Für den Zugriff auf die Wahllokalseiten vom **WIS** benötigt Anke aus Sicherheitsgründen eine VPN-Verbindung. Nach dem erfolgreichen Verbindungsaufbau ruft sie mit einem gängingen Webbrowser die WIS-URL "/location" auf.
 
 ![Wahlkreiswahl I](screenshots/screenshot_5.png)
 
-In selbigem wählt sie zunächst den für sie gültigen Wahlkreis aus.
+In dieser Ansicht kann Anke nun den Wahlkreis auswählen, in dem sie sich befindet.
 
 ![Wahlkreiswahl I](screenshots/screenshot_6.png)
 
-Durch Wahl eines Wahlkreises gelangt sie anschließend auf eine Site zur Registrierung eines Wählers für die elektronische Stimmabgabe.
+Durch Wahl eines Wahlkreises gelangt sie anschließend auf eine Seite zur Registrierung von neune Wählern für die elektronische Stimmabgabe.
 
 ![Wählerfreischaltung I](screenshots/screenshot_7.png)
 
 ##### Technisch
 
-Der initial ausgewählte Wahlkreis wird für alle anschließenden Wähler-Registrierungen verwendet. 
+Der initial ausgewählte Wahlkreis wird für alle anschließenden Wähler-Registrierungen verwendet. Eine entsprechende Überprüfung, ob Anke berechtigt ist, den jeweiligen Wahlkreis auszuwählen wurde derzeit bewusst nicht realisiert. 
 
 ### 2. Check-In im Wahlbüro
 
@@ -39,7 +39,7 @@ Anke druckt den Wahlschlüssel und händigt ihn Hans aus.
 ##### Technisch
 
 Bei Eingabe der Personalausweisnummer wird auf Basis selbiger ein MD5-Hash erzeugt - dieser wird im Anschluss als Wahlschlüssel verwendet.
-Der generierte Hash wird in der DB persistiert, die entsprechende Entität wird als "noch nicht gewählt" geflaggt.
+Der generierte Hash wird in der DB persistiert, die entsprechende Entität wird als "noch nicht gewählt" für den Wahlkreis geflaggt.
 
 ##### Organisatorisch
 
@@ -48,20 +48,20 @@ Das hier exemplarisch gewählte Verfahren, nämlich die Verschlüsselung der Per
 
 ### 3. Eigentliche Wahl
 
-Hans begibt sich zunächst in eine Wahlkabine, in welcher er einen laufenden PC mitsamt Tastatur und Maus vorfindet, auf welchem die WIS-Site "/vote" angezeigt wird. Er stellt fest, dass das Verlassen dieser Site bzw. des Browsers nicht möglich ist.
-Die Hans angezeigt Site fordert ihn dazu auf, den erhaltenen Wahlschlüssel einzugeben. Hans gibt seinen persönlichen Wahlschlüssel ein und bestätigt.
+Hans begibt sich zunächst in eine Wahlkabine, in welcher er einen laufenden PC mitsamt Tastatur und Maus vorfindet, auf welchem die WIS-Site "/vote" angezeigt wird. Er stellt fest, dass das Verlassen sowie die Navigation innerhalb der Seite bzw. des Browsers nicht möglich ist.
+Die Hans angezeigte Seite fordert ihn dazu auf, den erhaltenen Wahlschlüssel einzugeben. Hans gibt seinen persönlichen Wahlschlüssel ein und bestätigt.
 
 ![Wähler-Login](screenshots/screenshot_11.png)
 
-Hans wird nun eine optisch dem herkömmlichen Wahlzettel nachempfundene Site angezeigt, auf welcher er seine Erst- sowie Zweitstimme angibt.
+Hans wird nun eine optisch dem herkömmlichen Wahlzettel nachempfundene Seite angezeigt, auf welcher er seine Erst- sowie Zweitstimme angibt.
 
 ![Wahlzettel](screenshots/screenshot_12.png)
 
-Hans bestätigt seine Wahl durch Drücken eines Buttons mit der Beschriftung "Stimme jetzt abgeben", woraufhin WIS ihm eine Übersicht über seine abgegebene Erst- sowie Zweitstimme anzeigt. 
+Hans bestätigt seine Wahl durch Drücken eines Buttons mit der Beschriftung "Stimme jetzt abgeben", woraufhin WIS ihm eine Übersicht über seine abgegebene Erst- sowie Zweitstimme anzeigt. Selbstverständlich hat er hier auch noch einmal die Möglichkeit, seine Abgabe zu korrigieren.
 
 ![Überprüfung der Stimmabgabe](screenshots/screenshot_13.png)
 
-Hans kontrolliert seine Stimmabgabe und bestätigt diese im Anschluss endgültig durch Klick auf einen "Bestätigen"-Button.
+Hans kontrolliert seine Stimmabgabe und bestätigt diese im Anschluss endgültig durch Klick auf den "Bestätigen"-Button.
 Daraufhin teilt WIS Hans mit, dass dessen Stimme erfolgreich abgegeben wurde.
 
 ![Bestätigung der Stimmabgabe](screenshots/screenshot_14.png)
@@ -72,17 +72,17 @@ Hans verabschiedet sich von Anke und verlässt das Wahllokal.
 
 ##### Technisch
 
-Bei endgültiger Stimmabgabe wird die abgegebene Stimme persistiert, das "voted"-Flag der den aktuellen Wahlschlüssel beinhaltenden Entität wird auf "true" gesetzt - hierdurch wird gewährleistet, dass Hans nicht noch einmal wählen kann. Diese Entität wird nicht mit der abgegebenen Stimme verknüpft.
+Bei endgültiger Stimmabgabe wird die abgegebene Stimme persistiert, das "voted"-Flag der den aktuellen Wahlschlüssel beinhaltenden Entität wird auf "true" gesetzt - hierdurch wird gewährleistet, dass Hans nicht noch einmal wählen kann. Diese Entität wird nicht mit der abgegebenen Stimme verknüpft, so dass nicht nachvollzogen werden kann, welche Wahl Hans getätigt hat.
 
 Der zur Wahl bereit gestellte PC verwendet ein Kiosk-Tooling zur Verhinderung von nicht vorgesehenen Systemzugriffen (wie beispielsweise Zugriffe auf das dahinter liegende OS, manuelle URL-Eingaben etc.).
-Die Netzwerkverbindung des Wahl-PCs wurde darüber hinaus durch eine Fachkraft so vorkonfiguriert, dass Internetzugriffe per VPN erfolgen - die "/vote"-Sites des WIS sind nur durch einen entsprechenden VPN-Tunnel zu erreichen.
+Die Netzwerkverbindung des Wahl-PCs wurde darüber hinaus durch eine Fachkraft so vorkonfiguriert, dass Internetzugriffe per VPN erfolgen - die "/vote"-Seiten des WIS sind - ebenso wie die Seite zur Registrierung eines neuen Wählers - nur durch einen entsprechenden VPN-Tunnel zu erreichen.
 
 ##### Organisatorisch
 
-Eine Mehrfache Stimmabgabe wird durch Verwendung eines "voted"-Flags hier verhindert, siehe oben.
+Eine mehrfache Stimmenabgabe wird durch Verwendung des "voted"-Flags verhindert, siehe oben.
 
-Eine korrumpierende Verwendung des Wahl-PCs wird weiterhin ausgeschlossen, eine Aufrufbarkeit der Seiten zur elektronischen Stimmabgabe ausschließlich aus Wahllokalen wird durch VPN ermöglicht.
+Eine korrumpierende Verwendung des Wahl-PCs wird weiterhin ausgeschlossen, die Erreichbarkeit der Seiten zur elektronischen Stimmabgabe ausschließlich aus Wahllokalen wird durch die VPN-Verbindung sichergestellt.
 
 ## IT-Security
 
-IT-spezfische Korruptionsmöglichkeiten (wie beispielsweise SQL-Injection) werden durch das verwendete Framework Symfony bereits von Haus aus verhindert.
+IT-spezfische Korruptionsmöglichkeiten (wie beispielsweise SQL-Injection) werden durch Prepared-Statements im Rahmen des Persistenzframeworks Doctrine verhindert.
