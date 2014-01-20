@@ -1,18 +1,19 @@
 -- STEP 1: How many seats does each state get in the Bundestag?
 
 CREATE OR REPLACE VIEW state_seats (state_id, seats) AS (
-    WITH dhondt (state_id, rank) AS (
+    WITH highest (state_id, rank) AS (
         SELECT state_id, row_number() OVER (PARTITION BY election_id ORDER BY population / (i - .5) DESC)
         FROM state, generate_series(1, 598) i
     )
     SELECT state_id, count(1)
-    FROM dhondt
+    FROM highest
     WHERE rank <= 598
     GROUP BY state_id
 );
 
 -- STEP 2: Which parties have made it over the 5% threshold and what is the minimum
 --         number of seats the parties get in each state?
+
 CREATE OR REPLACE VIEW candidate_results (constituency_id, candidate_id, count) AS (
     SELECT constituency_id, candidate_id, count
     FROM aggregated_first_result
@@ -72,14 +73,14 @@ CREATE OR REPLACE VIEW state_party_votes (state_id, party_id, votes) AS (
 );
 
 CREATE OR REPLACE VIEW state_party_seats (state_id, party_id, seats, overhead) AS (
-    WITH dhondt (state_id, seats, party_id, rank) AS (
+    WITH highest (state_id, seats, party_id, rank) AS (
         SELECT state_id, seats, party_id, row_number() OVER (PARTITION BY state_id ORDER BY votes / (i - .5) DESC)
         FROM state_seats
           JOIN state_party_votes USING (state_id)
           CROSS JOIN generate_series(1, seats) i
     ), proportional_seats (state_id, party_id, seats) AS (
         SELECT state_id, party_id, count(1)
-        FROM dhondt
+        FROM highest
         WHERE rank <= seats
         GROUP BY state_id, party_id
     )
@@ -129,7 +130,7 @@ CREATE OR REPLACE VIEW party_seats (party_id, seats, candidates) AS (
 -- STEP 4: How many seats does each party get for its state lists?
 
 CREATE OR REPLACE VIEW party_state_seats (election_id, party_id, state_id, seats) AS (
-    WITH dhondt (party_id, state_id, num, rank) AS (
+    WITH highest (party_id, state_id, num, rank) AS (
         SELECT party_id, state_id, votes / (i - .5),
           row_number() OVER (PARTITION BY party_id, state_id ORDER BY votes / (i - .5) DESC)
         FROM party_seats
@@ -137,7 +138,7 @@ CREATE OR REPLACE VIEW party_state_seats (election_id, party_id, state_id, seats
           CROSS JOIN generate_series(1, seats) i
     ), selected (party_id, state_id, rank) AS (
         SELECT party_id, state_id, row_number() OVER (PARTITION BY party_id ORDER BY num DESC)
-        FROM dhondt
+        FROM highest
           LEFT JOIN state_party_candidates USING (party_id, state_id)
         WHERE rank > coalesce(candidates, 0)
     ), additional_seats (party_id, state_id, seats) AS (
