@@ -70,13 +70,13 @@ class VoterProvider
 			if (!is_null($candidateId)) {
 				$firstVoteQuery = $this->prepareQuery("INSERT INTO first_result (candidate_id) VALUES (:candidateId)");
 				$firstVoteQuery->bindValue('candidateId', $candidateId);
-				$firstVote = $this->executeQuery($firstVoteQuery);
+				$firstVote = $firstVoteQuery->execute();
 			}
 			if (!is_null($stateListId)) {
 				$secondVoteQuery = $this->prepareQuery("INSERT INTO second_result (state_list_id, constituency_id) VALUES (:stateListId, :constituencyId)");
 				$secondVoteQuery->bindValue('stateListId', $stateListId);
 				$secondVoteQuery->bindValue('constituencyId', $voter->getConstituency()->getId());
-				$secondVote = $this->executeQuery($secondVoteQuery);
+				$secondVote = $secondVoteQuery->execute();
 			}
 
 			$votedQuery = $this->prepareQuery("UPDATE voter SET voted = TRUE WHERE hash = :hash");

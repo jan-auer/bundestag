@@ -46,11 +46,12 @@ class AbstractProvider
 	 *
 	 * @param Statement $query A prepared statement with bound parameters.
 	 *
-	 * @return boolean True, if the query has successfully been executed; otherwise false.
+	 * @return array An array containing the statement results.
 	 */
 	protected function executeQuery(Statement $query)
 	{
-		return $query->execute();
+		$query->execute();
+		return $query->fetchAll();
 	}
 
 	/**
