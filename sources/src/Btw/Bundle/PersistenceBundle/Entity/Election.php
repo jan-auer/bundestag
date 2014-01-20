@@ -5,7 +5,7 @@ namespace Btw\Bundle\PersistenceBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Election
+ * Holds information about an election.
  *
  * @ORM\Table(name="election")
  * @ORM\Entity
@@ -13,29 +13,29 @@ use Doctrine\ORM\Mapping as ORM;
 class Election
 {
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="election_id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="election_election_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="election_id", type="integer", nullable=false)
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="SEQUENCE")
+	 * @ORM\SequenceGenerator(sequenceName="election_election_id_seq", allocationSize=1, initialValue=1)
+	 */
+	private $id;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="number", type="integer", nullable=false)
-     */
-    private $number;
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="number", type="integer", nullable=false)
+	 */
+	private $number;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date", type="date", nullable=false)
-     */
-    private $date;
+	/**
+	 * @var \DateTime
+	 *
+	 * @ORM\Column(name="date", type="date", nullable=false)
+	 */
+	private $date;
 
 	/**
 	 * @param \DateTime $date

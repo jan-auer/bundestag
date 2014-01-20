@@ -5,7 +5,8 @@ namespace Btw\Bundle\PersistenceBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * FirstResult
+ * This is one single vote for a direct candidate in a constituency (see {@link ConstituencyCandidacy}). Usually, these
+ * votes are aggregated and accessed via {@link AggregatedFirstResult}.
  *
  * @ORM\Table(name="first_result")
  * @ORM\Entity

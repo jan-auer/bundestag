@@ -7,7 +7,13 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Constituency
+ * A constituency represents the subunit of a state. Each potential voter is registered in one of the 299 constituencies
+ * and must not vote in a different constituency. Each party is allowed to field one candidate (see
+ * {@link ConstituencyCandidacy}) who receives a seat in the Bundestag instantly, if he has the most votes in his
+ * constituency.
+ *
+ * As constituencies are determined by their population, they change for each election. Old and new versions of
+ * constituencies can be matched by their names.
  *
  * @ORM\Table(name="constituency")
  * @ORM\Entity

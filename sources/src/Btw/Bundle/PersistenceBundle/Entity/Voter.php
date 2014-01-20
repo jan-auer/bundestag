@@ -5,36 +5,39 @@ namespace Btw\Bundle\PersistenceBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Voter
+ * Contains information about a voter. Voters have to register for each election and are then given a one time hash
+ * to authenticate with the voting machine. In order to identify voters, they also have to deposit their identity card
+ * numbers, which are unique among the German people.
  *
  * @ORM\Table(name="voter")
  * @ORM\Entity
  */
 class Voter
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="voter_id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="voter_voter_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="identityNumber", type="integer", nullable=false)
-     */
-    private $identityNumber;
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="voter_id", type="integer", nullable=false)
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="SEQUENCE")
+	 * @ORM\SequenceGenerator(sequenceName="voter_voter_id_seq", allocationSize=1, initialValue=1)
+	 */
+	private $id;
 
-    /**
-     * @var String
-     *
-     * @ORM\Column(name="hash", type="string", nullable=false)
-     */
-    private $hash;
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="identityNumber", type="integer", nullable=false)
+	 */
+	private $identityNumber;
+
+	/**
+	 * @var String
+	 *
+	 * @ORM\Column(name="hash", type="string", nullable=false)
+	 */
+	private $hash;
 
 	/**
 	 * @var Election
@@ -102,6 +105,7 @@ class Voter
 
 	/**
 	 * @param String $hash
+	 *
 	 * @return Voter
 	 */
 	public function setHash($hash)
@@ -120,6 +124,7 @@ class Voter
 
 	/**
 	 * @param $identityNumber
+	 *
 	 * @return Voter
 	 */
 	public function setIdentityNumber($identityNumber)
@@ -129,7 +134,7 @@ class Voter
 	}
 
 	/**
-	 * @return
+	 * @return int
 	 */
 	public function getIdentityNumber()
 	{
@@ -138,6 +143,7 @@ class Voter
 
 	/**
 	 * @param \Btw\Bundle\PersistenceBundle\Entity\Constituency $constituency
+	 *
 	 * @return Voter
 	 */
 	public function setConstituency($constituency)

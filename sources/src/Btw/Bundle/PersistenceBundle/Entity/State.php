@@ -5,13 +5,15 @@ namespace Btw\Bundle\PersistenceBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * State
+ * Holds information about a state.
+ * A new entity is created for each election, however, states can be compared via their names.
  *
  * @ORM\Table(name="state")
  * @ORM\Entity
  */
 class State
 {
+
 	/**
 	 * @var integer
 	 *
@@ -53,7 +55,7 @@ class State
 	private $election;
 
 	/**
-	 * @var Collection
+	 * @var Constituency[]
 	 *
 	 * @ORM\OneToMany(targetEntity="Constituency", mappedBy="state")
 	 * @ORM\OrderBy({"name" = "ASC"})
@@ -63,7 +65,7 @@ class State
 	/**
 	 * @param Election $election
 	 *
-	 * @return State
+	 * @return $this
 	 */
 	public function setElection(Election $election)
 	{
@@ -80,9 +82,9 @@ class State
 	}
 
 	/**
-	 * @param int $id
+	 * @param $id
 	 *
-	 * @return State
+	 * @return $this
 	 */
 	public function setId($id)
 	{
@@ -99,9 +101,9 @@ class State
 	}
 
 	/**
-	 * @param string $name
+	 * @param $name
 	 *
-	 * @return State
+	 * @return $this
 	 */
 	public function setName($name)
 	{
@@ -118,9 +120,9 @@ class State
 	}
 
 	/**
-	 * @param int $population
+	 * @param $population
 	 *
-	 * @return State
+	 * @return $this
 	 */
 	public function setPopulation($population)
 	{
@@ -137,7 +139,9 @@ class State
 	}
 
 	/**
-	 * @param int $number
+	 * @param $number
+	 *
+	 * @return $this
 	 */
 	public function setNumber($number)
 	{
@@ -154,7 +158,9 @@ class State
 	}
 
 	/**
-	 * @param \Btw\Bundle\PersistenceBundle\Entity\Constituency $constituencies
+	 * @param Constituency[] $constituencies
+	 *
+	 * @return $this
 	 */
 	public function setConstituencies($constituencies)
 	{
@@ -163,7 +169,7 @@ class State
 	}
 
 	/**
-	 * @return \Btw\Bundle\PersistenceBundle\Entity\Constituency
+	 * @return Constituency[]
 	 */
 	public function getConstituencies()
 	{
@@ -174,6 +180,5 @@ class State
 	{
 		return $this->getName();
 	}
-
 
 }

@@ -5,7 +5,9 @@ namespace Btw\Bundle\PersistenceBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * AggregatedSecondResult
+ * Contains the total number of votes for a party in a specific constituency. The party can be accessed through the
+ * {@link StateList} property. Values for this entity are automatically generated when importing election results into
+ * the database using the importer script.
  *
  * @ORM\Table(name="aggregated_second_result")
  * @ORM\Entity
@@ -108,7 +110,9 @@ class AggregatedSecondResult
 	}
 
 	/**
-	 * @param mixed $constituency
+	 * @param Constituency $constituency
+	 *
+	 * @return $this
 	 */
 	public function setConstituency(Constituency $constituency)
 	{
@@ -117,7 +121,7 @@ class AggregatedSecondResult
 	}
 
 	/**
-	 * @return mixed
+	 * @return Constituency
 	 */
 	public function getConstituency()
 	{

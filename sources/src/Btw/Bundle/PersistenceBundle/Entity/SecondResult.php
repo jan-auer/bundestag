@@ -5,7 +5,9 @@ namespace Btw\Bundle\PersistenceBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * SecondResult
+ * This is one single vote for a state list (see {@link StateList}). Usually, these votes are aggregated and accessed
+ * via {@link AggregatedSecondResult}. Even though it is not relevant for the election and seat distribution process,
+ * the constituency of this vote is also saved for analytical aspects.
  *
  * @ORM\Table(name="second_result")
  * @ORM\Entity
@@ -13,28 +15,28 @@ use Doctrine\ORM\Mapping as ORM;
 class SecondResult
 {
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="second_result_id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="second_result_second_result_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
-
-    /**
-     * @var StateList
-     *
-     * @ORM\ManyToOne(targetEntity="StateList")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="state_list_id", referencedColumnName="state_list_id")
-     * })
-     */
-    private $stateList;
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="second_result_id", type="integer", nullable=false)
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="SEQUENCE")
+	 * @ORM\SequenceGenerator(sequenceName="second_result_second_result_id_seq", allocationSize=1, initialValue=1)
+	 */
+	private $id;
 
 	/**
-	 * @var \Btw\Bundle\PersistenceBundle\Entity\Constituency
+	 * @var StateList
+	 *
+	 * @ORM\ManyToOne(targetEntity="StateList")
+	 * @ORM\JoinColumns({
+	 *   @ORM\JoinColumn(name="state_list_id", referencedColumnName="state_list_id")
+	 * })
+	 */
+	private $stateList;
+
+	/**
+	 * @var Constituency
 	 *
 	 * @ORM\ManyToOne(targetEntity="Btw\Bundle\PersistenceBundle\Entity\Constituency")
 	 * @ORM\JoinColumns({
@@ -80,6 +82,5 @@ class SecondResult
 	{
 		return $this->stateList;
 	}
-
 
 }

@@ -3,11 +3,11 @@
 namespace Btw\Bundle\PersistenceBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Candidate
+ * Holds information about a candidate. A new entity is created for each election, however, candidates can be compared
+ * via their name and birthday.
  *
  * @ORM\Table(name="candidate")
  * @ORM\Entity
@@ -15,29 +15,29 @@ use Doctrine\ORM\Mapping as ORM;
 class Candidate
 {
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="candidate_id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="candidate_candidate_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="candidate_id", type="integer", nullable=false)
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="SEQUENCE")
+	 * @ORM\SequenceGenerator(sequenceName="candidate_candidate_id_seq", allocationSize=1, initialValue=1)
+	 */
+	private $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="text", nullable=false)
-     */
-    private $name;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="name", type="text", nullable=false)
+	 */
+	private $name;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="birthday", type="date", nullable=true)
-     */
-    private $birthday;
+	/**
+	 * @var \DateTime
+	 *
+	 * @ORM\Column(name="birthday", type="date", nullable=true)
+	 */
+	private $birthday;
 
 	/**
 	 * @var Party
@@ -47,7 +47,7 @@ class Candidate
 	 *   @ORM\JoinColumn(name="party_id", referencedColumnName="party_id")
 	 * })
 	 */
-    private $party;
+	private $party;
 
 	/**
 	 * @var Election
@@ -59,13 +59,13 @@ class Candidate
 	 */
 	private $election;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->stateList = new ArrayCollection();
-    }
+	/**
+	 * Constructor
+	 */
+	public function __construct()
+	{
+		$this->stateList = new ArrayCollection();
+	}
 
 	/**
 	 * @param \DateTime $birthday
@@ -161,6 +161,5 @@ class Candidate
 	{
 		return $this->election;
 	}
-
 
 }

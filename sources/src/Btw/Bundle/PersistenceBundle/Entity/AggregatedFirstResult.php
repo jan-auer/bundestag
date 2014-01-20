@@ -5,7 +5,9 @@ namespace Btw\Bundle\PersistenceBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * AggregatedFirstResult
+ * Contains the total number of votes for a candidate in a specific constituency. Both the candidate and the constituency
+ * can be accessed via the {@link ConstituencyCandidacy} property. Values for this entity are automatically generated when
+ * importing election results into the database using the importer script.
  *
  * @ORM\Table(name="aggregated_first_result")
  * @ORM\Entity
@@ -96,4 +98,5 @@ class AggregatedFirstResult
 	{
 		return $this->count;
 	}
+
 }

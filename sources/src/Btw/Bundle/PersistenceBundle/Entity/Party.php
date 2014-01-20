@@ -5,43 +5,45 @@ namespace Btw\Bundle\PersistenceBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Party
+ * Holds information about parties during an election. A new entity is created for each election, however, parties can
+ * be compared via their names or abbreviations.
  *
  * @ORM\Table(name="party")
  * @ORM\Entity
  */
 class Party
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="party_id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="party_party_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="text", nullable=false)
-     */
-    private $name;
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="party_id", type="integer", nullable=false)
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="SEQUENCE")
+	 * @ORM\SequenceGenerator(sequenceName="party_party_id_seq", allocationSize=1, initialValue=1)
+	 */
+	private $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="abbreviation", type="text", nullable=true)
-     */
-    private $abbreviation;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="name", type="text", nullable=false)
+	 */
+	private $name;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="color", type="text", nullable=true)
-     */
-    private $color;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="abbreviation", type="text", nullable=true)
+	 */
+	private $abbreviation;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="color", type="text", nullable=true)
+	 */
+	private $color;
 
 	/**
 	 * @var Election
@@ -166,6 +168,5 @@ class Party
 	{
 		return $this->election;
 	}
-
 
 }

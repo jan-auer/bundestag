@@ -5,15 +5,16 @@ namespace Btw\Bundle\PersistenceBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ConstituencyCandidacy
+ * Represents the link between a candidate and the constituency he candidates in.
  *
  * @ORM\Table(name="constituency_candidacy")
  * @ORM\Entity
  */
 class ConstituencyCandidacy
 {
+
 	/**
-	 * @var \Btw\Bundle\PersistenceBundle\Entity\Candidate
+	 * @var Candidate
 	 *
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="NONE")
@@ -25,7 +26,7 @@ class ConstituencyCandidacy
 	private $candidate;
 
 	/**
-	 * @var \Btw\Bundle\PersistenceBundle\Entity\Constituency
+	 * @var Constituency
 	 *
 	 * @ORM\ManyToOne(targetEntity="Btw\Bundle\PersistenceBundle\Entity\Constituency")
 	 * @ORM\JoinColumns({
@@ -35,7 +36,9 @@ class ConstituencyCandidacy
 	private $constituency;
 
 	/**
-	 * @param mixed $candidate
+	 * @param Candidate $candidate
+	 *
+	 * @return $this
 	 */
 	public function setCandidate(Candidate $candidate)
 	{
@@ -44,7 +47,7 @@ class ConstituencyCandidacy
 	}
 
 	/**
-	 * @return mixed
+	 * @return Candidate
 	 */
 	public function getCandidate()
 	{
@@ -52,7 +55,9 @@ class ConstituencyCandidacy
 	}
 
 	/**
-	 * @param mixed $constituency
+	 * @param Constituency $constituency
+	 *
+	 * @return $this
 	 */
 	public function setConstituency(Constituency $constituency)
 	{
@@ -61,12 +66,11 @@ class ConstituencyCandidacy
 	}
 
 	/**
-	 * @return mixed
+	 * @return Constituency
 	 */
 	public function getConstituency()
 	{
 		return $this->constituency;
 	}
-
 
 }

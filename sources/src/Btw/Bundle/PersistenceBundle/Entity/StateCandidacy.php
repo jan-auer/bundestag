@@ -5,13 +5,16 @@ namespace Btw\Bundle\PersistenceBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * StateCandidacy
+ * Represents the candidate of a {@link StateList}. As parties have to specify an ordered list of candidates for each
+ * state they want to contest in, the StateCandidacy contains a `position` property. The party and state entities can
+ * be accessed via the {@link StateList} property.
  *
  * @ORM\Table(name="state_candidacy")
  * @ORM\Entity
  */
 class StateCandidacy
 {
+
 	/**
 	 * @var integer
 	 *
