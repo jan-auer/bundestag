@@ -9,58 +9,54 @@ parameters:
      btw_voter_provider.class: Btw\Bundle\BtwAppBundle\Services\VoterProvider
      btw_candidate_provider.class: Btw\Bundle\BtwAppBundle\Services\CandidateProvider
      btw_state_list_provider.class: Btw\Bundle\BtwAppBundle\Services\StateListProvider
-
      btw_benchmark_provider.class: Btw\Bundle\BtwAppBundle\Services\BenchmarkProvider
 
 services:
-     btw_election_provider:
-      class: "%btw_election_provider.class%"
-      arguments:
-              entityManager: "@doctrine.orm.entity_manager"
-     btw_state_provider:
-      class: "%btw_state_provider.class%"
-      arguments:
-              entityManager: "@doctrine.orm.entity_manager"
-     btw_constituency_provider:
-      class: "%btw_constituency_provider.class%"
-      arguments:
-              entityManager: "@doctrine.orm.entity_manager"
-     btw_members_of_bundestag_provider:
-                class: "%btw_members_of_bundestag_provider.class%"
-                arguments:
-                                   entityManager: "@doctrine.orm.entity_manager"
-     btw_party_results_provider:
-                     class: "%btw_party_results_provider.class%"
-                     arguments:
-                                        entityManager: "@doctrine.orm.entity_manager"
-     btw_party_provider:
-                     class: "%btw_party_provider.class%"
-                     arguments:
-                                        entityManager: "@doctrine.orm.entity_manager"
-     btw_closest_candidates_provider:
-                          class: "%btw_closest_candidates_provider.class%"
-                          arguments:
-                                             entityManager: "@doctrine.orm.entity_manager"
-
-     btw_voter_provider:
-                          class: "%btw_voter_provider.class%"
-                          arguments:
-                                             entityManager: "@doctrine.orm.entity_manager"
-                                             electionProvider: "@btw_election_provider"
-     btw_candidate_provider:
-                          class: "%btw_candidate_provider.class%"
-                          arguments:
-                                             entityManager: "@doctrine.orm.entity_manager"
-                                             electionProvider: "@btw_election_provider"
-
-     btw_state_list_provider:
-                               class: "%btw_state_list_provider.class%"
-                               arguments:
-                                                  entityManager: "@doctrine.orm.entity_manager"
-                                                  electionProvider: "@btw_election_provider"
-
-     btw_benchmark_provider:
-                          class: "%btw_benchmark_provider.class%"
-                          arguments:
-                                             entityManager: "@doctrine.orm.entity_manager"
-                                             electionProvider: "@btw_election_provider"
+    btw_election_provider:
+        class: "%btw_election_provider.class%"
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+    btw_state_provider:
+        class: "%btw_state_provider.class%"
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+    btw_constituency_provider:
+        class: "%btw_constituency_provider.class%"
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+    btw_members_of_bundestag_provider:
+        class: "%btw_members_of_bundestag_provider.class%"
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+    btw_party_results_provider:
+        class: "%btw_party_results_provider.class%"
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+    btw_party_provider:
+        class: "%btw_party_provider.class%"
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+    btw_closest_candidates_provider:
+        class: "%btw_closest_candidates_provider.class%"
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+    btw_voter_provider:
+        class: "%btw_voter_provider.class%"
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+            electionProvider: "@btw_election_provider"
+    btw_candidate_provider:
+        class: "%btw_candidate_provider.class%"
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+            electionProvider: "@btw_election_provider"
+    btw_state_list_provider:
+        class: "%btw_state_list_provider.class%"
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+            electionProvider: "@btw_election_provider"
+    btw_benchmark_provider:
+        class: "%btw_benchmark_provider.class%"
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+            electionProvider: "@btw_election_provider"
