@@ -13,8 +13,12 @@ use Btw\Bundle\PersistenceBundle\Entity\StateList;
 use Btw\Bundle\PersistenceBundle\Entity\Voter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 
+/**
+ * Controller for the voting process.
+ */
 class VoterController extends Controller
 {
 
@@ -31,21 +35,29 @@ class VoterController extends Controller
 	/** @var Session */
 	private $session;
 
+	/**
+	 * Displays a form to authenticate the user for the current election. If
+	 * the user has already voted, he is rejected and an error message is shown.
+	 * Once the user has successfully authenticated, he is redirected to the
+	 * ballotAction.
+	 *
+	 * @param Request $request An object containing request data.
+	 *
+	 * @return Response
+	 */
 	public function indexAction(Request $request)
 	{
-		$formVoter = new Voter();
-		$year  = date('Y');
-		$form = $this->createForm(new ElectorLoginFormType(), $formVoter );
+		$year = date('Y');
 
+		$formVoter = new Voter();
+		$form = $this->createForm(new ElectorLoginFormType(), $formVoter);
 		$form->handleRequest($request);
 
 		/** @var Voter $voter */
-		$voter = $this->getVoterProvider()->byHash($formVoter ->getHash());
+		$voter = $this->getVoterProvider()->byHash($formVoter->getHash());
 
 		if ($form->isValid() && !is_null($voter) && !$voter->getVoted()) {
-			$session = new Session();
-			$session->set('hash', $voter->getHash());
-
+			$this->getSession()->set('hash', $voter->getHash());
 			return $this->redirect($this->generateUrl('btw_app_vote_ballot'));
 		} else if (is_null($voter) && !is_null($formVoter->getHash())) {
 			$this->flashMessage('error', 'Fehlerhafter Wahlschlüssel, bitte überprüfen Sie Ihre Eingabe.');
@@ -57,38 +69,28 @@ class VoterController extends Controller
 		));
 	}
 
+	/**
+	 * Displays an election ballot and lets the user elect. Afterwards, the user
+	 * is redirected to the previewAction to review his vote.
+	 *
+	 * @return Response
+	 * @throws \Exception for script kiddies.
+	 */
 	public function ballotAction()
 	{
 		$hash = $this->getSession()->get('hash');
-
 		$voter = $this->getVoterProvider()->byHash($hash);
-		if (empty($voter) || $voter->getVoted())
+		if (empty($voter) || $voter->getVoted()) {
 			throw new \Exception('YOU SHALL NOT VOTE!');
+		}
 
 		$constituency = $voter->getConstituency();
-		$candidates   = array_map(function ($candidate) {
-			/** @var Candidate $candidate */
-			$party = $candidate->getParty();
-			return array(
-				'id'          => $candidate->getId(),
-				'name'        => $candidate->getName(),
-				'party_abbr'  => $party ? $party->getAbbreviation() : "Parteilos",
-				'party_name'  => $party ? $party->getName() : "Parteilos",
-				'party_color' => $party ? $party->getColor() : "",
-			);
-		}, $this->getCandidateProvider()->forConstituency($constituency));
+		$candidates = $this->getCandidateProvider()->forConstituency($constituency);
+		$candidates = array_map(array($this, 'serializeCandidate'), $candidates);
 
-		$state   = $constituency->getState();
-		$parties = array_map(function ($stateListEntry) {
-			/** @var StateList $stateListEntry */
-			$party = $stateListEntry->getParty();
-			return array(
-				'id'    => $stateListEntry->getId(),
-				'abbr'  => $party->getAbbreviation(),
-				'name'  => $party->getName(),
-				'color' => $party->getColor()
-			);
-		}, $this->getStateListProvider()->forState($state));
+		$state = $constituency->getState();
+		$parties = $this->getStateListProvider()->forState($state);
+		$parties = array_map(array($this, 'serializeStateList'), $parties);
 
 		return $this->render('BtwAppBundle:Elector:ballot.html.twig', array(
 			'submitUrl'  => $this->generateUrl('btw_app_vote_preview'),
@@ -97,13 +99,22 @@ class VoterController extends Controller
 		));
 	}
 
+	/**
+	 * Displays a preview of the vote. The user may then correct the vote or
+	 * proceed irreversibly (redirect to submitAction).
+	 *
+	 * @param Request $request An object containing request data.
+	 *
+	 * @return Response
+	 * @throws \Exception for script kiddies.
+	 */
 	public function previewAction(Request $request)
 	{
-		$hash  = $this->getSession()->get('hash');
+		$hash = $this->getSession()->get('hash');
 		$voter = $this->getVoterProvider()->byHash($hash);
-
-		if (empty($voter) || $voter->getVoted())
+		if (empty($voter) || $voter->getVoted()) {
 			throw new \Exception('YOU SHALL NOT VOTE!');
+		}
 
 		$candidateId = $request->get('candidate_id');
 		$stateListId = $request->get('state_list_id');
@@ -115,8 +126,8 @@ class VoterController extends Controller
 		$party = $this->getStateListProvider()->byId($stateListId)->getParty();
 
 		$message = sprintf('<b>1. Stimme:</b> %s <br /> <b>2. Stimme:</b> %s',
-			$candidate->getName()." (".$candidate->getParty()->getAbbreviation().")" ? : 'LEER',
-			$party->getName()." (".$party->getAbbreviation().")" ? : 'LEER');
+			$candidate->getName() . " (" . $candidate->getParty()->getAbbreviation() . ")" ? : 'LEER',
+			$party->getName() . " (" . $party->getAbbreviation() . ")" ? : 'LEER');
 
 		return $this->render('BtwAppBundle:Elector:preview.html.twig', array(
 			'message'   => $message,
@@ -125,6 +136,12 @@ class VoterController extends Controller
 		));
 	}
 
+	/**
+	 * Persists the vote and redirects back to the indexAction, showing a success
+	 * message which hides automatically after a few seconds.
+	 *
+	 * @return Response
+	 */
 	public function submitAction()
 	{
 		$hash = $this->getSession()->get('hash');
@@ -133,7 +150,8 @@ class VoterController extends Controller
 		$stateListId = $this->getSession()->get('stateListId');
 
 		if ($candidateId && $stateListId) {
-			if ($this->getVoterProvider()->vote($hash, $candidateId, $stateListId)) {
+			$success = $this->getVoterProvider()->vote($hash, $candidateId, $stateListId);
+			if ($success) {
 				$this->getSession()->remove('hash');
 				$this->flashMessage('success', 'Ihre Stimme wurde erfolgreich abgegeben.');
 			}
@@ -142,19 +160,64 @@ class VoterController extends Controller
 		return $this->redirect($this->generateUrl('btw_app_vote'));
 	}
 
+	//
+	// Helpers   --------------------------------------------------------------
+	//
+
 	/**
-	 * @param string $type
-	 * @param string $message
+	 * Enqueues a new flash message which will be displayed the next time, a page
+	 * is rendered. The rendering mechanism depends on the type of view script
+	 * or renderer used when fetching messages from the underlying flash bag.
+	 *
+	 * @param string $type    The type of the message, e.g. "error" or "warn"
+	 * @param string $message The message to display.
 	 */
-	public function flashMessage($type, $message)
+	private function flashMessage($type, $message)
 	{
 		$this->getSession()->getFlashBag()->add($type, $message);
 	}
 
 	/**
+	 * @param Candidate $candidate
+	 *
+	 * @return array
+	 */
+	private function serializeCandidate(Candidate $candidate)
+	{
+		$party = $candidate->getParty();
+		return array(
+			'id'          => $candidate->getId(),
+			'name'        => $candidate->getName(),
+			'party_abbr'  => $party ? $party->getAbbreviation() : "Parteilos",
+			'party_name'  => $party ? $party->getName() : "Parteilos",
+			'party_color' => $party ? $party->getColor() : "",
+		);
+	}
+
+	/**
+	 * @param StateList $stateListEntry
+	 *
+	 * @return array
+	 */
+	private function serializeStateList(StateList $stateListEntry)
+	{
+		$party = $stateListEntry->getParty();
+		return array(
+			'id'    => $stateListEntry->getId(),
+			'abbr'  => $party->getAbbreviation(),
+			'name'  => $party->getName(),
+			'color' => $party->getColor(),
+		);
+	}
+
+	//
+	// Dependencies   ---------------------------------------------------------
+	//
+
+	/**
 	 * @return CandidateProvider
 	 */
-	public function getCandidateProvider()
+	private function getCandidateProvider()
 	{
 		if ($this->candidateProvider == null)
 			$this->candidateProvider = $this->get('btw_candidate_provider');
@@ -164,7 +227,7 @@ class VoterController extends Controller
 	/**
 	 * @return ConstituencyProvider
 	 */
-	public function getConstituencyProvider()
+	private function getConstituencyProvider()
 	{
 		if ($this->constituencyProvider == null)
 			$this->constituencyProvider = $this->get('btw_constituency_provider');
@@ -174,7 +237,7 @@ class VoterController extends Controller
 	/**
 	 * @return ElectionProvider
 	 */
-	public function getElectionProvider()
+	private function getElectionProvider()
 	{
 		if ($this->electionProvider == null)
 			$this->electionProvider = $this->get('btw_election_provider');
@@ -184,7 +247,7 @@ class VoterController extends Controller
 	/**
 	 * @return StateListProvider
 	 */
-	public function getStateListProvider()
+	private function getStateListProvider()
 	{
 		if ($this->stateListProvider == null)
 			$this->stateListProvider = $this->get('btw_state_list_provider');
@@ -194,7 +257,7 @@ class VoterController extends Controller
 	/**
 	 * @return VoterProvider
 	 */
-	public function getVoterProvider()
+	private function getVoterProvider()
 	{
 		if ($this->voterProvider == null)
 			$this->voterProvider = $this->get('btw_voter_provider');
@@ -204,7 +267,7 @@ class VoterController extends Controller
 	/**
 	 * @return \Symfony\Component\HttpFoundation\Session\Session
 	 */
-	public function getSession()
+	private function getSession()
 	{
 		if ($this->session == null)
 			$this->session = $this->get('session');
