@@ -16,6 +16,9 @@ use Btw\Bundle\PersistenceBundle\Entity\State;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Controller for election details.
+ */
 class DetailController extends Controller
 {
 
@@ -57,7 +60,7 @@ class DetailController extends Controller
 	 */
 	public function electionResultsAction($year)
 	{
-		$election     = $this->getElectionProvider()->forYear($year);
+		$election = $this->getElectionProvider()->forYear($year);
 		$prevElection = $this->getElectionProvider()->getPreviousElectionFor($election);
 
 		$states = $this->getStateProvider()->getAllForElection($election);

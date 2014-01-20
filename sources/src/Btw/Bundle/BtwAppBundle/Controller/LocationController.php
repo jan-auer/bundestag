@@ -13,6 +13,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 
+/**
+ * Controller for all location related tasks, like voter management.
+ */
 class LocationController extends Controller
 {
 
