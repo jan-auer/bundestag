@@ -45,7 +45,7 @@ class ConstituencyProvider
 			");
 
 			$query->bindValue('electionId', $election->getId());
-			return $this->executeQuery($query, function ($result) {
+			return $this->executeMappedQuery($query, function ($result) {
 				return ConstituencyDetail::fromArray($result);
 			});
 		}
@@ -62,7 +62,7 @@ class ConstituencyProvider
 
 			$query->bindValue('current', $election->getId());
 			$query->bindValue('previous', $prevElection->getId());
-			return $this->executeQuery($query, function ($result) {
+			return $this->executeMappedQuery($query, function ($result) {
 				return ConstituencyDetail::fromArray($result);
 			});
 		}

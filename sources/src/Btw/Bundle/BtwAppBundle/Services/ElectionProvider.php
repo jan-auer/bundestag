@@ -62,7 +62,7 @@ class ElectionProvider
 	}
 
 	public function getLatest() {
-		$qb = $this->createQueryBulder();
+		$qb = $this->getEntityManager()->createQueryBuilder();
 		$qb->select('e')
 			->from('Btw\Bundle\PersistenceBundle\Entity\Election', 'e')
 			->orderBy('e.date', 'DESC')

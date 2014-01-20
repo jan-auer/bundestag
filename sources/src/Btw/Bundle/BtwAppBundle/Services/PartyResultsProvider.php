@@ -32,7 +32,7 @@ class PartyResultsProvider
 			GROUP BY state_id, party_id");
 
 		$query->bindValue('election', $election->getId());
-		return $this->executeQuery($query, function ($result) {
+		return $this->executeMappedQuery($query, function ($result) {
 			return SeatsResult::fromArray($result);
 		});
 	}
@@ -72,7 +72,7 @@ class PartyResultsProvider
 		}
 
 		$query->bindValue('new', date('Y', $election->getDate()->getTimestamp()));
-		return $this->executeQuery($query, function ($result) {
+		return $this->executeMappedQuery($query, function ($result) {
 			return VotesResult::fromArray($result);
 		});
 	}
@@ -93,7 +93,7 @@ class PartyResultsProvider
 			GROUP BY party_id, abbreviation, name, color, party_seats.seats");
 
 		$query->bindValue('election', $election->getId());
-		return $this->executeQuery($query, function ($result) {
+		return $this->executeMappedQuery($query, function ($result) {
 			return PartyResult::fromArray($result);
 		});
 	}

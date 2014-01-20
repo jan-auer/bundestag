@@ -30,7 +30,7 @@ class MembersOfBundestagProvider
 										   WHERE c.election_id = :electionId");
 		$query->bindValue('electionId', $election->getId());
 
-		$members = $this->executeQuery($query, function ($result) {
+		$members = $this->executeMappedQuery($query, function ($result) {
 			return MemberOfBundestag::fromArray($result);
 		});
 
@@ -54,7 +54,7 @@ class MembersOfBundestagProvider
 			WHERE c.election_id=:election");
 
 		$query->bindValue('election', $election->getId());
-		$direct = $this->executeQuery($query, function ($result) {
+		$direct = $this->executeMappedQuery($query, function ($result) {
 			return MemberOfBundestag::fromArray($result);
 		});
 
@@ -70,7 +70,7 @@ class MembersOfBundestagProvider
 			)");
 
 		$query->bindValue('election', $election->getId());
-		$indirect = $this->executeQuery($query, function ($result) {
+		$indirect = $this->executeMappedQuery($query, function ($result) {
 			return MemberOfBundestag::fromArray($result);
 		});
 
@@ -96,7 +96,7 @@ class MembersOfBundestagProvider
 			WHERE ct.state_id=:state");
 
 		$query->bindParam('state', $state->getId());
-		$direct = $this->executeQuery($query, function ($result) {
+		$direct = $this->executeMappedQuery($query, function ($result) {
 			return MemberOfBundestag::fromArray($result);
 		});
 
@@ -110,7 +110,7 @@ class MembersOfBundestagProvider
 			WHERE sl.state_id=:state");
 
 		$query->bindParam('state', $state->getId());
-		$indirect = $this->executeQuery($query, function ($result) {
+		$indirect = $this->executeMappedQuery($query, function ($result) {
 			return MemberOfBundestag::fromArray($result);
 		});
 
@@ -135,7 +135,7 @@ class MembersOfBundestagProvider
 			WHERE cc.constituency_id=:constituency");
 
 		$query->bindValue('constituency', $constituency->getId());
-		$direct = $this->executeQuery($query, function ($result) {
+		$direct = $this->executeMappedQuery($query, function ($result) {
 			return MemberOfBundestag::fromArray($result);
 		});
 
@@ -149,7 +149,7 @@ class MembersOfBundestagProvider
 			WHERE cc.constituency_id=:constituency");
 
 		$query->bindValue('constituency', $constituency->getId());
-		$indirect = $this->executeQuery($query, function ($result) {
+		$indirect = $this->executeMappedQuery($query, function ($result) {
 			return MemberOfBundestag::fromArray($result);
 		});
 

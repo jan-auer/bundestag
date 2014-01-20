@@ -29,7 +29,7 @@ class ClosestCandidatesProvider
 			WHERE tccc.party_id=:party AND tccc.ranking<=10");
 
 		$query->bindValue('party', $party->getId());
-		return $this->executeQuery($query, function ($result) {
+		return $this->executeMappedQuery($query, function ($result) {
 			return ClosestCandidate::fromArray($result);
 		});
 	}

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Btw\Bundle\BtwAppBundle\Services;
 
 use Doctrine\DBAL\DBALException;
@@ -8,13 +7,21 @@ use Doctrine\DBAL\Driver\Statement;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
+/**
+ * Base class for all providers. These classes use a Doctrine {@link EntityRepository}
+ * to load data from the database and compute it in a certain way, so it can be used
+ * by one or more controller actions.
+ */
 class AbstractProvider
 {
+
 	/** @var  EntityManager */
 	protected $em;
 
 	/**
-	 * @param EntityManager $entityManager
+	 * Creates a new Provider. Be sure to call parent::__construct in every subclass.
+	 *
+	 * @param EntityManager $entityManager The doctrine entity manager to build queris.
 	 */
 	function __construct(EntityManager $entityManager)
 	{
@@ -22,9 +29,11 @@ class AbstractProvider
 	}
 
 	/**
-	 * @param string $query
+	 * Creates a new prepared query.
 	 *
-	 * @return Statement
+	 * @param string $query The query SQL.
+	 *
+	 * @return Statement The prepared statement, ready to bind parameters.
 	 */
 	protected function prepareQuery($query)
 	{
@@ -33,28 +42,34 @@ class AbstractProvider
 	}
 
 	/**
-	 * @param Statement $query
-	 * @param Callable $mapper
+	 * Executes the given prepared statement on the database.
 	 *
-	 * @return array
+	 * @param Statement $query A prepared statement with bound parameters.
+	 *
+	 * @return boolean True, if the query has successfully been executed; otherwise false.
 	 */
-	protected function executeQuery(Statement $query, $mapper)
+	protected function executeQuery(Statement $query)
+	{
+		return $query->execute();
+	}
+
+	/**
+	 * Executes the given prepared statement on the database and pipes the
+	 * response objects through the given mapper callback.
+	 *
+	 * @param Statement $query  A prepared statement with bound parameters.
+	 * @param Callable  $mapper A callback to transform the response arrays to models.
+	 *
+	 * @return array An array containing all mapped result rows.
+	 */
+	protected function executeMappedQuery(Statement $query, $mapper)
 	{
 		$query->execute();
 		return array_map($mapper, $query->fetchAll());
 	}
 
 	/**
-	 * @param Statement $query
-	 *
-	 * @return boolean
-	 */
-	protected function executeUpdateQuery(Statement $query)
-	{
-		return $query->execute();
-	}
-
-	/**
+	 * Returns a Doctrine {@link EntityManager} instance.
 	 * @return EntityManager
 	 */
 	protected function getEntityManager()
@@ -63,7 +78,9 @@ class AbstractProvider
 	}
 
 	/**
-	 * @param string $entityName
+	 * Returns a Doctrine {@link EntityRepository} for the given entity.
+	 *
+	 * @param string $entityName The name of the entity class.
 	 *
 	 * @return EntityRepository
 	 */
@@ -73,7 +90,7 @@ class AbstractProvider
 	}
 
 	/**
-	 * Begins a new transaction
+	 * Starts a new transaction.
 	 */
 	protected function beginTransaction()
 	{
@@ -82,7 +99,8 @@ class AbstractProvider
 
 	/**
 	 * Commits the current running transaction.
-	 * @throws Exception In case of failed commit
+	 *
+	 * @throws DBALException In case of a failed commit.
 	 */
 	protected function commit()
 	{
@@ -102,10 +120,4 @@ class AbstractProvider
 		$this->em->rollback();
 	}
 
-	/**
-	 * @return \Doctrine\ORM\QueryBuilder
-	 */
-	protected function createQueryBulder() {
-		return $this->em->createQueryBuilder();
-	}
 }

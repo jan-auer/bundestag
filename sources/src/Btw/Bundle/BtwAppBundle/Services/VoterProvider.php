@@ -44,7 +44,7 @@ class VoterProvider
 		$query->bindValue('electionId', $constituency->getElection()->getId());
 
 		try {
-			$this->executeUpdateQuery($query);
+			$this->executeQuery($query);
 			$this->commit();
 			return $hash;
 		} catch (DBALException $e) {
@@ -70,18 +70,18 @@ class VoterProvider
 			if (!is_null($candidateId)) {
 				$firstVoteQuery = $this->prepareQuery("INSERT INTO first_result (candidate_id) VALUES (:candidateId)");
 				$firstVoteQuery->bindValue('candidateId', $candidateId);
-				$firstVote = $this->executeUpdateQuery($firstVoteQuery);
+				$firstVote = $this->executeQuery($firstVoteQuery);
 			}
 			if (!is_null($stateListId)) {
 				$secondVoteQuery = $this->prepareQuery("INSERT INTO second_result (state_list_id, constituency_id) VALUES (:stateListId, :constituencyId)");
 				$secondVoteQuery->bindValue('stateListId', $stateListId);
 				$secondVoteQuery->bindValue('constituencyId', $voter->getConstituency()->getId());
-				$secondVote = $this->executeUpdateQuery($secondVoteQuery);
+				$secondVote = $this->executeQuery($secondVoteQuery);
 			}
 
 			$votedQuery = $this->prepareQuery("UPDATE voter SET voted = TRUE WHERE hash = :hash");
 			$votedQuery->bindValue('hash', $voterHash);
-			$voted = $this->executeUpdateQuery($votedQuery);
+			$voted = $this->executeQuery($votedQuery);
 
 			if ($firstVote && $secondVote && $voted) {
 				try {

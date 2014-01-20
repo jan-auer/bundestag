@@ -36,7 +36,7 @@ class BenchmarkProvider extends AbstractProvider
 			");
 
 			$query->bindValue('electionId', $election->getId());
-			return $this->executeQuery($query, function ($result) {
+			return $this->executeMappedQuery($query, function ($result) {
 				return $result;
 			});
 		}
@@ -58,7 +58,7 @@ class BenchmarkProvider extends AbstractProvider
 					WHERE c.election_id = :electionId");
 
 			$query->bindValue('electionId', $election->getId());
-			return $this->executeQuery($query, function ($result) {
+			return $this->executeMappedQuery($query, function ($result) {
 				return $result;
 			});
 		}
@@ -77,7 +77,7 @@ class BenchmarkProvider extends AbstractProvider
 											WHERE constituency_id = :constituencyId");
 
 		$query->bindValue('constituencyId', $constituencyId);
-		$result = $this->executeQuery($query, function ($result) {
+		$result = $this->executeMappedQuery($query, function ($result) {
 			return $result;
 		});
 
@@ -99,7 +99,7 @@ class BenchmarkProvider extends AbstractProvider
 
 		$query->bindValue('constituencyId', $constituencyId);
 
-		$result = $this->executeQuery($query, function ($result) {
+		$result = $this->executeMappedQuery($query, function ($result) {
 			return $result;
 		});
 
@@ -123,7 +123,7 @@ class BenchmarkProvider extends AbstractProvider
 			");
 
 			$query->bindValue('electionId', $election->getId());
-			return $this->executeQuery($query, function ($result) {
+			return $this->executeMappedQuery($query, function ($result) {
 				return $result;
 			});
 		}
@@ -144,7 +144,7 @@ class BenchmarkProvider extends AbstractProvider
 			");
 
 			$query->bindValue('electionId', $election->getId());
-			return $this->executeQuery($query, function ($result) {
+			return $this->executeMappedQuery($query, function ($result) {
 				return $result;
 			});
 		}
@@ -167,7 +167,7 @@ class BenchmarkProvider extends AbstractProvider
 			");
 
 			$query->bindValue('electionId', $election->getId());
-			return $this->executeQuery($query, function ($result) {
+			return $this->executeMappedQuery($query, function ($result) {
 				return $result;
 			});
 		}
