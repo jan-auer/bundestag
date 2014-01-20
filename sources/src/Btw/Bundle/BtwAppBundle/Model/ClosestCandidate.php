@@ -14,9 +14,7 @@ class ClosestCandidate
 	private $type;
 
 	/**
-	 * @param array $data
-	 *
-	 * @return ClosestCandidate
+	 * @inheritdoc
 	 */
 	public static function fromArray(array &$data)
 	{
@@ -28,7 +26,7 @@ class ClosestCandidate
 	}
 
 	/**
-	 * @return array
+	 * @inheritdoc
 	 */
 	public function toArray()
 	{

@@ -18,9 +18,7 @@ class VotesResult
 	private $votesPrev;
 
 	/**
-	 * @param array $data
-	 *
-	 * @return VotesResult
+	 * @inheritdoc
 	 */
 	public static function fromArray(array &$data)
 	{
@@ -38,7 +36,7 @@ class VotesResult
 	}
 
 	/**
-	 * @return array
+	 * @inheritdoc
 	 */
 	public function toArray()
 	{

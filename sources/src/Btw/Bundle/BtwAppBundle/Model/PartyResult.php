@@ -18,9 +18,7 @@ class PartyResult
 	private $overhead;
 
 	/**
-	 * @param array $data
-	 *
-	 * @return PartyResult
+	 * @inheritdoc
 	 */
 	public static function fromArray(array &$data)
 	{
@@ -34,7 +32,7 @@ class PartyResult
 	}
 
 	/**
-	 * @return array
+	 * @inheritdoc
 	 */
 	public function toArray()
 	{

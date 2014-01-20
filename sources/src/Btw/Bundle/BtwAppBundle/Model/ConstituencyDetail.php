@@ -20,9 +20,7 @@ class ConstituencyDetail
 	private $votersPrev;
 
 	/**
-	 * @param array $data
-	 *
-	 * @return ConstituencyDetail
+	 * @inheritdoc
 	 */
 	public static function fromArray(array &$data)
 	{
@@ -37,7 +35,7 @@ class ConstituencyDetail
 	}
 
 	/**
-	 * @return array
+	 * @inheritdoc
 	 */
 	public function toArray()
 	{

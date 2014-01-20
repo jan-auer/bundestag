@@ -16,9 +16,7 @@ class SeatsResult
 	private $overhead;
 
 	/**
-	 * @param array $data
-	 *
-	 * @return SeatsResult
+	 * @inheritdoc
 	 */
 	public static function fromArray(array &$data)
 	{
@@ -31,7 +29,7 @@ class SeatsResult
 	}
 
 	/**
-	 * @return array
+	 * @inheritdoc
 	 */
 	public function toArray()
 	{

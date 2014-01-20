@@ -17,9 +17,7 @@ class MemberOfBundestag
 	private $party;
 
 	/**
-	 * @param array $data
-	 *
-	 * @return MemberOfBundestag
+	 * @inheritdoc
 	 */
 	public static function fromArray(array &$data)
 	{
@@ -33,7 +31,7 @@ class MemberOfBundestag
 	}
 
 	/**
-	 * @return array
+	 * @inheritdoc
 	 */
 	public function toArray()
 	{
