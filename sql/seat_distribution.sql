@@ -154,7 +154,7 @@ CREATE OR REPLACE VIEW party_state_seats (election_id, party_id, state_id, seats
       JOIN party USING (party_id)
 );
 
-CREATE OR REPLACE VIEW elected_candidates (candidate_id) AS (
+CREATE OR REPLACE VIEW elected_candidates (candidate_id, direct_candidate) AS (
     WITH state_list_losers (candidate_id) AS (
         SELECT candidate_id FROM state_candidacy
         EXCEPT
@@ -164,10 +164,10 @@ CREATE OR REPLACE VIEW elected_candidates (candidate_id) AS (
         FROM state_list_losers
           JOIN state_candidacy USING (candidate_id)
     )
-    SELECT candidate_id
+    SELECT candidate_id, TRUE
     FROM constituency_winners
     UNION ALL
-    SELECT candidate_id
+    SELECT candidate_id, FALSE
     FROM filtered_state_list
       JOIN state_list USING (state_list_id)
       JOIN party_state_seats USING (party_id, state_id)

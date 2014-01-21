@@ -22,11 +22,11 @@ class MemberOfBundestag
 	public static function fromArray(array &$data)
 	{
 		$model = new MemberOfBundestag();
-		$model->setName($data['name']);
-		$model->setCandidate($data['candidate']);
-		$model->setState($data['state']);
-		$model->setConstituency($data['constituency']);
-		$model->setParty($data['party']);
+		$model->setName($data['candidate_name']);
+		$model->setCandidate($data['candidate_id']);
+		$model->setState($data['state_id']);
+		$model->setConstituency($data['constituency_id']);
+		$model->setParty($data['party_id']);
 		return $model;
 	}
 

@@ -24,17 +24,12 @@ class MembersOfBundestagProvider
 	 */
 	public function getAllForElection(Election $election)
 	{
-		$query = $this->prepareQuery("SELECT c.candidate_id AS candidate, c.name AS name, bc.state_id AS state, bc.constituency_id AS constituency, bc.party_id AS party, bc.directCandidate
-										   FROM bundestag_candidates bc
-										    JOIN Candidate c USING(candidate_id)
-										   WHERE c.election_id = :electionId");
+		$query = $this->prepareQuery("SELECT * FROM bundestag_candidates WHERE election_id = :electionId");
 		$query->bindValue('electionId', $election->getId());
 
-		$members = $this->executeMappedQuery($query, function ($result) {
+		return $this->executeMappedQuery($query, function ($result) {
 			return MemberOfBundestag::fromArray($result);
 		});
-
-		return $members;
 	}
 
 	/**
