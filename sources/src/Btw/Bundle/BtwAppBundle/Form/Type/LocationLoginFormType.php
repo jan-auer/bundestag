@@ -27,7 +27,13 @@ class LocationLoginFormType extends AbstractType
 			->add('constituency', 'entity', array(
 				'label_render'  => false,
 				'class'         => 'Btw\Bundle\PersistenceBundle\Entity\Constituency',
-				'query_builder' => array($this, 'createElectionQuery'),
+				'query_builder' => function (EntityRepository $repository) {
+						return $repository
+							->createQueryBuilder('c')
+							->where('c.election = :election')
+							->orderBy('c.number')
+							->setParameter('election', $this->election);
+					},
 			));
 	}
 
@@ -48,22 +54,6 @@ class LocationLoginFormType extends AbstractType
 	public function getName()
 	{
 		return 'BTW_Elector_Register';
-	}
-
-	/**
-	 * Creates a query which fetches all constituencies for the configured election.
-	 *
-	 * @param EntityRepository $repository The repository which will execute the query.
-	 *
-	 * @return QueryBuilder The query builder which creates the query.
-	 */
-	private function createElectionQuery(EntityRepository $repository)
-	{
-		return $repository
-			->createQueryBuilder('c')
-			->where('c.election = :election')
-			->orderBy('c.number')
-			->setParameter('election', $this->election);
 	}
 
 }
