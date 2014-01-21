@@ -1,4 +1,4 @@
-# SQL-Anfrage zur Auswerung
+# SQL-Anfragen zur Auswerung
 
 Die SQL-Anfrage zur Berechnung der Wahlergebnisse orientiert sich an der [Beschreibung des Bundeswahlleiters vom 09.10.2013](http://bundeswahlleiter.de/de/aktuelle_mitteilungen/downloads/20131009_Erl_Sitzzuteilung.pdf).
 Der dort beschriebene Algorithmus besteht im Wesentlichen aus fünf Schritten:
@@ -26,6 +26,17 @@ Die SQL-Anfragen zum Erzeugen einer View beinhalten wiederum mehrere *Common Tab
 Die Sitzverteilungen werden jeweils in CTEs mit dem Namen `highest` berechnet, wobei es sich um das Höchstzahlverfahren nach Sainte-Lague/Schepers handelt. Darin werden jedem Eintrag der Aufteilungsgrundlage (z.B. Bundesländer) Divisoren durch die Funktion `generate_series(1, seats)` zugeordnet und der Rang basierend auf `population / divisor` berechnet. Im nächsten Schritt werden die Einträge gezählt, deren Rank  kleiner oder gleich der verfügbaren Sitzzahl ist.
 
 Zum derzeitigen Stand sind keine der Views materialisiert. Aus Performance-Gründen kann es allerdings durchaus angebracht sein, einige der Views nur bei neuen Wahldaten zu berechnen und dann materialisiert abzuspeichern.
+
+## Weitere Analyse-Abfragen
+
+Zusätzlich zu den oben genannten Views werden in der Datei `sql/analysis.sql` einige weitere Abfragen zur direkten Analyse der Wahlergebnisse geboten. Darüber hinaus werden ebendiese Abfragen für Benchmarks herangezogen. Im Wesentlichen handelt es sich dabei um die Anreicherung der Ergebnisse aus Kapitel 1 mit Lookup-Daten von Wahlkreisen, Kandidaten oder Parteien. Die Abfragen sind:
+
+* `bundestag_candidates`: Alle gewählten Kandidaten inklusive Wahl, Partei, Bundesland und Wahlkreis.
+* `constituency_turnout`: Prozentuale und absolute Wahlbeteiligung auf Wahlkreisebene.
+* `constituency_votes`: Relative und absolute Wahlergebnisse der Parteien pro Wahlkreis.
+* `constituency_votes_history`: Relative und absolute Wahlergebnisse der Parteien pro Wahlkreis mitsamt einem Vorjahresvergleich. 
+* `constituency_winner_parties`: Wahlsieger nach Erst- und Zweitstimmen pro Wahlkreis. 
+* `top_close_constituency_candidates`: Knappste Wahlsieger oder -verlierer pro Partei.
 
 ## Bekannte Probleme
 
