@@ -28,7 +28,7 @@ class Voter
 	/**
 	 * @var integer
 	 *
-	 * @ORM\Column(name="identityNumber", type="integer", nullable=false)
+	 * @ORM\Column(name="identity_number", type="integer", nullable=false)
 	 */
 	private $identityNumber;
 
