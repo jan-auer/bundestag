@@ -11,6 +11,11 @@ class VoterProvider
 {
 
 	/**
+	 * Value for delimiting identitynumber of voter and election id in the hash.
+	 */
+	const DELIMITER_HASH = "|";
+
+	/**
 	 * @param $hash
 	 *
 	 * @return Voter
@@ -25,14 +30,14 @@ class VoterProvider
 	}
 
 	/**
-	 * @param int          $identityNumber
+	 * @param int $identityNumber
 	 * @param Constituency $constituency
 	 *
 	 * @return String
 	 */
 	public function createVoter($identityNumber, Constituency $constituency)
 	{
-		$hash = md5($identityNumber);
+		$hash = md5($identityNumber . self::DELIMITER_HASH . $constituency->getElection()->getId());
 
 		$this->beginTransaction();
 
