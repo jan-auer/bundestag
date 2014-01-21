@@ -160,7 +160,7 @@ CREATE OR REPLACE VIEW elected_candidates (candidate_id) AS (
         EXCEPT
         SELECT candidate_id FROM constituency_winners
     ), filtered_state_list (candidate_id, state_list_id, position) AS (
-        SELECT candidate_id, state_list_id, row_number() OVER (PARTITION BY state_list_id ORDER BY position DESC)
+        SELECT candidate_id, state_list_id, row_number() OVER (PARTITION BY state_list_id ORDER BY position ASC)
         FROM state_list_losers
           JOIN state_candidacy USING (candidate_id)
     )
