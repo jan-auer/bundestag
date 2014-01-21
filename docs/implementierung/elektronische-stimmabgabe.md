@@ -21,7 +21,7 @@ Durch Wahl eines Wahlkreises gelangt sie anschließend auf eine Seite zur Regist
 
 ##### Technisch
 
-Der initial ausgewählte Wahlkreis wird für alle anschließenden Wähler-Registrierungen verwendet. Eine entsprechende Überprüfung, ob Anke berechtigt ist, den jeweiligen Wahlkreis auszuwählen wurde derzeit bewusst nicht realisiert. 
+Der initial ausgewählte Wahlkreis wird für alle anschließenden Wähler-Registrierungen verwendet. Eine entsprechende Überprüfung, ob Anke berechtigt ist, den jeweiligen Wahlkreis auszuwählen wurde derzeit bewusst nicht realisiert.
 
 ### 2. Check-In im Wahlbüro
 
@@ -68,7 +68,7 @@ Daraufhin teilt WIS Hans mit, dass dessen Stimme erfolgreich abgegeben wurde.
 
 Hans stellt nach kurzer Zeit fest, dass die soeben noch angezeigte Erfolgsmeldung verschwunden ist und nun wieder die initiale Sicht zur Eingabe eines Wahlschlüssels angezeigt wird.
 
-Hans verabschiedet sich von Anke und verlässt das Wahllokal. 
+Hans verabschiedet sich von Anke und verlässt das Wahllokal.
 
 ##### Technisch
 

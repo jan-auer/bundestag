@@ -12,7 +12,7 @@ Das Wahlinformationssystem wird von den folgenden Benutzergruppen über die Webs
 
 ####Analytiker
 Die erste Gruppe ist die der "Analytiker", die das Webangebot ohne Authenitifizierung anonym nutzen können. Diese informieren sich typischerweise über die Ergebnisse der Bundestagswahl und vergleichen diese mit Ergebnissen aus den vorherigen Jahren. Dabei haben sie zudem die Möglichkeit, die Informationen auf verschiedenen Granularitätsebenen zu betrachten (beispielsweise auf der Ebene eines Wahlkreises oder Bundeslandes).
- 
+
 ####Wähler
 Die Gruppe der Wähler hat, nach der Idenfitikation mit dem System, die Möglichkeit für eine laufende Bundestagswahl seine Stimme abzugeben. Dabei muss natürlich berücksichtigt werden, dass eine Mehrfachabstimmung für eine Bundestagswahl nicht möglich ist. Die Unterstützung dieser Benutzergruppe ist erst für eine zukünftige Version des **WIS** geplant.
 
@@ -55,7 +55,7 @@ Wie bereits angesprochen wird das Wahlinformationssystem über ein Web-Frontend 
 
 1. Als Administrator möchte ich eine anstehende Wahl hinzufügen, ändern oder löschen.
 2. Als Administrator möchte ich eine beliebige Partei hinzufügen, ändern oder löschen.
-3. Als Administrator möchte ich die Länderliste einer beliebigen Partei für eine anstehende Wahl hinzufügen, ändern oder löschen. 
+3. Als Administrator möchte ich die Länderliste einer beliebigen Partei für eine anstehende Wahl hinzufügen, ändern oder löschen.
 4. Als Administrator möchte ich den Direktkandidaten eines beliebigen Wahlkreises für eine anstehende Wahl hinzufügen, ändern oder löschen.
 5. Als Administrator möchte ich ein beliebiges Bundesland hinzufügen, ändern oder löschen.
 6. Als Administrator möchte ich einen beliebigen Wahlkreis hinzufügen, ändern oder löschen.
@@ -73,14 +73,14 @@ Wie bereits angesprochen wird das Wahlinformationssystem über ein Web-Frontend 
 
 ## Abnahmeszenarien
 
-### Szenario 1: Authentifizierung als 
+### Szenario 1: Authentifizierung als
 
 **Schritte:**
 
  - Zugriff auf eine geschützte Seite ohne Login.
  - Einloggen mit falschen Benutzerdaten.
  - Einloggen mit korrekten Benutzerdaten.
- 
+
 **Erwartete Resultate:**
 
  - Zugriff ohne Login war nicht möglich.
@@ -94,13 +94,13 @@ Wie bereits angesprochen wird das Wahlinformationssystem über ein Web-Frontend 
  - Hinzufügen einer neuen Partei und Hochladen eines Bildes.
  - Ändern des Namens einer bestehenen Partei.
  - Ändern des Bildes einer bestehenden Partei.
- - Löschen einer bestehenden Partei. 
- 
+ - Löschen einer bestehenden Partei.
+
 **Erwartete Resultate:**
 
  - Die gespeicherten Daten sind persistiert.
  - Vergangene Wahlen müssen von diesen Änderungen unberührt bleiben.
- - Zukünftige Wahlen werden mit den neuen Informationen aktualisiert. 
+ - Zukünftige Wahlen werden mit den neuen Informationen aktualisiert.
  - Die Änderungen sind auf der Webseite sichtbar.
 
 ### Szenario 3: Wartung demographischer Daten
@@ -116,7 +116,7 @@ Wie bereits angesprochen wird das Wahlinformationssystem über ein Web-Frontend 
 
  - Die gespeicherten Daten sind persistiert.
  - Vergangene Wahlen müssen von diesen Änderungen unberührt bleiben.
- - Zukünftige Wahlen werden mit den neuen Informationen aktualisiert. 
+ - Zukünftige Wahlen werden mit den neuen Informationen aktualisiert.
  - Das Speichern des Wahlkreises mit zu großer Abweichung von der durchschnittlichen Einwohnerzahl war nicht möglich.
  - Die Einwohnerzahlen der Bundesländer wurden basierend auf den neuen Informationen der Wahlkreise aktualisiert.
 
@@ -127,17 +127,17 @@ Wie bereits angesprochen wird das Wahlinformationssystem über ein Web-Frontend 
  - Erstellen einer neuen Wahl.
  - Auswahl der kandidierenden Parteien.
  - Hinzufügen von Kandidaten zu den Landeslisten und Wahlkreisen.
- 
+
 **Erwartete Resultate:**
 
  - Die gespeicherten Daten sind persistiert.
- 
+
 ### Szenario 5: Auswertung von Wahlergebnissen
 
  - Eintragen der letzten Wahlergebnisse zur Auswertung.
  - Bundesweite Abfrage der Zweitstimmen.
  - Landesweite Abfrage der Zweitstimmen.
- - Abfrage der gewählten Direktmandate. 
+ - Abfrage der gewählten Direktmandate.
  - Abfrage der Sitzverteilung im Bundestag auf Bundesebene.
  - Abfrage der Sitzverteilung im Bundestag auf Landesebene.
 
