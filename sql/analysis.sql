@@ -33,8 +33,8 @@ CREATE OR REPLACE VIEW constituency_turnout (constituency_id, turnout, voters, e
         FROM aggregated_second_result
         GROUP BY constituency_id
     )
-
-    SELECT constituency_id, greatest(frv.votes, srv.votes) / electives :: REAL, greatest(frv.votes, srv.votes), electives
+    SELECT constituency_id, greatest(frv.votes, srv.votes) / electives :: REAL,
+      greatest(frv.votes, srv.votes), electives
     FROM first_result_votes frv
       JOIN second_result_votes srv
       USING (constituency_id)
@@ -48,24 +48,28 @@ CREATE OR REPLACE VIEW constituency_turnout (constituency_id, turnout, voters, e
 -- Query 3.3: Compute the relative and absolute number of votes for each party.
 
 CREATE OR REPLACE VIEW constituency_votes (party_id, constituency_id, absoluteVotes, percentualVotes, totalVotes) AS (
-  SELECT cpv.party_id, cpv.constituency_id, SUM(votes), SUM(votes) / total.totalvotes :: REAL, total.totalvotes
-  FROM constituency_party_votes cpv
-    JOIN (SELECT constituency_id, sum(votes) AS totalvotes
-          FROM constituency_party_votes
-          GROUP BY constituency_id) total USING (constituency_id)
-  GROUP BY party_id, constituency_id, total.totalvotes
+    WITH total (constituency_id, total_votes) AS (
+        SELECT constituency_id, sum(votes)
+        FROM constituency_party_votes
+        GROUP BY constituency_id
+    )
+    SELECT party_id, constituency_id, SUM(votes), SUM(votes) / total_votes :: REAL, total_votes
+    FROM constituency_party_votes
+      JOIN total USING (constituency_id)
+    GROUP BY party_id, constituency_id, total_votes
 );
 
 -- Query 3.4: Compare election results to the previous election.
 
-CREATE OR REPLACE VIEW constituency_votes_history (oldDate, newDate, constituency_name, party_abbreviation, oldAbsoluteVotes, oldTotalVotes, newAbsoluteVotes, newTotalVotes) AS (
-    WITH constituency_election (date, constituency_name, party_abbreviation, absoluteVotes, totalVotes) AS (
-        SELECT date, c.name, p.abbreviation, absoluteVotes, totalVotes
+CREATE OR REPLACE VIEW constituency_votes_history (olddate, newdate, constituency_name, party_abbreviation, oldabsolutevotes, oldtotalvotes, newabsolutevotes, newtotalvotes) AS (
+    WITH constituency_election (date, constituency_name, party_abbreviation, absolutevotes, totalvotes) AS (
+        SELECT date, c.name, p.abbreviation, absolutevotes, totalvotes
         FROM constituency c JOIN constituency_votes USING (constituency_id)
           JOIN election USING (election_id)
           JOIN party p USING (party_id)
     )
-    SELECT old.date, new.date, old.constituency_name, old.party_abbreviation, old.absoluteVotes, old.totalVotes, new.absoluteVotes, new.totalVotes
+    SELECT old.date, new.date, old.constituency_name, old.party_abbreviation, old.absolutevotes,
+           old.totalvotes, new.absolutevotes, new.totalvotes
     FROM constituency_election old, constituency_election new
     WHERE old.constituency_name = new.constituency_name AND old.date < new.date AND
           old.party_abbreviation = new.party_abbreviation
@@ -73,21 +77,22 @@ CREATE OR REPLACE VIEW constituency_votes_history (oldDate, newDate, constituenc
 
 -- Query 4: Compute the best party for each constituency (first and second results).
 
-CREATE OR REPLACE VIEW constituency_winner_parties (election_id, constituency_id, firstVotePartyId, secondVotePartyId) AS (
+CREATE OR REPLACE VIEW constituency_winner_parties (election_id, constituency_id, firstvotepartyid, secondvotepartyid) AS (
     WITH constituency_winners_second_votes (election_id, constituency_id, party_id) AS (
         SELECT election_id, constituency_id, party_id
         FROM aggregated_second_result r1
           JOIN state_list USING (state_list_id)
           JOIN party USING (party_id)
-        WHERE NOT EXISTS(SELECT *
-                         FROM aggregated_second_result r2
-                         WHERE r1.constituency_id = r2.constituency_id AND r1.count < r2.count)
+        WHERE NOT EXISTS(
+            SELECT *
+            FROM aggregated_second_result r2
+            WHERE r1.constituency_id = r2.constituency_id AND r1.count < r2.count
+        )
     ), constituency_winners_first_votes (election_id, constituency_id, party_id) AS (
         SELECT election_id, constituency_id, party_id
         FROM constituency_winners
           NATURAL JOIN candidate
     )
-
     SELECT election_id, constituency_id, fv.party_id, sv.party_id
     FROM constituency_winners_first_votes fv JOIN constituency_winners_second_votes sv
       USING (election_id, constituency_id)
@@ -100,57 +105,42 @@ CREATE OR REPLACE VIEW constituency_winner_parties (election_id, constituency_id
 -- Query 6: Compute the closest winners or losers for each party.
 -- Usage: Use "ranking" for top x:  SELECT * FROM top_close_constituency_candidates WHERE ranking <=10;
 
-CREATE OR REPLACE VIEW close_constituency_winners (election_id, party_id, constituency_id, candidate_id, ranking) AS (
-    WITH constituency_second_winners (constituency_id, candidate_id, count) AS (
-        SELECT constituency_id, candidate_id, count FROM (
-                                                           SELECT constituency_id, candidate_id, count, row_number() OVER (PARTITION BY constituency_id ORDER BY count DESC) AS ranking
-                                                           FROM candidate_results) t
-        WHERE t.ranking=2
-    ), constituency_winners_votes_diff (constituency_id, candidate_id, party_id, votes_diff) AS (
-        SELECT w.constituency_id, w.candidate_id, party_id, w.count - sw.count
-        FROM constituency_winners w JOIN candidate USING (candidate_id)
-          JOIN constituency_second_winners sw
-          USING (constituency_id)
-    )
-
-    SELECT election_id, party_id, constituency_id, candidate_id, ranking
-    FROM (SELECT election_id, party_id, constituency_id, candidate_id, row_number() OVER (PARTITION BY party_id ORDER BY votes_diff DESC) AS ranking
-          FROM party
-            JOIN constituency_winners_votes_diff USING (party_id)) t
-);
-
-
-CREATE OR REPLACE VIEW close_constituency_loosers (election_id, party_id, constituency_id, candidate_id, ranking) AS (
-
-    WITH constituency_loosers (constituency_id, candidate_id, count) AS (
-        SELECT constituency_id, candidate_id, count
-        FROM candidate_results r1
-        WHERE candidate_id NOT IN (
-          SELECT candidate_id
-          FROM constituency_winners
-        )
-    ), constituency_loosers_votes_diff (constituency_id, candidate_id, party_id, votes_diff) AS (
-        SELECT constituency_id, cl.candidate_id, party_id, (cw.count - cl.count)
-        FROM constituency_loosers cl JOIN candidate USING (candidate_id)
-          JOIN constituency_winners cw
-          USING (constituency_id)
-    )
-
-    SELECT election_id, party_id, constituency_id, candidate_id, ranking
-    FROM (SELECT election_id, party_id, constituency_id, candidate_id, row_number() OVER (PARTITION BY party_id ORDER BY votes_diff DESC) AS ranking
-          FROM party
-            JOIN constituency_loosers_votes_diff USING (party_id)) t
-    ORDER BY ranking
-);
-
 CREATE OR REPLACE VIEW top_close_constituency_candidates (election_id, party_id, constituency_id, candidate_id, ranking, type) AS (
+    WITH candidate_ranking (election_id, party_id, constituency_id, candidate_id, count, ranking) AS (
+        SELECT election_id, party_id, constituency_id, candidate_id, count,
+          row_number() OVER (PARTITION BY constituency_id ORDER BY count DESC)
+        FROM candidate_results
+          JOIN candidate USING (candidate_id)
+    ),
+    constituency_winners_diff (election_id, party_id, constituency_id, candidate_id, diff) AS (
+        SELECT election_id, w.party_id, constituency_id, w.candidate_id, w.count - sw.count
+        FROM candidate_ranking w
+          JOIN candidate_ranking sw USING (election_id, constituency_id)
+        WHERE w.ranking = 1 AND sw.ranking = 2
+    ),
+    constituency_losers_diff (election_id, party_id, constituency_id, candidate_id, diff) AS (
+        SELECT election_id, l.party_id, constituency_id, l.candidate_id, w.count - l.count
+        FROM candidate_ranking w
+          JOIN candidate_ranking l USING (election_id, constituency_id)
+        WHERE w.ranking = 1 AND l.ranking > 1
+    ),
+    close_constituency_winners (election_id, party_id, constituency_id, candidate_id, ranking) AS (
+        SELECT election_id, party_id, constituency_id, candidate_id,
+          row_number() OVER (PARTITION BY party_id ORDER BY diff ASC)
+        FROM constituency_winners_diff
+    ),
+    close_constituency_losers (election_id, party_id, constituency_id, candidate_id, ranking) AS (
+        SELECT election_id, party_id, constituency_id, candidate_id,
+          row_number() OVER (PARTITION BY party_id ORDER BY diff ASC)
+        FROM constituency_losers_diff
+    )
     SELECT *, 'W'
     FROM close_constituency_winners
-  UNION ALL
+    UNION ALL
     SELECT *, 'L'
-    FROM close_constituency_loosers
-    WHERE (party_id) NOT IN (SELECT party_id
-                                            FROM close_constituency_winners)
+    FROM close_constituency_losers
+    WHERE party_id NOT IN (SELECT DISTINCT party_id FROM close_constituency_winners)
+    ORDER BY ranking ASC
 );
 
 -- Query 7: Show election results without using aggregated data.

@@ -56,7 +56,7 @@ class BenchmarkProvider extends AbstractProvider
 		}
 
 		$query = $this->prepareQuery("
-			SELECT c.name AS name, s.name AS state, co.name AS constituency, p.name AS party, bc.directcandidate
+			SELECT c.name AS name, s.name AS state, co.name AS constituency, p.name AS party, bc.direct_candidate
 		    FROM bundestag_candidates bc
 	        JOIN candidate c USING(candidate_id, party_id)
 	        JOIN state s USING(state_id)
