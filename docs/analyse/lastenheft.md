@@ -10,16 +10,16 @@ Das Wahlsystem ist als Webapplikation konzipiert und stellt dort zusätzlich zu 
 
 Das Wahlinformationssystem wird von den folgenden Benutzergruppen über die Webschnittstelle verwendet:
 
-####Analytiker
+#### Analytiker
 Die erste Gruppe ist die der "Analytiker", die das Webangebot ohne Authenitifizierung anonym nutzen können. Diese informieren sich typischerweise über die Ergebnisse der Bundestagswahl und vergleichen diese mit Ergebnissen aus den vorherigen Jahren. Dabei haben sie zudem die Möglichkeit, die Informationen auf verschiedenen Granularitätsebenen zu betrachten (beispielsweise auf der Ebene eines Wahlkreises oder Bundeslandes).
 
-####Wähler
+#### Wähler
 Die Gruppe der Wähler hat, nach der Idenfitikation mit dem System, die Möglichkeit für eine laufende Bundestagswahl seine Stimme abzugeben. Dabei muss natürlich berücksichtigt werden, dass eine Mehrfachabstimmung für eine Bundestagswahl nicht möglich ist. Die Unterstützung dieser Benutzergruppe ist erst für eine zukünftige Version des **WIS** geplant.
 
-####Wahllokalleiter
+#### Wahllokalleiter
 Repräsentativ für ein Wahllokal steht der Wahllokalleiter. Dessen Verantwortlichkeit liegt in dem Einpflegen in das **WIS** von abgegebenen Stimmen während einer laufenden Bundestagswahl. Dadurch wird es der Benutzergruppe der Analytiker ermöglicht eine zeitnahe Hochrechnung bei einer laufenden Wahl einsehen zu können.
 
-####Administrator
+#### Administrator
 Administratoren des Systems haben die Verantwortlichkeit der Stammdatenverwaltung. Darunter fällt beispielsweise das Anlegen einer neuen Wahl und der dazugehörigen Aufteilung in Bundesländer, Wahlkreise, Wahlbezirke etc. Ferner fällt die Benutzer- und Gruppenverwaltung in das Aufgabengebiet des Administrators.
 
 ## Benutzer-Schnittstelle
@@ -33,7 +33,7 @@ Wie bereits angesprochen wird das Wahlinformationssystem über ein Web-Frontend 
 ### Analytiker
 
 1. Als Analytiker möchte ich Wahlergebnisse bundesweit, pro Bundesland sowie pro Wahlkreis vergleichen.
-2. Als Analytiker möchte ich Wahlergebnisse (bundesweit, pro Bundesland sowie pro Wahlkreis) aus verschiedenen Jahren vergleichen.
+2. Als Analytiker möchte ich Wahlergebnisse (bundesweit, pro Bundesland sowie pro Wahlkreis) mit der letzten Wahl vergleichen.
 3. Als Analytiker möchte ich den Gewinner eines Wahlkreises (vgl. Direktmandat) ermitteln.
 4. Als Analytiker möchte ich alle Mandate innerhalb eines Bundeslands (bzw. auch bundesweit) auflisten.
 5. Als Analytiker möchte ich alle Koalitionsmöglichkeiten für ein beliebiges Wahlergebnis bestimmen.
@@ -47,11 +47,10 @@ Wie bereits angesprochen wird das Wahlinformationssystem über ein Web-Frontend 
 
 ### Wahllokalleiter
 
-1. Als Wahllokalleiter möchte ich abgegebene Stimmen in das System einpflegen können.
-2. Als Wahllokalleiter möchte ich im Fehlerfall Wahlstimmen einer aktuellen Wahl ändern können.
-3. Als Wahllokalleiter muss ich mich eindeutig authentifiziert haben, um auf das System zugreifen zu können.
+1. Als Wahllokalleiter möchte ich Wähler vorort zur Wahl freischalten können.
+2. Als Wahllokalleiter möchte ich mich authentifizieren oder auf einem verschlüsselten Kanal auf das Wahlsystem zugreifen, um sicheren Zugang zum System zu erlangen.
 
-### Administrator
+### Administrator (optional)
 
 1. Als Administrator möchte ich eine anstehende Wahl hinzufügen, ändern oder löschen.
 2. Als Administrator möchte ich eine beliebige Partei hinzufügen, ändern oder löschen.
@@ -73,66 +72,7 @@ Wie bereits angesprochen wird das Wahlinformationssystem über ein Web-Frontend 
 
 ## Abnahmeszenarien
 
-### Szenario 1: Authentifizierung als
-
-**Schritte:**
-
- - Zugriff auf eine geschützte Seite ohne Login.
- - Einloggen mit falschen Benutzerdaten.
- - Einloggen mit korrekten Benutzerdaten.
-
-**Erwartete Resultate:**
-
- - Zugriff ohne Login war nicht möglich.
- - Login mit falschen Benutzerdaten war nicht möglich.
- - Login mit korrekten Benutzerdaten war möglich.
-
-### Szenario 2: Wartung von Parteidaten
-
-**Schritte:**
-
- - Hinzufügen einer neuen Partei und Hochladen eines Bildes.
- - Ändern des Namens einer bestehenen Partei.
- - Ändern des Bildes einer bestehenden Partei.
- - Löschen einer bestehenden Partei.
-
-**Erwartete Resultate:**
-
- - Die gespeicherten Daten sind persistiert.
- - Vergangene Wahlen müssen von diesen Änderungen unberührt bleiben.
- - Zukünftige Wahlen werden mit den neuen Informationen aktualisiert.
- - Die Änderungen sind auf der Webseite sichtbar.
-
-### Szenario 3: Wartung demographischer Daten
-
-**Schritte:**
-
- - Hinzufügen eines neuen Wahlkreises.
- - Hinzufügen von Wahllokalen zu dem neuen Wahlkreis .
- - Ändern der Einwohnerzahl eines Wahlkreises.
- - Ändern der Einwohnerzahl eines Wahrkreises mit zu großer Abweichung vom Durchschnitt.
-
-**Erwartete Resultate:**
-
- - Die gespeicherten Daten sind persistiert.
- - Vergangene Wahlen müssen von diesen Änderungen unberührt bleiben.
- - Zukünftige Wahlen werden mit den neuen Informationen aktualisiert.
- - Das Speichern des Wahlkreises mit zu großer Abweichung von der durchschnittlichen Einwohnerzahl war nicht möglich.
- - Die Einwohnerzahlen der Bundesländer wurden basierend auf den neuen Informationen der Wahlkreise aktualisiert.
-
-### Szenario 4: Wartung von Wahldaten
-
-**Schritte:**
-
- - Erstellen einer neuen Wahl.
- - Auswahl der kandidierenden Parteien.
- - Hinzufügen von Kandidaten zu den Landeslisten und Wahlkreisen.
-
-**Erwartete Resultate:**
-
- - Die gespeicherten Daten sind persistiert.
-
-### Szenario 5: Auswertung von Wahlergebnissen
+### Szenario 1: Auswertung von Wahlergebnissen
 
  - Eintragen der letzten Wahlergebnisse zur Auswertung.
  - Bundesweite Abfrage der Zweitstimmen.
@@ -144,3 +84,37 @@ Wie bereits angesprochen wird das Wahlinformationssystem über ein Web-Frontend 
 **Erwartete Resultate:**
 
  - Die Auswertungen stimmen mit den tatsächlichen Wahlergebnissen überein.
+ 
+### Szenario 2: Registrieren eines neuen Wählers
+
+ - Wählen des Wahlkreises, sofern noch nicht geschehen
+ - Eintragen der Personalausweisnummer
+ - Ausdrucken des Wahlschlüssels
+
+**Erwartete Resultate:**
+ 
+ - Der Nutzer erhält einen Wahlschlüssel
+ - Der Wahlschlüssel kann über einen Standarddialog ausgedruckt werden
+ 
+   
+### Szenario 3: Registrieren eines vorhanenden Wählers
+
+ - Wählen des Wahlkreises, sofern noch nicht geschehen
+ - Eintragen einer bereits registrierten Personalausweisnummer
+ 
+**Erwartete Resultate:**
+ 
+ - Eine Fehlermeldung wird ausgegeben
+  
+### Szenario 4: Elektronische Stimmabgabe
+ 
+ - Anmeldung mit dem persönlichen Wahlschlüssel
+ - Auswahl der Erst- und Zweitstimme
+ - Review der abgegebenen Stimme
+ - Absenden
+  
+ **Erwartete Resultate:**
+ 
+ - Der elektronische Stimmzettel wird nach Eingabe des Wahlschlüssels angezeigt
+ - Die Stimmen des Wählers werden angezeigt (inkl. **UNGÜLTIG** bei keiner Stimmabgabe)
+ - Erfolgsnachricht nach finalem Absenden

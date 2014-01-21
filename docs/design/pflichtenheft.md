@@ -10,16 +10,16 @@ Das Wahlsystem ist als Webapplikation konzipiert und stellt dort zusätzlich zu 
 
 Das Wahlinformationssystem wird von den folgenden Benutzergruppen über die Webschnittstelle verwendet:
 
-####Analytiker
+#### Analytiker
 Die erste Gruppe ist die der "Analytiker", die das Webangebot ohne Authenitifizierung anonym nutzen können. Diese informieren sich typischerweise über die Ergebnisse der Bundestagswahl und vergleichen diese mit Ergebnissen aus den vorherigen Jahren. Dabei haben sie zudem die Möglichkeit, die Informationen auf verschiedenen Granularitätsebenen zu betrachten (beispielsweise auf der Ebene eines Wahlkreises oder Bundeslandes).
 
-####Wähler
+#### Wähler
 Die Gruppe der Wähler hat, nach der Idenfitikation mit dem System, die Möglichkeit für eine laufende Bundestagswahl seine Stimme abzugeben. Dabei muss natürlich berücksichtigt werden, dass eine Mehrfachabstimmung für eine Bundestagswahl nicht möglich ist. Die Unterstützung dieser Benutzergruppe ist erst für eine zukünftige Version des **WIS** geplant.
 
-####Wahllokalleiter
+#### Wahllokalleiter
 Repräsentativ für ein Wahllokal steht der Wahllokalleiter. Dessen Verantwortlichkeit liegt in dem Einpflegen in das **WIS** von abgegebenen Stimmen während einer laufenden Bundestagswahl. Dadurch wird es der Benutzergruppe der Analytiker ermöglicht eine zeitnahe Hochrechnung bei einer laufenden Wahl einsehen zu können.
 
-####Administrator
+#### Administrator
 Administratoren des Systems haben die Verantwortlichkeit der Stammdatenverwaltung. Darunter fällt beispielsweise das Anlegen einer neuen Wahl und der dazugehörigen Aufteilung in Bundesländer, Wahlkreise, Wahlbezirke etc. Ferner fällt die Benutzer- und Gruppenverwaltung in das Aufgabengebiet des Administrators.
 
 ## Benutzer-Schnittstelle
@@ -88,71 +88,63 @@ Als Wähler muss ich mich eindeutig authentifiziert haben, um eine Stimme abgebe
 
 `WL01` `Must-Have`
 
-Als Wahllokalleiter möchte ich abgegebene Stimmen in das System einpflegen können.
+Als Wahllokalleiter möchte ich Wähler vorort zur Wahl freischalten können.
 
------
+`WL02` `Should-Have`
 
-`WL02` `Must-Have`
+Als Wahllokalleiter möchte ich mich authentifizieren oder auf einem verschlüsselten Kanal auf das Wahlsystem zugreifen, um sicheren Zugang zum System zu erlangen.
 
-Als Wahllokalleiter möchte ich im Fehlerfall Wahlstimmen einer aktuellen Wahl ändern können.
+### Administrator (optional)
 
------
-
-`WL03` `Must-Have`
-
-Als Wahllokalleiter muss ich mich eindeutig authentifiziert haben, um auf das System zugreifen zu können.
-
-### Administrator
-
-`AD01` `Must-Have`
+`AD01` `Could-Have`
 
 Als Administrator möchte ich eine anstehende Wahl hinzufügen, ändern oder löschen.
 
 -----
 
-`AD02` `Must-Have`
+`AD02` `Could-Have`
 
 Als Administrator möchte ich eine beliebige Partei hinzufügen, ändern oder löschen.
 
 -----
 
-`AD03` `Must-Have`
+`AD03` `Could-Have`
 
 Als Administrator möchte ich die Länderliste einer beliebigen Partei für eine anstehende Wahl hinzufügen, ändern oder löschen.
 
 -----
 
-`AD04` `Must-Have`
+`AD04` `Could-Have`
 
 Als Administrator möchte ich den Direktkandidaten eines beliebigen Wahlkreises für eine anstehende Wahl hinzufügen, ändern oder löschen.
 
 -----
 
-`AD05` `Must-Have`
+`AD05` `Could-Have`
 
 Als Administrator möchte ich ein beliebiges Bundesland hinzufügen, ändern oder löschen.
 
 -----
 
-`AD06` `Must-Have`
+`AD06` `Could-Have`
 
 Als Administrator möchte ich einen beliebigen Wahlkreis hinzufügen, ändern oder löschen.
 
 -----
 
-`AD07` `Must-Have`
+`AD07` `Could-Have`
 
 Als Administrator möchte ich einen beliebigen Wahlbezirk hinzufügen, ändern oder löschen.
 
 -----
 
-`AD08` `Must-Have`
+`AD08` `Could-Have`
 
 Als Administrator möchte ich ein beliebiges Wahllokal hinzufügen, ändern oder löschen.
 
 -----
 
-`AD09` `Must-Have`
+`AD09` `Could-Have`
 
 Als Administrator muss ich mich eindeutig authentifiziert haben, um auf das System zugreifen zu können.
 
@@ -210,7 +202,22 @@ Doctrine erhält das Schema der Datenbank durch anotierte Datenklassen, sogenann
 
 #### Backend
 
-*Hier wird die Grobarchitektur des Systems nach den ersten Designschritten festgehalten.*
+Der Server ist in eine mehrschichtige Architektur unterteilt:
+
+1. **Präsentationsschicht** - Controller
+2. **Geschäftslogik** - Provider
+3. **Persistenzschicht** - Repository und Doctrine
+
+In der folgenden grafik sind die Schichten und ihre Komponenten näher dargestellt. Weitere Dokumentation findet sich in Form von phpDoc-Kommentaren über den Klassen im Quelltext.
+
+![Architektur](architektur.png)
+
+
+#### Frontend
+
+Das Frontend wird mit dem MVC-Framework *AngularJS* entwickelt, das neben der Loslösung von Benutzeroberflächen und Präsentationslogik mittels des MVVM-Prinzips außerdem *Dependency Injection* und Browserunabhängigkeit bei Ajax-Anfragen ermöglicht. 
+
+Die Detailansicht einer Wahl wird vom `DetailController` verwaltet, der die Wahldaten vom Server per Ajax lädt und in einem `ElectionService` abspeichert. Dieser Service bietet vereinfachten Zugriff auf Wahlergebnisse unterschiedlicher Granularitäten durch Querverweise zwischen den aggregierten Wahlergebnissen, Kandidaten und demographischen Einheiten.
 
 ### GUI-Mockups
 Die nachfolgende Übersicht gibt einen Einblick in die Navigation der Webapplikation. Dabei besteht die Webseite aus zwei zentralen Startpunkten: Zum einen der Login-Bereich für Wähler, der nur innerhalb eines Wahllokals aufrufbar ist und das Abgeben einer Stimme vom Wähler direkt ermöglichen wird. Dem gegenüber steht die Startseite des **WIS**, die im Internet erreichbar ist und den Zugriff auf weitere Analysen, sowie dem Administrations- und Wahllokalbereich ermöglicht.
@@ -219,66 +226,7 @@ Die nachfolgende Übersicht gibt einen Einblick in die Navigation der Webapplika
 
 ## Abnahmeszenarien
 
-### Szenario 1: Authentifizierung als
-
-**Schritte:**
-
- - Zugriff auf eine geschützte Seite ohne Login.
- - Einloggen mit falschen Benutzerdaten.
- - Einloggen mit korrekten Benutzerdaten.
-
-**Erwartete Resultate:**
-
- - Zugriff ohne Login war nicht möglich.
- - Login mit falschen Benutzerdaten war nicht möglich.
- - Login mit korrekten Benutzerdaten war möglich.
-
-### Szenario 2: Wartung von Parteidaten
-
-**Schritte:**
-
- - Hinzufügen einer neuen Partei und Hochladen eines Bildes.
- - Ändern des Namens einer bestehenen Partei.
- - Ändern des Bildes einer bestehenden Partei.
- - Löschen einer bestehenden Partei.
-
-**Erwartete Resultate:**
-
- - Die gespeicherten Daten sind persistiert.
- - Vergangene Wahlen müssen von diesen Änderungen unberührt bleiben.
- - Zukünftige Wahlen werden mit den neuen Informationen aktualisiert.
- - Die Änderungen sind auf der Webseite sichtbar.
-
-### Szenario 3: Wartung demographischer Daten
-
-**Schritte:**
-
- - Hinzufügen eines neuen Wahlkreises.
- - Hinzufügen von Wahllokalen zu dem neuen Wahlkreis .
- - Ändern der Einwohnerzahl eines Wahlkreises.
- - Ändern der Einwohnerzahl eines Wahrkreises mit zu großer Abweichung vom Durchschnitt.
-
-**Erwartete Resultate:**
-
- - Die gespeicherten Daten sind persistiert.
- - Vergangene Wahlen müssen von diesen Änderungen unberührt bleiben.
- - Zukünftige Wahlen werden mit den neuen Informationen aktualisiert.
- - Das Speichern des Wahlkreises mit zu großer Abweichung von der durchschnittlichen Einwohnerzahl war nicht möglich.
- - Die Einwohnerzahlen der Bundesländer wurden basierend auf den neuen Informationen der Wahlkreise aktualisiert.
-
-### Szenario 4: Wartung von Wahldaten
-
-**Schritte:**
-
- - Erstellen einer neuen Wahl.
- - Auswahl der kandidierenden Parteien.
- - Hinzufügen von Kandidaten zu den Landeslisten und Wahlkreisen.
-
-**Erwartete Resultate:**
-
- - Die gespeicherten Daten sind persistiert.
-
-### Szenario 5: Auswertung von Wahlergebnissen
+### Szenario 1: Auswertung von Wahlergebnissen
 
  - Eintragen der letzten Wahlergebnisse zur Auswertung.
  - Bundesweite Abfrage der Zweitstimmen.
@@ -290,3 +238,37 @@ Die nachfolgende Übersicht gibt einen Einblick in die Navigation der Webapplika
 **Erwartete Resultate:**
 
  - Die Auswertungen stimmen mit den tatsächlichen Wahlergebnissen überein.
+ 
+### Szenario 2: Registrieren eines neuen Wählers
+
+ - Wählen des Wahlkreises, sofern noch nicht geschehen
+ - Eintragen der Personalausweisnummer
+ - Ausdrucken des Wahlschlüssels
+
+**Erwartete Resultate:**
+ 
+ - Der Nutzer erhält einen Wahlschlüssel
+ - Der Wahlschlüssel kann über einen Standarddialog ausgedruckt werden
+ 
+   
+### Szenario 3: Registrieren eines vorhanenden Wählers
+
+ - Wählen des Wahlkreises, sofern noch nicht geschehen
+ - Eintragen einer bereits registrierten Personalausweisnummer
+ 
+**Erwartete Resultate:**
+ 
+ - Eine Fehlermeldung wird ausgegeben
+  
+### Szenario 4: Elektronische Stimmabgabe
+ 
+ - Anmeldung mit dem persönlichen Wahlschlüssel
+ - Auswahl der Erst- und Zweitstimme
+ - Review der abgegebenen Stimme
+ - Absenden
+  
+ **Erwartete Resultate:**
+ 
+ - Der elektronische Stimmzettel wird nach Eingabe des Wahlschlüssels angezeigt
+ - Die Stimmen des Wählers werden angezeigt (inkl. **UNGÜLTIG** bei keiner Stimmabgabe)
+ - Erfolgsnachricht nach finalem Absenden
