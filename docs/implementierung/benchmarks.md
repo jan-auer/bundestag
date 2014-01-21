@@ -56,8 +56,8 @@ Nachfolgend sind die Ergebnisse des Benchmarks für einen vollständige Workload
 
 Vergleicht man die Auswirkungen der Parameteränderungen bei einem Workload-Mix so fällt auf, dass die Anzahl der Terminals einen größeren Einfluss auf die Performance der Anwendung hat.
 
-![Auswirkungen unterschiedlicher Terminalanzahl (*n*)](diagram_1.png)
-![Auswirkungen unterschiedlicher Wartezeiten (*t*)](diagram_2.png)
+![Auswirkungen unterschiedlicher Terminalanzahl (*n*)](benchmarks/diagram_1.png)
+![Auswirkungen unterschiedlicher Wartezeiten (*t*)](benchmarks/diagram_2.png)
 
 
 ### Query-Ergebnisse
