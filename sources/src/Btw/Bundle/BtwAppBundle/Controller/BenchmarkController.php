@@ -104,7 +104,7 @@ class BenchmarkController extends Controller
 	 */
 	private function getBenchmarkProvider() {
 		if ($this->benchmarkProvider == null) {
-			$$this->benchmarkProvider = $this->get("btw_benchmark_provider");
+			$this->benchmarkProvider = $this->get("btw_benchmark_provider");
 		}
 		return $this->benchmarkProvider;
 	}
