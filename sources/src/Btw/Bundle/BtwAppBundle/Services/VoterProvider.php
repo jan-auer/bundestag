@@ -41,7 +41,7 @@ class VoterProvider
 
 		$this->beginTransaction();
 
-		$query = $this->prepareQuery("INSERT INTO voter (identityNumber, hash, constituency_id, voted, election_id) VALUES (:identityNumber, :hash, :constituencyId, :voted, :electionId)");
+		$query = $this->prepareQuery("INSERT INTO voter (identity_number, hash, constituency_id, voted, election_id) VALUES (:identityNumber, :hash, :constituencyId, :voted, :electionId)");
 		$query->bindValue('identityNumber', $identityNumber);
 		$query->bindValue('hash', $hash);
 		$query->bindValue('constituencyId', $constituency->getId());
