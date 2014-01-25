@@ -6,24 +6,38 @@ use Btw\Bundle\PersistenceBundle\Entity\Election;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
-class ElectionProvider
-	extends AbstractProvider
+/**
+ * Provides access to {@link Election} entities.
+ */
+class ElectionProvider extends AbstractProvider
 {
 
 	/** @var  EntityRepository */
 	private $repository;
 
+	/**
+	 * @param EntityManager $entityManager
+	 */
 	function __construct(EntityManager $entityManager)
 	{
 		parent::__construct($entityManager);
 	}
 
+	/**
+	 * Returns an election identified by the given id.
+	 *
+	 * @param int $id The id of the election.
+	 *
+	 * @return Election
+	 */
 	public function byId($id)
 	{
 		return $this->getMyRepository()->find($id);
 	}
 
 	/**
+	 * Returns a list of all elections.
+	 *
 	 * @return Election[]
 	 */
 	public function getAll()
@@ -32,21 +46,24 @@ class ElectionProvider
 	}
 
 	/**
+	 * Returns a list of all election years.
+	 *
 	 * @return int[]
 	 */
 	public function getAllYears()
 	{
 		return array_map(function ($election) {
+			/** @var Election $election */
 			return date('Y', $election->getDate()->getTimestamp());
 		}, $this->getAll());
 	}
 
 	/**
-	 * @param string $year
+	 * Returns an election for the given year or null, if no election was held in this year.
 	 *
-	 * @return Election|null
+	 * @param string|int $year The year of the election.
 	 *
-	 * @todo Use a DQL query.
+	 * @return Election
 	 */
 	public function forYear($year)
 	{
@@ -54,32 +71,37 @@ class ElectionProvider
 		$elections = $this->getMyRepository()->findAll();
 
 		foreach ($elections as $election) {
-			if (date('Y', $election->getDate()->getTimestamp()) == $year)
+			if (date('Y', $election->getDate()->getTimestamp()) == $year) {
 				return $election;
+			}
 		}
 
-		return null;
-	}
-
-	public function getLatest() {
-		$qb = $this->getEntityManager()->createQueryBuilder();
-		$qb->select('e')
-			->from('Btw\Bundle\PersistenceBundle\Entity\Election', 'e')
-			->orderBy('e.date', 'DESC')
-			->setMaxResults(1);
-
-		$query = $qb->getQuery();
-		$result = $query->getResult();
-		if(is_array($result)) {
-			return $result[0];
-		}
 		return null;
 	}
 
 	/**
-	 * @param Election $election
+	 * Returns the latest election, if any.
 	 *
-	 * @return Election|null
+	 * @return Election
+	 */
+	public function getLatest()
+	{
+		$query = $this->getEntityManager()->createQuery('
+			SELECT e
+			FROM Btw\Bundle\PersistenceBundle\Entity\Election e
+			ORDER BY e.date DESC');
+
+		$query->setMaxResults(1);
+		$results = $query->getResult();
+		return is_array($results) ? $results[0] : null;
+	}
+
+	/**
+	 * Returns the predecessor to the given election.
+	 *
+	 * @param Election $election The preceding election to the result.
+	 *
+	 * @return Election
 	 */
 	public function getPreviousElectionFor(Election $election)
 	{

@@ -6,15 +6,23 @@ use Btw\Bundle\BtwAppBundle\Model\ClosestCandidate;
 use Btw\Bundle\PersistenceBundle\Entity\Party;
 use Doctrine\ORM\EntityManager;
 
-class ClosestCandidatesProvider
-	extends AbstractProvider
+/**
+ * Computes a list of closest winners or losers of a party.
+ */
+class ClosestCandidatesProvider extends AbstractProvider
 {
+
+	/**
+	 * @param EntityManager $entityManager
+	 */
 	function __construct(EntityManager $entityManager)
 	{
 		parent::__construct($entityManager);
 	}
 
 	/**
+	 * Returns the closest winners or losers for the given party.
+	 *
 	 * @param Party $party
 	 *
 	 * @return ClosestCandidate[]
@@ -33,4 +41,5 @@ class ClosestCandidatesProvider
 			return ClosestCandidate::fromArray($result);
 		});
 	}
+
 }

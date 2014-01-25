@@ -1,16 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: schaefep
- * Date: 07.01.14
- * Time: 21:13
- */
 
 namespace Btw\Bundle\BtwAppBundle\Services;
 
-use Btw\Bundle\PersistenceBundle\Entity\StateList;
 use Btw\Bundle\PersistenceBundle\Entity\State;
+use Btw\Bundle\PersistenceBundle\Entity\StateList;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 
+/**
+ * Provides access to {@link StateList} entities.
+ */
 class StateListProvider extends AbstractProvider
 {
 
@@ -18,7 +17,18 @@ class StateListProvider extends AbstractProvider
 	private $repository;
 
 	/**
-	 * @param $id
+	 * @param EntityManager $entityManager
+	 */
+	function __construct(EntityManager $entityManager)
+	{
+		parent::__construct($entityManager);
+	}
+
+	/**
+	 * Returns a state list entity identified by the given id.
+	 *
+	 * @param int $id The identifier of the state list.
+	 *
 	 * @return StateList
 	 */
 	public function byId($id)
@@ -27,13 +37,16 @@ class StateListProvider extends AbstractProvider
 	}
 
 	/**
-	 * @param State $state
+	 * Returns all state lists of the given state. That is a list of all parties
+	 * running for seats in that state.
+	 *
+	 * @param State $state The state to get parties (state lists) for.
 	 *
 	 * @return StateList[]
 	 */
 	public function forState(State $state)
 	{
-		$stateList = $this->getRepository('StateList')->findBy(array('state' => $state));
+		$stateList = $this->getMyRepository()->findBy(array('state' => $state));
 		return $stateList;
 	}
 
@@ -47,4 +60,5 @@ class StateListProvider extends AbstractProvider
 		}
 		return $this->repository;
 	}
-} 
+
+}

@@ -63,7 +63,7 @@ class Voter
 	 * @var boolean
 	 * @ORM\Column(name="voted", type="boolean")
 	 */
-	private $voted;
+	private $voted = false;
 
 	/**
 	 * @param Election $election
@@ -142,7 +142,7 @@ class Voter
 	}
 
 	/**
-	 * @param \Btw\Bundle\PersistenceBundle\Entity\Constituency $constituency
+	 * @param Constituency $constituency
 	 *
 	 * @return Voter
 	 */
@@ -153,11 +153,22 @@ class Voter
 	}
 
 	/**
-	 * @return \Btw\Bundle\PersistenceBundle\Entity\Constituency
+	 * @return Constituency
 	 */
 	public function getConstituency()
 	{
 		return $this->constituency;
+	}
+
+	/**
+	 * @param boolean $voted
+	 *
+	 * @return Voter
+	 */
+	public function setVoted($voted)
+	{
+		$this->voted = $voted;
+		return $this;
 	}
 
 	/**

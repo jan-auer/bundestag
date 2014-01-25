@@ -8,10 +8,15 @@ use Btw\Bundle\BtwAppBundle\Model\VotesResult;
 use Btw\Bundle\PersistenceBundle\Entity\Election;
 use Doctrine\ORM\EntityManager;
 
-class PartyResultsProvider
-	extends AbstractProvider
+/**
+ * Provides election results for certain parties.
+ */
+class PartyResultsProvider extends AbstractProvider
 {
 
+	/**
+	 * @param EntityManager $entityManager
+	 */
 	function __construct(EntityManager $entityManager)
 	{
 		parent::__construct($entityManager);
@@ -45,11 +50,11 @@ class PartyResultsProvider
 	 *
 	 * @see ConstituencyProvider::getAllDetailsForElection
 	 */
-	public function getVotesForElection(Election $election, $previousElection)
+	public function getVotesForElection(Election $election, $previousElection = null)
 	{
-		if(is_null($previousElection)) {
+		if (is_null($previousElection)) {
 			$query = $this->prepareQuery("
-			SELECT state_id AS state, constituency_id AS constituency, party_id AS party, absoluteVotes :: INT AS votes
+			SELECT state_id AS state, constituency_id AS constituency, party_id AS party, absolutevotes :: INT AS votes
 			FROM constituency_votes cv
 			  JOIN constituency c USING (constituency_id)
 			  JOIN state s USING (election_id, state_id)
@@ -58,17 +63,17 @@ class PartyResultsProvider
 			WHERE date_part('Y', date) = :new");
 		} else {
 			$query = $this->prepareQuery("
-			SELECT state_id AS state, constituency_id AS constituency, party_id AS party, absoluteVotes :: INT AS votes, oldAbsoluteVotes :: INT AS votes_prev
+			SELECT state_id AS state, constituency_id AS constituency, party_id AS party, absolutevotes :: INT AS votes, oldabsolutevotes :: INT AS votes_prev
 			FROM constituency_votes cv
 			  JOIN constituency c USING (constituency_id)
 			  JOIN state s USING (election_id, state_id)
 			  JOIN party p USING (election_id, party_id)
 			  LEFT JOIN constituency_votes_history h ON (h.constituency_name = c.name AND p.abbreviation = h.party_abbreviation)
-			WHERE ( (date_part('Y', newDate) = :new AND date_part('Y', oldDate) = :old) OR (newDate IS NULL AND oldDate IS NULL) )
-			 AND election_id = :electionId");
+			WHERE ( (date_part('Y', newdate) = :new AND date_part('Y', olddate) = :old) OR (newdate IS NULL AND olddate IS NULL) )
+			 AND election_id = :election_id");
 
 			$query->bindValue('old', date('Y', $previousElection->getDate()->getTimestamp()));
-			$query->bindValue('electionId', $election->getId());
+			$query->bindValue('election_id', $election->getId());
 		}
 
 		$query->bindValue('new', date('Y', $election->getDate()->getTimestamp()));

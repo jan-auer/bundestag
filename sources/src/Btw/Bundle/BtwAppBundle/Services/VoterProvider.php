@@ -3,100 +3,102 @@
 namespace Btw\Bundle\BtwAppBundle\Services;
 
 use Btw\Bundle\PersistenceBundle\Entity\Constituency;
+use Btw\Bundle\PersistenceBundle\Entity\FirstResult;
 use Btw\Bundle\PersistenceBundle\Entity\Voter;
 use Doctrine\DBAL\DBALException;
 
-class VoterProvider
-	extends AbstractProvider
+class VoterProvider extends AbstractProvider
 {
 
 	/**
-	 * Value for delimiting identitynumber of voter and election id in the hash.
+	 * Value for delimiting identity number of voter and election id in the hash.
 	 */
 	const DELIMITER_HASH = "|";
 
 	/**
-	 * @param $hash
+	 * Returns a voter identified by the given hash.
+	 *
+	 * @param string $hash A secret token handed to the voter.
 	 *
 	 * @return Voter
 	 */
 	public function byHash($hash)
 	{
-		$voter = $this->em->getRepository('Btw\Bundle\PersistenceBundle\Entity\Voter')->findBy(array('hash' => $hash));
-		if (is_array($voter) && count($voter)) {
-			return $voter[0];
-		}
-		return null;
+		$voter = $this->getRepository('Voter')->findBy(array('hash' => $hash));
+		return is_array($voter) && count($voter) ? $voter[0] : null;
 	}
 
 	/**
-	 * @param int $identityNumber
-	 * @param Constituency $constituency
+	 * Creates a new voter entity.
 	 *
-	 * @return String
+	 * @param int          $identityNumber The identity card number of the voter.
+	 * @param Constituency $constituency   The constituency, this voter is registered in.
+	 *
+	 * @return String The voter hash.
 	 */
 	public function createVoter($identityNumber, Constituency $constituency)
 	{
 		$hash = md5($identityNumber . self::DELIMITER_HASH . $constituency->getElection()->getId());
 
-		$this->beginTransaction();
-
-		$query = $this->prepareQuery("INSERT INTO voter (identity_number, hash, constituency_id, voted, election_id) VALUES (:identityNumber, :hash, :constituencyId, :voted, :electionId)");
-		$query->bindValue('identityNumber', $identityNumber);
-		$query->bindValue('hash', $hash);
-		$query->bindValue('constituencyId', $constituency->getId());
-		$query->bindValue('voted', 'FALSE');
-		$query->bindValue('electionId', $constituency->getElection()->getId());
+		$voter = new Voter();
+		$voter->setConstituency($constituency);
+		$voter->setHash($hash);
+		$voter->setIdentityNumber($identityNumber);
+		$voter->setElection($constituency->getElection());
 
 		try {
-			$this->executeQuery($query);
+			$this->beginTransaction();
+			$this->getEntityManager()->persist($voter);
+			$this->getEntityManager()->flush();
 			$this->commit();
 			return $hash;
 		} catch (DBALException $e) {
-			$this->rollback();
 			return null;
 		}
 	}
 
 	/**
-	 * @param $voterHash hash of voter
-	 * @param $candidateId first vote
-	 * @param $stateListId second vote
-	 * @return bool true in case of successfull vote, false otherwise
+	 * Adds a new vote to the system.
+	 *
+	 * @param string $voterHash   The secret token of the voter (hash).
+	 * @param int    $candidateId The first vote (candidate).
+	 * @param int    $stateListId The second vote (party / state list).
+	 *
+	 * @return bool True in case of success; false otherwise.
 	 */
 	public function vote($voterHash, $candidateId, $stateListId)
 	{
 		$voter = $this->byHash($voterHash);
 		if ($voter == null || $voter->getVoted()) {
 			return false;
-		} else {
+		}
+
+		try {
 			$this->beginTransaction();
 
 			if (!is_null($candidateId)) {
-				$firstVoteQuery = $this->prepareQuery("INSERT INTO first_result (candidate_id) VALUES (:candidateId)");
-				$firstVoteQuery->bindValue('candidateId', $candidateId);
-				$firstVote = $firstVoteQuery->execute();
+				$firstVoteQuery = $this->prepareQuery("INSERT INTO first_result (candidate_id) VALUES (:candidate_id)");
+				$firstVoteQuery->bindValue('candidate_id', $candidateId);
+				$firstVoteQuery->execute();
 			}
+
 			if (!is_null($stateListId)) {
-				$secondVoteQuery = $this->prepareQuery("INSERT INTO second_result (state_list_id, constituency_id) VALUES (:stateListId, :constituencyId)");
-				$secondVoteQuery->bindValue('stateListId', $stateListId);
-				$secondVoteQuery->bindValue('constituencyId', $voter->getConstituency()->getId());
-				$secondVote = $secondVoteQuery->execute();
+				$secondVoteQuery = $this->prepareQuery("INSERT INTO second_result (state_list_id, constituency_id) VALUES (:state_list_id, :constituency_id)");
+				$secondVoteQuery->bindValue('state_list_id', $stateListId);
+				$secondVoteQuery->bindValue('constituency_id', $voter->getConstituency()->getId());
+				$secondVoteQuery->execute();
 			}
 
-			$votedQuery = $this->prepareQuery("UPDATE voter SET voted = TRUE WHERE hash = :hash");
-			$votedQuery->bindValue('hash', $voterHash);
-			$voted = $this->executeQuery($votedQuery);
+			$voter->setVoted(true);
+			$this->getEntityManager()->merge($voter);
 
-			if ($firstVote && $secondVote && $voted) {
-				try {
-					$this->commit();
-					return true;
-				} catch (DBALException $e) {
-					return false;
-				}
-			}
+			$this->getEntityManager()->flush();
+			$this->commit();
+
+			return true;
+		} catch (DBALException $e) {
+			return false;
 		}
-
 	}
+
 }

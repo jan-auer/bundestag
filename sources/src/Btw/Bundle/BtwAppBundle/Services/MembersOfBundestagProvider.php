@@ -8,10 +8,15 @@ use Btw\Bundle\PersistenceBundle\Entity\Election;
 use Btw\Bundle\PersistenceBundle\Entity\State;
 use Doctrine\ORM\EntityManager;
 
-class MembersOfBundestagProvider
-	extends AbstractProvider
+/**
+ * Provides access to the elected candidates (members).
+ */
+class MembersOfBundestagProvider extends AbstractProvider
 {
 
+	/**
+	 * @param EntityManager $entityManager
+	 */
 	function __construct(EntityManager $entityManager)
 	{
 		parent::__construct($entityManager);
@@ -24,8 +29,8 @@ class MembersOfBundestagProvider
 	 */
 	public function getAllForElection(Election $election)
 	{
-		$query = $this->prepareQuery("SELECT * FROM bundestag_candidates WHERE election_id = :electionId");
-		$query->bindValue('electionId', $election->getId());
+		$query = $this->prepareQuery("SELECT * FROM bundestag_candidates WHERE election_id = :election_id");
+		$query->bindValue('election_id', $election->getId());
 
 		return $this->executeMappedQuery($query, function ($result) {
 			return MemberOfBundestag::fromArray($result);
@@ -36,8 +41,6 @@ class MembersOfBundestagProvider
 	 * @param Election $election
 	 *
 	 * @return MemberOfBundestag[]
-	 *
-	 * @todo: use the view `elected_candidates` instead
 	 */
 	public function forCountry(Election $election)
 	{
@@ -61,7 +64,7 @@ class MembersOfBundestagProvider
 			WHERE c.election_id = :election AND c.candidate_id NOT IN (
 				SELECT c.candidate_id AS name
 				FROM candidate c, constituency_winners cw
-				WHERE c.candidate_id=cw.candidate_id AND c.election_id=:electionId
+				WHERE c.candidate_id=cw.candidate_id AND c.election_id=:election
 			)");
 
 		$query->bindValue('election', $election->getId());
@@ -76,8 +79,6 @@ class MembersOfBundestagProvider
 	 * @param State $state
 	 *
 	 * @return MemberOfBundestag[]
-	 *
-	 * @todo: use the view `elected_candidates` instead
 	 */
 	public function forState(State $state)
 	{
@@ -116,8 +117,6 @@ class MembersOfBundestagProvider
 	 * @param Constituency $constituency
 	 *
 	 * @return MemberOfBundestag[]
-	 *
-	 * @todo: use the view `elected_candidates` instead
 	 */
 	public function forConstituency(Constituency $constituency)
 	{
@@ -133,7 +132,6 @@ class MembersOfBundestagProvider
 		$direct = $this->executeMappedQuery($query, function ($result) {
 			return MemberOfBundestag::fromArray($result);
 		});
-
 
 		$query = $this->prepareQuery("
 			SELECT c.name AS name, p.abbreviation AS party

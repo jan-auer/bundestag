@@ -7,20 +7,27 @@ use Btw\Bundle\PersistenceBundle\Entity\State;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
-class StateProvider
-	extends AbstractProvider
+/**
+ * Provides access to {@link State} entities.
+ */
+class StateProvider extends AbstractProvider
 {
 
 	/** @var  EntityRepository */
 	private $repository;
 
+	/**
+	 * @param EntityManager $entityManager
+	 */
 	function __construct(EntityManager $entityManager)
 	{
 		parent::__construct($entityManager);
 	}
 
 	/**
-	 * @param int $id
+	 * Returns a state entity identified by the given id.
+	 *
+	 * @param int $id The identifier of the state entity.
 	 *
 	 * @return State
 	 */
@@ -30,7 +37,9 @@ class StateProvider
 	}
 
 	/**
-	 * @param $election Election
+	 * Returns a list of state entities for the given entities.
+	 *
+	 * @param $election Election The election to retrieve states for.
 	 *
 	 * @return State[]
 	 */

@@ -7,17 +7,24 @@ use Btw\Bundle\PersistenceBundle\Entity\Constituency;
 use Btw\Bundle\PersistenceBundle\Entity\Election;
 use Doctrine\ORM\EntityManager;
 
-class ConstituencyProvider
-	extends AbstractProvider
+/**
+ * Provides access to {@link Constituency} entities.
+ */
+class ConstituencyProvider extends AbstractProvider
 {
 
+	/**
+	 * @param EntityManager $entityManager
+	 */
 	function __construct(EntityManager $entityManager)
 	{
 		parent::__construct($entityManager);
 	}
 
 	/**
-	 * @param int $id
+	 * Returns a constituency identified by the given id.
+	 *
+	 * @param int $id The id of the constituency entity.
 	 *
 	 * @return Constituency
 	 */
@@ -27,30 +34,28 @@ class ConstituencyProvider
 	}
 
 	/**
-	 * @param Election $election
-	 * @param Election $prevElection
+	 * Returns details for the specified election, including the vote count and turnout.
+	 *
+	 * @param Election $election     The election to retrieve details for.
+	 * @param Election $prevElection A previous election to compare to.
 	 *
 	 * @return ConstituencyDetail[]
-	 *
 	 */
-	public function getAllDetailsForElection($election, $prevElection)
+	public function getAllDetailsForElection(Election $election, $prevElection = null)
 	{
-		if (is_null($prevElection))
-		{
+		if (is_null($prevElection)) {
 			$query = $this->prepareQuery("
 				SELECT c.constituency_id AS id, c.name, c.state_id AS state, c.electives, ct.voters, -1 AS voters_prev
 				FROM constituency c
 				  JOIN constituency_turnout ct USING (constituency_id)
-				WHERE c.election_id = :electionId
+				WHERE c.election_id = :election_id
 			");
 
-			$query->bindValue('electionId', $election->getId());
+			$query->bindValue('election_id', $election->getId());
 			return $this->executeMappedQuery($query, function ($result) {
 				return ConstituencyDetail::fromArray($result);
 			});
-		}
-		else
-		{
+		} else {
 			$query = $this->prepareQuery("
 				SELECT c.constituency_id AS id, c.name, c.state_id AS state, c.electives, ct.voters, ctprev.voters AS voters_prev
 				FROM constituency c
