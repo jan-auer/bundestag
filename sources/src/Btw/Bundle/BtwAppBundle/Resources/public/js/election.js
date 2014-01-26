@@ -7,7 +7,7 @@
 	}
 
 	function inc(obj, key, val) {
-		return obj[key] = (obj[key] || 0) + parseInt(val);
+		return obj[key] = (obj[key] || 0) + (parseInt(val) || 0);
 	}
 
 	Module.value('ALL_CONSTITUENCIES', {
@@ -117,6 +117,8 @@
 		Election.prototype.addConstituencies = function addConstituencies(constituencies) {
 			var country = this.getCountry();
 			ng.forEach(constituencies, function (constituency) {
+				!constituency.votersPrev && console.log(constituency);
+
 				inc(country, 'electives', constituency.electives);
 				inc(country, 'voters', constituency.voters);
 				inc(country, 'votersPrev', constituency.votersPrev);

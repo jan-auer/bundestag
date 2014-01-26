@@ -45,7 +45,7 @@ class ConstituencyProvider extends AbstractProvider
 	{
 		if (is_null($prevElection)) {
 			$query = $this->prepareQuery("
-				SELECT c.constituency_id AS id, c.name, c.state_id AS state, c.electives, ct.voters, -1 AS voters_prev
+				SELECT c.constituency_id AS id, c.name, c.state_id AS state, c.electives, ct.voters, 0 AS voters_prev
 				FROM constituency c
 				  JOIN constituency_turnout ct USING (constituency_id)
 				WHERE c.election_id = :election_id
